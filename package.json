@@ -1,13 +1,15 @@
 {
   "name": "@yagomarinho/application-kernel",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "index.ts",
   "types": "index.ts",
   "exports": {
     ".": {
       "types": "./src/index.ts",
       "default": "./src/index.ts"
-    }
+    },
+    "./v1": "./src/v1/index.ts",
+    "./v2": "./src/v2/index.ts"
   },
   "files": [
     "src"
