@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Metadata } from '@davna/kernel'
-import { Resource, verifyResource } from '../../domain'
+import { Metadata } from '@yagomarinho/ts-toolkit'
+import { Resource } from '@yagomarinho/domain-kernel'
 
 /**
  * Resource identifier for responses.

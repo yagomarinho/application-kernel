@@ -6,3 +6,19 @@
  */
 
 export type HttpMethod = 'get' | 'post' | 'put' | 'patch' | 'delete'
+
+type HttpMethodMap = {
+  GET: 'get'
+  POST: 'post'
+  PUT: 'put'
+  PATCH: 'patch'
+  DELETE: 'delete'
+}
+
+export const HttpMethod: HttpMethodMap = {
+  GET: 'get',
+  POST: 'post',
+  PUT: 'put',
+  PATCH: 'patch',
+  DELETE: 'delete',
+}

@@ -5,9 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Resolvable } from '@davna/core'
-import { ExecutionContext } from './execution.context'
+import { ExecutionContext, Resolvable } from '@yagomarinho/domain-kernel'
 
-export interface ErrorHandler<Env, Output, Error = any> {
+export interface ErrorHandler<Output = any, Env = any, Error = any> {
   (error: Error, env: Env, ctx: ExecutionContext): Resolvable<Output>
 }

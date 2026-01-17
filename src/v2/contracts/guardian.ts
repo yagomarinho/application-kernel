@@ -5,10 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Resolvable } from '@davna/core'
-
-import { Result } from './result'
-import { ExecutionContext } from './execution.context'
+import {
+  ExecutionContext,
+  Resolvable,
+  Result,
+} from '@yagomarinho/domain-kernel'
 
 export interface Guardian<Input = any, Output = any, Env = any, Error = any> {
   (

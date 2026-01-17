@@ -5,9 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Resolvable, Tag } from '@davna/core'
-import { ExecutionContext } from './execution.context'
-import { Failure } from './result'
+import {
+  ExecutionContext,
+  Failure,
+  Resolvable,
+  Tag,
+} from '@yagomarinho/domain-kernel'
 
 export const NextURI = 'next'
 export type NextURI = typeof NextURI
@@ -21,7 +24,7 @@ export type MiddlewareResult<Error, Data> = Failure<Error> | Next<Data>
 
 export function Next<Data>(data: Data, ctx: ExecutionContext): Next<Data> {
   return {
-    _t: NextURI,
+    tag: NextURI,
     data,
     ctx,
   }
@@ -33,4 +36,15 @@ export interface Middleware<Input = any, Output = any, Env = any, Error = any> {
     env: Env,
     ctx: ExecutionContext,
   ): Resolvable<MiddlewareResult<Error, Output>>
+}
+
+export type MiddlewareChain<Input, Output = Input> = Middleware<any, any>[] & {
+  __input?: Input
+  __output?: Output
+}
+
+export function MiddlewareChain<Chain extends Middleware<any, any>[]>(
+  ...middlewares: Chain
+): Chain {
+  return middlewares
 }

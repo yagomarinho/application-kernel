@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Identifiable, Tag } from '@davna/core'
+import { Identifiable, Tag } from '@yagomarinho/domain-kernel'
 
 export const AuthContextURI = 'auth.context'
 export type AuthContextURI = typeof AuthContextURI
@@ -83,6 +83,6 @@ export function createAuthContext(
   return {
     actor: actor ? actor : { type: 'account', subject_id: account.id },
     principal: { account },
-    _t: AuthContextURI,
+    tag: AuthContextURI,
   }
 }
