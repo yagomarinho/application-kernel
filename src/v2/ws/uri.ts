@@ -5,5 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './ws.event.handler'
-export * from './ws.event.handler.config'
+export const WshandlerURI = 'ws.handler'
+export type WshandlerURI = typeof WshandlerURI

@@ -5,18 +5,27 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Engine } from '../contracts'
-import { WsCommandHandler } from './command/ws.command.handler'
-import { WsCommandHandlerConfig } from './command/ws.command.handler.config'
-import { WsEventHandler, WsEventHandlerConfig } from './event'
+import type { Engine, EngineBinder, RequiredTaggable } from '../contracts'
+import type { WsCommandHandler, WsCommandHandlerConfig } from './command'
+import type { WsEventHandler, WsEventHandlerConfig } from './event'
+import type {
+  WsMixedEventHandler,
+  WsMixedEventHandlerConfig,
+} from './mixed.event'
+import type { WshandlerURI } from './uri'
 
-export type Config = WsCommandHandlerConfig | WsEventHandlerConfig
-export type Type = WsCommandHandler | WsEventHandler
+type Config =
+  | WsCommandHandlerConfig
+  | WsEventHandlerConfig
+  | WsMixedEventHandlerConfig
+type Type = WsCommandHandler | WsEventHandler | WsMixedEventHandler
 
 type TypeMapper<C extends Config> = C extends WsCommandHandlerConfig
   ? WsCommandHandler
   : WsEventHandler
 
 export interface WsEngine extends Engine<Config, Type> {
-  mount: <C extends Config>(config: C) => TypeMapper<C>
+  mount: <C extends Config>(config: RequiredTaggable<C>) => TypeMapper<C>
 }
+
+export type WsEngineBinder = EngineBinder<WsEngine, WshandlerURI>

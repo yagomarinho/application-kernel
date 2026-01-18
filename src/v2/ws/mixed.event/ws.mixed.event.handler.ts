@@ -7,19 +7,19 @@
 
 import type { Tag } from '@yagomarinho/domain-kernel'
 
-import type { CommandHandler } from '../../messaging'
-import type { WithAdapter } from '../composition'
+import type { DerivedAcceptIncoming, DerivedEndsEmits } from '../composition'
+import type { ServiceBase } from '../../contracts'
 import type { WsEngine, WsEngineBinder } from '../engine'
-import type { WsCommandHandlerConfig } from './ws.command.handler.config'
+import type { WsMixedEventHandlerConfig } from './ws.mixed.event.handler.config'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
 
 import { WshandlerURI } from '../uri'
 
-export const WsCommandhandlerURI = 'ws.command.handler'
-export type WsCommandhandlerURI = typeof WsCommandhandlerURI
+export const WsMixedEventHandlerURI = 'ws.mixed.event.handler'
+export type WsMixedEventHandlerURI = typeof WsMixedEventHandlerURI
 
-export interface WsCommandHandler<
+export interface WsMixedEventHandler<
   RawInput = unknown,
   GuardInput = RawInput,
   Input = GuardInput,
@@ -28,14 +28,12 @@ export interface WsCommandHandler<
   Env = unknown,
 >
   extends
-    Omit<
-      CommandHandler<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-      'tag'
-    >,
-    WithAdapter<RawInput>,
-    Tag<WsCommandhandlerURI> {}
+    ServiceBase<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
+    DerivedAcceptIncoming<RawInput>,
+    DerivedEndsEmits,
+    Tag<WsMixedEventHandlerURI> {}
 
-export function WsCommandHandler<
+export function WsMixedEventHandler<
   RawInput = unknown,
   GuardInput = RawInput,
   Input = GuardInput,
@@ -51,8 +49,7 @@ export function WsCommandHandler<
   postprocessors,
   onError,
   env,
-  incomingAdapter,
-}: WsCommandHandlerConfig<
+}: WsMixedEventHandlerConfig<
   RawInput,
   GuardInput,
   Input,
@@ -70,8 +67,7 @@ export function WsCommandHandler<
       postprocessors,
       onError,
       env,
-      incomingAdapter,
-      tag: WsCommandhandlerURI,
+      tag: WsMixedEventHandlerURI,
     })
 
   return applyEntry('resource', WshandlerURI)(target)

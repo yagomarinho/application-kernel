@@ -28,7 +28,8 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@yagomarinho/domain-kernel": "^0.2.0"
+    "@yagomarinho/domain-kernel": "^0.2.0",
+    "@yagomarinho/utils-toolkit": "^0.2.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"

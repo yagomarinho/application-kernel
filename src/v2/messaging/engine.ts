@@ -5,20 +5,26 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Engine } from '../contracts'
+import { Engine, EngineBinder, RequiredTaggable } from '../contracts'
 
-import { CommandHandler } from './command.handler'
-import { CommandHandlerConfig } from './command.handler.config'
-import { EventHandler } from './event.handler'
-import { EventHandlerConfig } from './event.handler.config'
+import { CommandHandler } from './command/command.handler'
+import { CommandHandlerConfig } from './command/command.handler.config'
+import { EventHandler } from './event/event.handler'
+import { EventHandlerConfig } from './event/event.handler.config'
+import { MessagingHandlerURI } from './uri'
 
-export type Config = CommandHandlerConfig | EventHandlerConfig
-export type Type = CommandHandler | EventHandler
+type Config = CommandHandlerConfig | EventHandlerConfig
+type Type = CommandHandler | EventHandler
 
 type TypeMapper<C extends Config> = C extends CommandHandlerConfig
   ? CommandHandler
   : EventHandler
 
 export interface MessagingEngine extends Engine<Config, Type> {
-  mount: <C extends Config>(config: C) => TypeMapper<C>
+  mount: <C extends Config>(config: RequiredTaggable<C>) => TypeMapper<C>
 }
+
+export type MessageEngineBinder = EngineBinder<
+  MessagingEngine,
+  MessagingHandlerURI
+>

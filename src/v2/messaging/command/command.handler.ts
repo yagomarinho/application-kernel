@@ -5,10 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ServiceBase } from '../contracts'
+import type { Tag } from '@yagomarinho/domain-kernel'
+
+import type { ServiceBase } from '../../contracts'
 import type { CommandHandlerConfig } from './command.handler.config'
-import type { MessagingEngine } from './engine'
-import type { MessageLike } from './message.like'
+import type { MessageEngineBinder, MessagingEngine } from '../engine'
+import type { AcceptIncoming, EndsEmits } from '../composition'
+
+import { MessagingHandlerURI } from '../uri'
+import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
+
+export const CommandHandlerURI = 'command.handler'
+export type CommandHandlerURI = typeof CommandHandlerURI
 
 /**
  * CommandHandler defines an Application Service that handles a Command
@@ -40,25 +48,12 @@ export interface CommandHandler<
   Output = unknown,
   FinalOutput = Output,
   Env = unknown,
-> extends ServiceBase<RawInput, GuardInput, Input, Output, FinalOutput, Env> {
-  /**
-   * Identifies the Command this handler consumes.
-   *
-   * - Semantic identifier only (string)
-   * - Strongly typed payload at compile-time
-   * - Used for routing and contract definition
-   */
-  input: MessageLike<RawInput>
-
-  /**
-   * Identifies the expected result of the Command.
-   *
-   * - Defines the command response contract
-   * - May be transformed or enriched by postprocessors
-   * - Always expected to be produced (success or failure)
-   */
-  output: MessageLike<Output>
-}
+>
+  extends
+    ServiceBase<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
+    AcceptIncoming<RawInput>,
+    EndsEmits<FinalOutput>,
+    Tag<CommandHandlerURI> {}
 
 export function CommandHandler<
   RawInput,
@@ -68,8 +63,8 @@ export function CommandHandler<
   FinalOutput,
   Env,
 >({
-  input,
-  output,
+  on,
+  emits,
   middlewares,
   guardian,
   handler,
@@ -83,16 +78,19 @@ export function CommandHandler<
   Output,
   FinalOutput,
   Env
->) {
-  return (engine: MessagingEngine) =>
+>): MessageEngineBinder {
+  const target = (engine: MessagingEngine) =>
     engine.mount({
-      input,
-      output,
+      on,
+      emits,
       middlewares,
       guardian,
       handler,
       postprocessors,
       onError,
       env,
+      tag: CommandHandlerURI,
     })
+
+  return applyEntry('resource', MessagingHandlerURI)(target)
 }

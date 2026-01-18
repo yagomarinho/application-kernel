@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { HttpRoute } from './route'
+import type { WsMixedEventHandler } from './ws.mixed.event.handler'
 
-export type RequiredKeys = 'method' | 'path' | 'handler'
+type RequiredKeys = 'on' | 'emits' | 'handler'
 
-export type HttpRouteConfig<
+export type WsMixedEventHandlerConfig<
   RawInput = any,
   GuardInput = RawInput,
   Input = GuardInput,
@@ -18,11 +18,11 @@ export type HttpRouteConfig<
   Env = any,
 > = Partial<
   Omit<
-    HttpRoute<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
+    WsMixedEventHandler<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
     RequiredKeys
   >
 > &
   Pick<
-    HttpRoute<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
+    WsMixedEventHandler<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
     RequiredKeys
   >

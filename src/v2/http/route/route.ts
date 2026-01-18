@@ -5,13 +5,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ServiceBase } from '../../contracts'
+import type { Tag } from '@yagomarinho/domain-kernel'
+import type { EngineBinder, ServiceBase } from '../../contracts'
 
 import type { HttpMethod } from '../method'
 import type { HttpResponse } from '../response'
 import type { HttpRequest } from '../request'
 import type { HttpRouteConfig } from './config'
 import type { HttpEngine } from './engine'
+
+import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
+
+export const HttpRouteURI = 'http.route'
+export type HttpRouteURI = typeof HttpRouteURI
 
 export interface HttpRoute<
   RawInput = HttpRequest,
@@ -20,7 +26,10 @@ export interface HttpRoute<
   Output = unknown,
   FinalOutput = Output,
   Env = unknown,
-> extends ServiceBase<RawInput, GuardInput, Input, Output, FinalOutput, Env> {
+>
+  extends
+    ServiceBase<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
+    Tag<HttpRouteURI> {
   /**
    * Route identity and transport-level definition.
    * These values are used by the engine to bind the route
@@ -46,12 +55,12 @@ export interface HttpRoute<
 }
 
 export function HttpRoute<
-  RawInput = HttpRequest,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = any,
-  FinalOutput = Output,
-  Env = any,
+  RawInput,
+  GuardInput,
+  Input,
+  Output,
+  FinalOutput,
+  Env,
 >({
   method,
   path,
@@ -62,8 +71,15 @@ export function HttpRoute<
   onError,
   env,
   adapters,
-}: HttpRouteConfig<RawInput, GuardInput, Input, Output, FinalOutput, Env>) {
-  return (engine: HttpEngine) =>
+}: HttpRouteConfig<
+  RawInput,
+  GuardInput,
+  Input,
+  Output,
+  FinalOutput,
+  Env
+>): EngineBinder<HttpEngine, HttpRouteURI> {
+  const target = (engine: HttpEngine) =>
     engine.mount({
       method,
       path,
@@ -74,5 +90,8 @@ export function HttpRoute<
       onError,
       env,
       adapters,
-    } as any)
+      tag: HttpRouteURI,
+    })
+
+  return applyEntry('resource', HttpRouteURI)(target)
 }

@@ -5,5 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './ws.event.handler'
-export * from './ws.event.handler.config'
+export * from './ws.route.connection'
+export * from './ws.route.connection.config'

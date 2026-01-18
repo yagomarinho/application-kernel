@@ -7,35 +7,25 @@
 
 import type { Tag } from '@yagomarinho/domain-kernel'
 
-import type { CommandHandler } from '../../messaging'
-import type { WithAdapter } from '../composition'
+import type { WsRouteConnectionConfig } from './ws.route.connection.config'
 import type { WsEngine, WsEngineBinder } from '../engine'
-import type { WsCommandHandlerConfig } from './ws.command.handler.config'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
-
 import { WshandlerURI } from '../uri'
 
-export const WsCommandhandlerURI = 'ws.command.handler'
-export type WsCommandhandlerURI = typeof WsCommandhandlerURI
+export const WsRouteConnectionURI = 'ws.route.connection'
+export type WsRouteConnectionURI = typeof WsRouteConnectionURI
 
-export interface WsCommandHandler<
+export interface WsRouteConnection<
   RawInput = unknown,
   GuardInput = RawInput,
   Input = GuardInput,
   Output = unknown,
   FinalOutput = Output,
   Env = unknown,
->
-  extends
-    Omit<
-      CommandHandler<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-      'tag'
-    >,
-    WithAdapter<RawInput>,
-    Tag<WsCommandhandlerURI> {}
+> extends Tag<WsRouteConnectionURI> {}
 
-export function WsCommandHandler<
+export function WsRouteConnection<
   RawInput = unknown,
   GuardInput = RawInput,
   Input = GuardInput,
@@ -51,8 +41,7 @@ export function WsCommandHandler<
   postprocessors,
   onError,
   env,
-  incomingAdapter,
-}: WsCommandHandlerConfig<
+}: WsRouteConnectionConfig<
   RawInput,
   GuardInput,
   Input,
@@ -70,8 +59,7 @@ export function WsCommandHandler<
       postprocessors,
       onError,
       env,
-      incomingAdapter,
-      tag: WsCommandhandlerURI,
+      tag: WsRouteConnectionURI,
     })
 
   return applyEntry('resource', WshandlerURI)(target)
