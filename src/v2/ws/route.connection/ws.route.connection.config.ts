@@ -5,24 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { WsHandlersEngineBinder } from '../engine'
 import type { WsRouteConnection } from './ws.route.connection'
 
-type RequiredKeys = 'on' | 'emits' | 'handler'
+type RequiredKeys = 'path' | 'handlers'
 
-export type WsRouteConnectionConfig<
-  RawInput = any,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = any,
-  FinalOutput = Output,
-  Env = any,
-> = Partial<
-  Omit<
-    WsRouteConnection<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    RequiredKeys
-  >
-> &
-  Pick<
-    WsRouteConnection<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    RequiredKeys
-  >
+type Config = Omit<WsRouteConnection, 'handlers'> & {
+  handlers: WsHandlersEngineBinder[]
+}
+
+export type WsRouteConnectionConfig = Partial<Omit<Config, RequiredKeys>> &
+  Pick<Config, RequiredKeys>

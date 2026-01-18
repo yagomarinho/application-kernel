@@ -9,20 +9,7 @@ import type { WsCommandHandler } from './ws.command.handler'
 
 type RequiredKeys = 'on' | 'emits' | 'handler'
 
-export type WsCommandHandlerConfig<
-  RawInput = any,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = any,
-  FinalOutput = Output,
-  Env = any,
-> = Partial<
-  Omit<
-    WsCommandHandler<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    RequiredKeys
-  >
+export type WsCommandHandlerConfig = Partial<
+  Omit<WsCommandHandler, RequiredKeys>
 > &
-  Pick<
-    WsCommandHandler<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    RequiredKeys
-  >
+  Pick<WsCommandHandler, RequiredKeys>

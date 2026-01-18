@@ -5,9 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { MessageLike } from '../message.like'
-
-export interface EndsEmits<Output> {
+export interface EndsEmits {
   /**
    * Identifies the expected result of the Command.
    *
@@ -15,5 +13,5 @@ export interface EndsEmits<Output> {
    * - May be transformed or enriched by postprocessors
    * - Always expected to be produced (success or failure)
    */
-  emits: MessageLike<Output>
+  emits: string
 }

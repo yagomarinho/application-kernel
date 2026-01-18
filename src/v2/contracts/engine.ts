@@ -6,7 +6,6 @@
  */
 
 import { Resource, Tag } from '@yagomarinho/domain-kernel'
-import { ServiceBase } from './service.base'
 
 export type RequiredTaggable<C extends Partial<Tag>> = C extends {
   tag?: string
@@ -21,9 +20,6 @@ export type EngineBinder<E extends Engine, T extends string> = ((
 ) => ReturnType<E['mount']>) &
   Resource<T>
 
-export interface Engine<
-  C extends Partial<Tag> = any,
-  S extends ServiceBase = any,
-> {
+export interface Engine<C extends Partial<Tag> = any, S = any> {
   mount: (config: RequiredTaggable<C>) => S
 }

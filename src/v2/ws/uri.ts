@@ -5,5 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export const WshandlerURI = 'ws.handler'
-export type WshandlerURI = typeof WshandlerURI
+export const WsURI = 'ws'
+export type WsURI = typeof WsURI
+
+export const WsConnectionURI = 'ws.connection'
+export type WsConnectionURI = typeof WsConnectionURI
+
+export const WsCommandHandlerURI = 'ws.command.handler'
+export type WsCommandHandlerURI = typeof WsCommandHandlerURI
+
+export const WsEventHandlerURI = 'ws.event.handler'
+export type WsEventHandlerURI = typeof WsEventHandlerURI
+
+export const WsMixedEventHandlerURI = 'ws.mixed.event.handler'
+export type WsMixedEventHandlerURI = typeof WsMixedEventHandlerURI

@@ -7,16 +7,13 @@
 
 import type { Tag } from '@yagomarinho/domain-kernel'
 
-import type { ServiceBase } from '../../contracts'
 import type { CommandHandlerConfig } from './command.handler.config'
-import type { MessageEngineBinder, MessagingEngine } from '../engine'
+import type { MessagingEngineBinder, MessagingEngine } from '../engine'
 import type { AcceptIncoming, EndsEmits } from '../composition'
 
-import { MessagingHandlerURI } from '../uri'
+import { CommandhandlerURI, MessagingURI } from '../uri'
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
-
-export const CommandHandlerURI = 'command.handler'
-export type CommandHandlerURI = typeof CommandHandlerURI
+import { ApplicationService } from '../../application.service'
 
 /**
  * CommandHandler defines an Application Service that handles a Command
@@ -41,28 +38,14 @@ export type CommandHandlerURI = typeof CommandHandlerURI
  * Errors are intercepted and translated via `onError` to ensure
  * the command contract is never violated.
  */
-export interface CommandHandler<
-  RawInput = unknown,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = unknown,
-  FinalOutput = Output,
-  Env = unknown,
->
+export interface CommandHandler
   extends
-    ServiceBase<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    AcceptIncoming<RawInput>,
-    EndsEmits<FinalOutput>,
-    Tag<CommandHandlerURI> {}
+    ApplicationService,
+    AcceptIncoming,
+    EndsEmits,
+    Tag<CommandhandlerURI> {}
 
-export function CommandHandler<
-  RawInput,
-  GuardInput,
-  Input,
-  Output,
-  FinalOutput,
-  Env,
->({
+export function CommandHandler({
   on,
   emits,
   middlewares,
@@ -71,14 +54,7 @@ export function CommandHandler<
   postprocessors,
   onError,
   env,
-}: CommandHandlerConfig<
-  RawInput,
-  GuardInput,
-  Input,
-  Output,
-  FinalOutput,
-  Env
->): MessageEngineBinder {
+}: CommandHandlerConfig): MessagingEngineBinder {
   const target = (engine: MessagingEngine) =>
     engine.mount({
       on,
@@ -89,8 +65,8 @@ export function CommandHandler<
       postprocessors,
       onError,
       env,
-      tag: CommandHandlerURI,
+      tag: CommandhandlerURI,
     })
 
-  return applyEntry('resource', MessagingHandlerURI)(target)
+  return applyEntry('resource', MessagingURI)(target)
 }

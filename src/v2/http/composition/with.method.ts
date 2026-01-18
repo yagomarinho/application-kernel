@@ -5,5 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './config'
-export * from './route'
+import { HttpMethod } from '../ports'
+
+export interface WithHttpMethod {
+  method: HttpMethod
+}

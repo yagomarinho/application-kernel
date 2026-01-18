@@ -9,40 +9,17 @@ import type { Tag } from '@yagomarinho/domain-kernel'
 
 import type { CommandHandler } from '../../messaging'
 import type { WithAdapter } from '../composition'
-import type { WsEngine, WsEngineBinder } from '../engine'
+import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engine'
 import type { WsCommandHandlerConfig } from './ws.command.handler.config'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
 
-import { WshandlerURI } from '../uri'
+import { WsCommandHandlerURI, WsURI } from '../uri'
 
-export const WsCommandhandlerURI = 'ws.command.handler'
-export type WsCommandhandlerURI = typeof WsCommandhandlerURI
+export interface WsCommandHandler
+  extends Omit<CommandHandler, 'tag'>, WithAdapter, Tag<WsCommandHandlerURI> {}
 
-export interface WsCommandHandler<
-  RawInput = unknown,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = unknown,
-  FinalOutput = Output,
-  Env = unknown,
->
-  extends
-    Omit<
-      CommandHandler<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-      'tag'
-    >,
-    WithAdapter<RawInput>,
-    Tag<WsCommandhandlerURI> {}
-
-export function WsCommandHandler<
-  RawInput = unknown,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = unknown,
-  FinalOutput = Output,
-  Env = unknown,
->({
+export function WsCommandHandler({
   on,
   emits,
   middlewares,
@@ -52,15 +29,8 @@ export function WsCommandHandler<
   onError,
   env,
   incomingAdapter,
-}: WsCommandHandlerConfig<
-  RawInput,
-  GuardInput,
-  Input,
-  Output,
-  FinalOutput,
-  Env
->): WsEngineBinder {
-  const target = (engine: WsEngine) =>
+}: WsCommandHandlerConfig): WsHandlersEngineBinder {
+  const target = (engine: WsHandlersEngine) =>
     engine.mount({
       on,
       emits,
@@ -71,8 +41,8 @@ export function WsCommandHandler<
       onError,
       env,
       incomingAdapter,
-      tag: WsCommandhandlerURI,
+      tag: WsCommandHandlerURI,
     })
 
-  return applyEntry('resource', WshandlerURI)(target)
+  return applyEntry('resource', WsURI)(target)
 }

@@ -7,7 +7,6 @@
 
 export * from './application'
 export * from './contracts'
-export * from './emitter'
 export * from './http'
 export * from './messaging'
 export * from './ws'

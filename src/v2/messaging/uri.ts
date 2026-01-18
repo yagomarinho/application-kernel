@@ -5,5 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export const MessagingHandlerURI = 'messaging.handler'
-export type MessagingHandlerURI = typeof MessagingHandlerURI
+export const MessagingURI = 'messaging'
+export type MessagingURI = typeof MessagingURI
+
+export const CommandhandlerURI = 'command.handler'
+export type CommandhandlerURI = typeof CommandhandlerURI
+
+export const EventHandlerURI = 'event.handler'
+export type EventHandlerURI = typeof EventHandlerURI

@@ -6,7 +6,8 @@
  */
 
 export * from './command'
+export * from './composition'
+export * from './emitter'
 export * from './engine'
 export * from './event'
-export * from './message.like'
 export * from './uri'

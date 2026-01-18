@@ -7,7 +7,7 @@
 
 import { WithAdapter } from './with.adapter'
 
-interface AcceptWsIncoming<Input> extends Partial<WithAdapter<Input>> {
+interface AcceptWsIncoming extends Partial<WithAdapter> {
   source: 'ws'
   event: string
 }
@@ -17,6 +17,6 @@ interface AcceptEmitterIncoming {
   event: string
 }
 
-export interface DerivedAcceptIncoming<Input> {
-  on: AcceptWsIncoming<Input> | AcceptEmitterIncoming
+export interface DerivedAcceptIncoming {
+  on: AcceptWsIncoming | AcceptEmitterIncoming
 }

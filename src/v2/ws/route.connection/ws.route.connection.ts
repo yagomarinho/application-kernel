@@ -8,59 +8,46 @@
 import type { Tag } from '@yagomarinho/domain-kernel'
 
 import type { WsRouteConnectionConfig } from './ws.route.connection.config'
-import type { WsEngine, WsEngineBinder } from '../engine'
+import type {
+  WsConnectionEngine,
+  WsConnectionEngineBinder,
+  WsHandlers,
+} from '../engine'
+import type { ServiceBase } from '../../contracts'
+import type { WithPath } from '../../http'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
-import { WshandlerURI } from '../uri'
+import { WsConnectionURI, WsURI } from '../uri'
 
-export const WsRouteConnectionURI = 'ws.route.connection'
-export type WsRouteConnectionURI = typeof WsRouteConnectionURI
+export interface WsRouteConnection
+  extends
+    Pick<ServiceBase, 'env' | 'middlewares' | 'postprocessors' | 'onError'>,
+    WithPath,
+    Tag<WsConnectionURI> {
+  handlers: WsHandlers[]
+  onConnection?: Pick<ServiceBase, 'guardian' | 'handler'>
+}
 
-export interface WsRouteConnection<
-  RawInput = unknown,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = unknown,
-  FinalOutput = Output,
-  Env = unknown,
-> extends Tag<WsRouteConnectionURI> {}
-
-export function WsRouteConnection<
-  RawInput = unknown,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = unknown,
-  FinalOutput = Output,
-  Env = unknown,
->({
-  on,
-  emits,
+export function WsRouteConnection({
+  path,
+  handlers,
   middlewares,
-  guardian,
-  handler,
   postprocessors,
+  onConnection,
   onError,
   env,
-}: WsRouteConnectionConfig<
-  RawInput,
-  GuardInput,
-  Input,
-  Output,
-  FinalOutput,
-  Env
->): WsEngineBinder {
-  const target = (engine: WsEngine) =>
+}: WsRouteConnectionConfig): WsConnectionEngineBinder {
+  const target = (engine: WsConnectionEngine) =>
     engine.mount({
-      on,
-      emits,
+      path,
+      handlers,
       middlewares,
-      guardian,
-      handler,
       postprocessors,
+      onConnection,
       onError,
       env,
-      tag: WsRouteConnectionURI,
+      tag: WsConnectionURI,
     })
 
-  return applyEntry('resource', WshandlerURI)(target)
+  return applyEntry('resource', WsURI)(target)
 }

@@ -7,26 +7,21 @@
 
 import type { UseCase } from '@yagomarinho/domain-kernel'
 
-import type { Guardian } from './guardian'
-import type { MiddlewareChain } from './middleware'
-import type { PostprocessorChain } from './postprocessor'
-import type { ErrorHandler } from './error.handler'
+import type {
+  Guardian,
+  Middleware,
+  Postprocessor,
+  ErrorHandler,
+} from '../contracts'
 
-export interface ServiceBase<
-  RawInput = any,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = any,
-  FinalOutput = Output,
-  Env = any,
-> {
+export interface ApplicationService {
   /**
    * Route-scoped environment resolver.
    * Receives the global application environment and
    * derives a narrowed context used by the use case
    * and the execution pipeline of this route.
    */
-  env: (globalEnv: unknown) => Env
+  env: (globalEnv: any) => any
 
   /**
    * Technical pre-processing pipeline.
@@ -41,7 +36,7 @@ export interface ServiceBase<
    * Input  : RawInput (output of requestAdapter)
    * Output : GuardInput (input for the guardian)
    */
-  middlewares: MiddlewareChain<RawInput, GuardInput>
+  middlewares: Middleware[]
 
   /**
    * Semantic validation and authorization layer.
@@ -51,14 +46,14 @@ export interface ServiceBase<
    * Input  : GuardInput
    * Output : Input (use case input)
    */
-  guardian: Guardian<GuardInput, Input>
+  guardian: Guardian
 
   /**
    * Core application behavior.
    * Pure domain logic that operates on validated input
    * and a resolved environment, producing a domain output.
    */
-  handler: UseCase<Input, Output, Env>
+  handler: UseCase
 
   /**
    * Post-domain processing pipeline.
@@ -72,7 +67,7 @@ export interface ServiceBase<
    * Input  : Output (use case result)
    * Output : FinalOutput (response adapter input)
    */
-  postprocessors: PostprocessorChain<Output, FinalOutput>
+  postprocessors: Postprocessor[]
 
   /**
    * Centralized error handling strategy for this route.

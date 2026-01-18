@@ -37,14 +37,3 @@ export interface Middleware<Input = any, Output = any, Env = any, Error = any> {
     ctx: ExecutionContext,
   ): Resolvable<MiddlewareResult<Error, Output>>
 }
-
-export type MiddlewareChain<Input, Output = Input> = Middleware<any, any>[] & {
-  __input?: Input
-  __output?: Output
-}
-
-export function MiddlewareChain<Chain extends Middleware<any, any>[]>(
-  ...middlewares: Chain
-): Chain {
-  return middlewares
-}

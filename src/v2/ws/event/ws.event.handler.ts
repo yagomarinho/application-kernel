@@ -10,34 +10,16 @@ import type { Tag } from '@yagomarinho/domain-kernel'
 import type { WsEventHandlerConfig } from './ws.event.handler.config'
 import type { EventHandler } from '../../messaging'
 import type { WithAdapter } from '../composition'
-import type { WsEngine, WsEngineBinder } from '../engine'
+import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engine'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
 
-import { WshandlerURI } from '../uri'
+import { WsEventHandlerURI, WsURI } from '../uri'
 
-export const WsEventHandlerURI = 'ws.event.handler'
-export type WsEventHandlerURI = typeof WsEventHandlerURI
+export interface WsEventHandler
+  extends Omit<EventHandler, 'tag'>, WithAdapter, Tag<WsEventHandlerURI> {}
 
-export interface WsEventHandler<
-  RawInput = unknown,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = unknown,
-  Env = unknown,
->
-  extends
-    Omit<EventHandler<RawInput, GuardInput, Input, Output, Env>, 'tag'>,
-    WithAdapter<RawInput>,
-    Tag<WsEventHandlerURI> {}
-
-export function WsEventHandler<
-  RawInput = unknown,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = unknown,
-  Env = unknown,
->({
+export function WsEventHandler({
   on,
   middlewares,
   guardian,
@@ -46,14 +28,8 @@ export function WsEventHandler<
   onError,
   env,
   incomingAdapter,
-}: WsEventHandlerConfig<
-  RawInput,
-  GuardInput,
-  Input,
-  Output,
-  Env
->): WsEngineBinder {
-  const target = (engine: WsEngine) =>
+}: WsEventHandlerConfig): WsHandlersEngineBinder {
+  const target = (engine: WsHandlersEngine) =>
     engine.mount({
       on,
       middlewares,
@@ -66,5 +42,5 @@ export function WsEventHandler<
       tag: WsEventHandlerURI,
     })
 
-  return applyEntry('resource', WshandlerURI)(target)
+  return applyEntry('resource', WsURI)(target)
 }

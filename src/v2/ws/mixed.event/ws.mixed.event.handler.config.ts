@@ -9,20 +9,7 @@ import type { WsMixedEventHandler } from './ws.mixed.event.handler'
 
 type RequiredKeys = 'on' | 'emits' | 'handler'
 
-export type WsMixedEventHandlerConfig<
-  RawInput = any,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = any,
-  FinalOutput = Output,
-  Env = any,
-> = Partial<
-  Omit<
-    WsMixedEventHandler<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    RequiredKeys
-  >
+export type WsMixedEventHandlerConfig = Partial<
+  Omit<WsMixedEventHandler, RequiredKeys>
 > &
-  Pick<
-    WsMixedEventHandler<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    RequiredKeys
-  >
+  Pick<WsMixedEventHandler, RequiredKeys>

@@ -6,62 +6,27 @@
  */
 
 import type { Tag } from '@yagomarinho/domain-kernel'
-import type { EngineBinder, ServiceBase } from '../../contracts'
 
-import type { HttpMethod } from '../method'
-import type { HttpResponse } from '../response'
-import type { HttpRequest } from '../request'
+import type { WithHttpAdapters, WithHttpMethod, WithPath } from '../composition'
 import type { HttpRouteConfig } from './config'
-import type { HttpEngine } from './engine'
+import type { HttpEngine, HttpEngineBinder } from '../engine'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
+import { HttpURI } from '../uri'
+import { ApplicationService } from '../../application.service'
 
 export const HttpRouteURI = 'http.route'
 export type HttpRouteURI = typeof HttpRouteURI
 
-export interface HttpRoute<
-  RawInput = HttpRequest,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = unknown,
-  FinalOutput = Output,
-  Env = unknown,
->
+export interface HttpRoute
   extends
-    ServiceBase<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    Tag<HttpRouteURI> {
-  /**
-   * Route identity and transport-level definition.
-   * These values are used by the engine to bind the route
-   * to the underlying HTTP server (Express, Fastify, etc).
-   */
-  method: HttpMethod
-  path: string
+    ApplicationService,
+    WithHttpMethod,
+    WithPath,
+    WithHttpAdapters,
+    Tag<HttpRouteURI> {}
 
-  /**
-   * Transport protocol adapters.
-   * Defines how raw HTTP requests are translated into
-   * application inputs and how final outputs are translated
-   * back into HTTP responses.
-   *
-   * These adapters may be partially or fully overridden
-   * by route-level adapters, falling back to global ones
-   * when not provided.
-   */
-  adapters: {
-    requestAdapter: (request: HttpRequest) => RawInput
-    responseAdapter: (data: FinalOutput) => HttpResponse
-  }
-}
-
-export function HttpRoute<
-  RawInput,
-  GuardInput,
-  Input,
-  Output,
-  FinalOutput,
-  Env,
->({
+export function HttpRoute({
   method,
   path,
   middlewares,
@@ -71,14 +36,7 @@ export function HttpRoute<
   onError,
   env,
   adapters,
-}: HttpRouteConfig<
-  RawInput,
-  GuardInput,
-  Input,
-  Output,
-  FinalOutput,
-  Env
->): EngineBinder<HttpEngine, HttpRouteURI> {
+}: HttpRouteConfig): HttpEngineBinder {
   const target = (engine: HttpEngine) =>
     engine.mount({
       method,
@@ -93,5 +51,5 @@ export function HttpRoute<
       tag: HttpRouteURI,
     })
 
-  return applyEntry('resource', HttpRouteURI)(target)
+  return applyEntry('resource', HttpURI)(target)
 }

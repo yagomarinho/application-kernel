@@ -9,13 +9,5 @@ import type { WsEventHandler } from './ws.event.handler'
 
 type RequiredKeys = 'on' | 'handler'
 
-export type WsEventHandlerConfig<
-  RawInput = any,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = any,
-  Env = any,
-> = Partial<
-  Omit<WsEventHandler<RawInput, GuardInput, Input, Output, Env>, RequiredKeys>
-> &
-  Pick<WsEventHandler<RawInput, GuardInput, Input, Output, Env>, RequiredKeys>
+export type WsEventHandlerConfig = Partial<Omit<WsEventHandler, RequiredKeys>> &
+  Pick<WsEventHandler, RequiredKeys>

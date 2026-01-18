@@ -6,8 +6,8 @@
  */
 
 export * from './engine'
+export * from './env.handler'
 export * from './error.handler'
 export * from './guardian'
 export * from './middleware'
 export * from './postprocessor'
-export * from './service.base'

@@ -9,20 +9,5 @@ import type { CommandHandler } from './command.handler'
 
 type RequiredKeys = 'on' | 'emits' | 'handler'
 
-export type CommandHandlerConfig<
-  RawInput = any,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = any,
-  FinalOutput = Output,
-  Env = any,
-> = Partial<
-  Omit<
-    CommandHandler<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    RequiredKeys
-  >
-> &
-  Pick<
-    CommandHandler<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    RequiredKeys
-  >
+export type CommandHandlerConfig = Partial<Omit<CommandHandler, RequiredKeys>> &
+  Pick<CommandHandler, RequiredKeys>

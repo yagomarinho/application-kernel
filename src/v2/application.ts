@@ -5,6 +5,54 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export function describeApplication() {
-  return {}
+import { HttpEngine, HttpEngineBinder, HttpURI } from './http'
+import {
+  MessagingEngine,
+  MessagingEngineBinder,
+  MessagingURI,
+} from './messaging'
+import { WsConnectionEngine, WsConnectionEngineBinder, WsURI } from './ws'
+
+interface ApplicationConfig {
+  routes: (
+    | HttpEngineBinder
+    | MessagingEngineBinder
+    | WsConnectionEngineBinder
+  )[]
+}
+
+interface Application {
+  mount: () => void
+}
+
+type Engines = {
+  [HttpURI]: HttpEngine
+  [MessagingURI]: MessagingEngine
+  [WsURI]: WsConnectionEngine
+}
+
+export function createApplication({ routes }: ApplicationConfig): Application {
+  const engines: Engines = {
+    [HttpURI]: HttpEngine(),
+    [MessagingURI]: {},
+    [WsURI]: {},
+  }
+
+  const mount: Application['mount'] = () => {
+    const mountedRoutes = routes.map(binder =>
+      binder(engines[binder.resource] as any),
+    )
+
+    // Estou aqui horas perdido no mesmo desafio,
+    // modificando coisas que não tem nada a ver
+    // porque estou simplesmente perdido
+    // O que está havendo, não estou em flow
+
+    // O que é que eu preciso realizar agora?
+    // Preciso inserir as rotas nos apps?
+  }
+
+  return {
+    mount,
+  }
 }

@@ -10,17 +10,3 @@ import { ExecutionContext, Resolvable } from '@yagomarinho/domain-kernel'
 export interface Postprocessor<Input = any, Output = any, Env = any> {
   (data: Input, env: Env, ctx: ExecutionContext): Resolvable<Output>
 }
-
-export type PostprocessorChain<Input, Output = Input> = Postprocessor<
-  any,
-  any
->[] & {
-  __input?: Input
-  __output?: Output
-}
-
-export function PostprocessorChain<Chain extends Postprocessor<any, any>[]>(
-  ...postprocessors: Chain
-): Chain {
-  return postprocessors
-}

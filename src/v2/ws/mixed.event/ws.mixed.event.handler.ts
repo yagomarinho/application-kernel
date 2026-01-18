@@ -9,38 +9,21 @@ import type { Tag } from '@yagomarinho/domain-kernel'
 
 import type { DerivedAcceptIncoming, DerivedEndsEmits } from '../composition'
 import type { ServiceBase } from '../../contracts'
-import type { WsEngine, WsEngineBinder } from '../engine'
+import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engine'
 import type { WsMixedEventHandlerConfig } from './ws.mixed.event.handler.config'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
 
-import { WshandlerURI } from '../uri'
+import { WsMixedEventHandlerURI, WsURI } from '../uri'
 
-export const WsMixedEventHandlerURI = 'ws.mixed.event.handler'
-export type WsMixedEventHandlerURI = typeof WsMixedEventHandlerURI
-
-export interface WsMixedEventHandler<
-  RawInput = unknown,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = unknown,
-  FinalOutput = Output,
-  Env = unknown,
->
+export interface WsMixedEventHandler
   extends
-    ServiceBase<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    DerivedAcceptIncoming<RawInput>,
+    ServiceBase,
+    DerivedAcceptIncoming,
     DerivedEndsEmits,
     Tag<WsMixedEventHandlerURI> {}
 
-export function WsMixedEventHandler<
-  RawInput = unknown,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = unknown,
-  FinalOutput = Output,
-  Env = unknown,
->({
+export function WsMixedEventHandler({
   on,
   emits,
   middlewares,
@@ -49,15 +32,8 @@ export function WsMixedEventHandler<
   postprocessors,
   onError,
   env,
-}: WsMixedEventHandlerConfig<
-  RawInput,
-  GuardInput,
-  Input,
-  Output,
-  FinalOutput,
-  Env
->): WsEngineBinder {
-  const target = (engine: WsEngine) =>
+}: WsMixedEventHandlerConfig): WsHandlersEngineBinder {
+  const target = (engine: WsHandlersEngine) =>
     engine.mount({
       on,
       emits,
@@ -70,5 +46,5 @@ export function WsMixedEventHandler<
       tag: WsMixedEventHandlerURI,
     })
 
-  return applyEntry('resource', WshandlerURI)(target)
+  return applyEntry('resource', WsURI)(target)
 }

@@ -5,9 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { MessageLike } from '../message.like'
-
-export interface AcceptIncoming<Input> {
+export interface AcceptIncoming {
   /**
    * Identifies the Command this handler consumes.
    *
@@ -15,5 +13,5 @@ export interface AcceptIncoming<Input> {
    * - Strongly typed payload at compile-time
    * - Used for routing and contract definition
    */
-  on: MessageLike<Input>
+  on: string
 }

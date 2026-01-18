@@ -5,5 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './config'
-export * from './route'
+export interface EnvHandler<GlobalEnv = any, LocalEnv = GlobalEnv> {
+  (globalEnv: GlobalEnv): LocalEnv
+}

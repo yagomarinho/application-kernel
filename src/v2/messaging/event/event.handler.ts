@@ -7,27 +7,14 @@
 
 import type { Tag } from '@yagomarinho/domain-kernel'
 
-import type { ServiceBase } from '../../contracts'
 import type { EventHandlerConfig } from './event.handler.config'
-import type { MessageEngineBinder, MessagingEngine } from '../engine'
-import type { MessageLike } from '../message.like'
+import type { MessagingEngineBinder, MessagingEngine } from '../engine'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
-import { MessagingHandlerURI } from '../uri'
+import { EventHandlerURI, MessagingURI } from '../uri'
+import { ApplicationService } from '../../application.service'
 
-export const EventHandlerURI = 'event.handler'
-export type EventHandlerURI = typeof EventHandlerURI
-
-export interface EventHandler<
-  RawInput = unknown,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = void,
-  Env = unknown,
->
-  extends
-    ServiceBase<RawInput, GuardInput, Input, Output, void, Env>,
-    Tag<EventHandlerURI> {
+export interface EventHandler extends ApplicationService, Tag<EventHandlerURI> {
   /**
    * Identifies the Command this handler consumes.
    *
@@ -35,10 +22,10 @@ export interface EventHandler<
    * - Strongly typed payload at compile-time
    * - Used for routing and contract definition
    */
-  on: MessageLike<RawInput>
+  on: string
 }
 
-export function EventHandler<RawInput, GuardInput, Input, Output, Env>({
+export function EventHandler({
   on,
   middlewares,
   guardian,
@@ -46,13 +33,7 @@ export function EventHandler<RawInput, GuardInput, Input, Output, Env>({
   postprocessors,
   onError,
   env,
-}: EventHandlerConfig<
-  RawInput,
-  GuardInput,
-  Input,
-  Output,
-  Env
->): MessageEngineBinder {
+}: EventHandlerConfig): MessagingEngineBinder {
   const target = (engine: MessagingEngine) =>
     engine.mount({
       on,
@@ -65,5 +46,5 @@ export function EventHandler<RawInput, GuardInput, Input, Output, Env>({
       tag: EventHandlerURI,
     })
 
-  return applyEntry('resource', MessagingHandlerURI)(target)
+  return applyEntry('resource', MessagingURI)(target)
 }

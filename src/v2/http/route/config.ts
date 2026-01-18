@@ -9,20 +9,5 @@ import { HttpRoute } from './route'
 
 export type RequiredKeys = 'method' | 'path' | 'handler'
 
-export type HttpRouteConfig<
-  RawInput = any,
-  GuardInput = RawInput,
-  Input = GuardInput,
-  Output = any,
-  FinalOutput = Output,
-  Env = any,
-> = Partial<
-  Omit<
-    HttpRoute<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    RequiredKeys
-  >
-> &
-  Pick<
-    HttpRoute<RawInput, GuardInput, Input, Output, FinalOutput, Env>,
-    RequiredKeys
-  >
+export type HttpRouteConfig = Partial<Omit<HttpRoute, RequiredKeys>> &
+  Pick<HttpRoute, RequiredKeys>
