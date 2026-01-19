@@ -12,7 +12,10 @@ import { CommandHandlerConfig } from '../command/command.handler.config'
 import { EventHandler } from '../event/event.handler'
 import { EventHandlerConfig } from '../event/event.handler.config'
 import { MessagingURI } from '../uri'
-import { castMessagingDefaults, MessagingDefaults } from './messaging.defaults'
+import {
+  resolveMessagingDefaults,
+  MessagingDefaults,
+} from './messaging.defaults'
 import { mountMessagingHandler } from './mount'
 
 export type MessagingHandlerConfig = CommandHandlerConfig | EventHandlerConfig
@@ -40,7 +43,7 @@ export interface MessagingEngineOptions {
 export function MessagingEngine({
   defaults,
 }: MessagingEngineOptions = {}): MessagingEngine {
-  const ensureDefaults = castMessagingDefaults(defaults)
+  const ensureDefaults = resolveMessagingDefaults(defaults)
 
   const mount: MessagingEngine['mount'] = mountMessagingHandler(ensureDefaults)
 

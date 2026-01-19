@@ -8,7 +8,7 @@
 import type { Tag } from '@yagomarinho/domain-kernel'
 
 import type { CommandHandler } from '../../messaging'
-import type { WithAdapter } from '../composition'
+import type { WithWsAdapter } from '../composition'
 import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engine'
 import type { WsCommandHandlerConfig } from './ws.command.handler.config'
 
@@ -17,7 +17,10 @@ import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
 import { WsCommandHandlerURI, WsURI } from '../uri'
 
 export interface WsCommandHandler
-  extends Omit<CommandHandler, 'tag'>, WithAdapter, Tag<WsCommandHandlerURI> {}
+  extends
+    Omit<CommandHandler, 'tag'>,
+    WithWsAdapter,
+    Tag<WsCommandHandlerURI> {}
 
 export function WsCommandHandler({
   on,

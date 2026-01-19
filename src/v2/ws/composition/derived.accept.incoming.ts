@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { WithAdapter } from './with.adapter'
+import { WithWsAdapter } from './with.ws.adapter'
 
-interface AcceptWsIncoming extends Partial<WithAdapter> {
+export interface AcceptWsIncoming extends WithWsAdapter {
   source: 'ws'
   event: string
 }
 
-interface AcceptEmitterIncoming {
+export interface AcceptEmitterIncoming {
   source: 'emitter'
   event: string
 }

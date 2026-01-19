@@ -5,9 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { HttpAdapters } from '../composition'
 import { HttpRoute } from './route'
 
 export type RequiredKeys = 'method' | 'path' | 'handler'
 
-export type HttpRouteConfig = Partial<Omit<HttpRoute, RequiredKeys>> &
+export type HttpPartialAdapters = Omit<HttpRoute, 'adapters'> & {
+  adapters: Partial<HttpAdapters>
+}
+
+export type HttpRouteConfig = Partial<Omit<HttpPartialAdapters, RequiredKeys>> &
   Pick<HttpRoute, RequiredKeys>

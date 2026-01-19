@@ -9,7 +9,7 @@ import type { Tag } from '@yagomarinho/domain-kernel'
 
 import type { WsEventHandlerConfig } from './ws.event.handler.config'
 import type { EventHandler } from '../../messaging'
-import type { WithAdapter } from '../composition'
+import type { WithWsAdapter } from '../composition'
 import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engine'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
@@ -17,7 +17,7 @@ import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
 import { WsEventHandlerURI, WsURI } from '../uri'
 
 export interface WsEventHandler
-  extends Omit<EventHandler, 'tag'>, WithAdapter, Tag<WsEventHandlerURI> {}
+  extends Omit<EventHandler, 'tag'>, WithWsAdapter, Tag<WsEventHandlerURI> {}
 
 export function WsEventHandler({
   on,

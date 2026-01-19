@@ -10,7 +10,7 @@ import { Engine, EngineBinder } from '../../contracts'
 import { ApplicationService } from '../application.service'
 import {
   ApplicationServiceDefaults,
-  castApplicationServiceDefaults,
+  resolveApplicationServiceDefaults,
 } from '../application.service.defaults'
 import { mountApplicationService } from './mount'
 
@@ -39,7 +39,7 @@ export interface ApplicationServiceEngineOptions {
 export function ApplicationServiceEngine({
   defaults,
 }: ApplicationServiceEngineOptions = {}): ApplicationServiceEngine {
-  const ensureDefaults = castApplicationServiceDefaults(defaults)
+  const ensureDefaults = resolveApplicationServiceDefaults(defaults)
 
   const mount: ApplicationServiceEngine['mount'] =
     mountApplicationService(ensureDefaults)

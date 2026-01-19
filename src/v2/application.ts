@@ -34,22 +34,14 @@ type Engines = {
 export function createApplication({ routes }: ApplicationConfig): Application {
   const engines: Engines = {
     [HttpURI]: HttpEngine(),
-    [MessagingURI]: {},
-    [WsURI]: {},
+    [MessagingURI]: MessagingEngine(),
+    [WsURI]: WsEngine(),
   }
 
   const mount: Application['mount'] = () => {
     const mountedRoutes = routes.map(binder =>
       binder(engines[binder.resource] as any),
     )
-
-    // Estou aqui horas perdido no mesmo desafio,
-    // modificando coisas que não tem nada a ver
-    // porque estou simplesmente perdido
-    // O que está havendo, não estou em flow
-
-    // O que é que eu preciso realizar agora?
-    // Preciso inserir as rotas nos apps?
   }
 
   return {

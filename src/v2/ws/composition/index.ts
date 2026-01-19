@@ -7,4 +7,6 @@
 
 export * from './derived.accept.incoming'
 export * from './derived.ends.emits'
-export * from './with.adapter'
+export * from './with.handlers'
+export * from './with.on.connection'
+export * from './with.ws.adapter'

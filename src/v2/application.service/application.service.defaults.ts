@@ -28,13 +28,13 @@ export function identity<A>(value: A): A {
   return value
 }
 
-export function defaultGuardian<A>(input: A): Successful<A> {
+export function doneDefault<A>(input: A): Successful<A> {
   return Successful(input)
 }
 
-export function castApplicationServiceDefaults({
+export function resolveApplicationServiceDefaults({
   env = identity,
-  guardian = defaultGuardian,
+  guardian = doneDefault,
   middlewares = EMPTY_ARRAY,
   onError = identity,
   postprocessors = EMPTY_ARRAY,

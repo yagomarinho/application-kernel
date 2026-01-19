@@ -9,5 +9,5 @@ export interface HttpResponse {
   status: number
   headers: Record<string, string>
   body: unknown
-  bodyStream: WritableStream
+  bodyStream?: WritableStream
 }

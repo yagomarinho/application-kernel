@@ -7,7 +7,7 @@
 
 import {
   ApplicationServiceDefaults,
-  castApplicationServiceDefaults,
+  resolveApplicationServiceDefaults,
   identity,
 } from '../../application.service'
 import { HttpAdapters } from '../composition'
@@ -16,15 +16,16 @@ export interface HttpRouteDefaults extends ApplicationServiceDefaults {
   readonly adapters: HttpAdapters
 }
 
-export function castHttpRouteDefaults(
-  defaults: Partial<HttpRouteDefaults> = {},
-): HttpRouteDefaults {
-  const serviceDefaults = castApplicationServiceDefaults(defaults)
+export function resolveHttpRouteDefaults({
+  adapters = {
+    requestAdapter: identity,
+    responseAdapter: identity,
+  },
+  ...rest
+}: Partial<HttpRouteDefaults> = {}): HttpRouteDefaults {
+  const serviceDefaults = resolveApplicationServiceDefaults(rest)
   return {
     ...serviceDefaults,
-    adapters: defaults.adapters ?? {
-      requestAdapter: identity,
-      responseAdapter: identity,
-    },
+    adapters,
   }
 }

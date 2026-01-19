@@ -8,17 +8,17 @@
 import type { Tag } from '@yagomarinho/domain-kernel'
 
 import type { DerivedAcceptIncoming, DerivedEndsEmits } from '../composition'
-import type { ServiceBase } from '../../contracts'
 import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engine'
 import type { WsMixedEventHandlerConfig } from './ws.mixed.event.handler.config'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
 
 import { WsMixedEventHandlerURI, WsURI } from '../uri'
+import { ApplicationService } from '../../application.service'
 
 export interface WsMixedEventHandler
   extends
-    ServiceBase,
+    ApplicationService,
     DerivedAcceptIncoming,
     DerivedEndsEmits,
     Tag<WsMixedEventHandlerURI> {}

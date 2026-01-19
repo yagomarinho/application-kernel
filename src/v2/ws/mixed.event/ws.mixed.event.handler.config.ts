@@ -5,11 +5,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {
+  AcceptEmitterIncoming,
+  AcceptWsIncoming,
+  IncomingAdapter,
+} from '../composition'
 import type { WsMixedEventHandler } from './ws.mixed.event.handler'
 
 type RequiredKeys = 'on' | 'emits' | 'handler'
 
-export type WsMixedEventHandlerConfig = Partial<
-  Omit<WsMixedEventHandler, RequiredKeys>
-> &
-  Pick<WsMixedEventHandler, RequiredKeys>
+type Config = Omit<WsMixedEventHandler, 'on'> & {
+  on:
+    | AcceptEmitterIncoming
+    | (Omit<AcceptWsIncoming, 'incomingAdapter'> & {
+        incomingAdapter?: IncomingAdapter
+      })
+}
+
+export type WsMixedEventHandlerConfig = Partial<Omit<Config, RequiredKeys>> &
+  Pick<Config, RequiredKeys>

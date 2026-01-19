@@ -7,9 +7,9 @@
 
 import {
   ApplicationServiceDefaults,
-  castApplicationServiceDefaults,
+  resolveApplicationServiceDefaults,
 } from '../../application.service'
 
 export interface MessagingDefaults extends ApplicationServiceDefaults {}
 
-export const castMessagingDefaults = castApplicationServiceDefaults
+export const resolveMessagingDefaults = resolveApplicationServiceDefaults

@@ -5,14 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Engine, EngineBinder, RequiredTaggable } from '../../contracts'
-import type { WsCommandHandler, WsCommandHandlerConfig } from '../command'
-import type { WsEventHandler, WsEventHandlerConfig } from '../event'
+import type { Engine, EngineBinder, RequiredTaggable } from '../../../contracts'
+import type { WsCommandHandler, WsCommandHandlerConfig } from '../../command'
+import type { WsEventHandler, WsEventHandlerConfig } from '../../event'
 import type {
   WsMixedEventHandler,
   WsMixedEventHandlerConfig,
-} from '../mixed.event'
-import type { WsURI } from '../uri'
+} from '../../mixed.event'
+import type { WsURI } from '../../uri'
 
 type Config =
   | WsCommandHandlerConfig

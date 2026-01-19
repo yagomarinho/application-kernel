@@ -7,26 +7,28 @@
 
 import type { Tag } from '@yagomarinho/domain-kernel'
 
+import type { ApplicationService } from '../../application.service'
 import type { WsRouteConnectionConfig } from './ws.route.connection.config'
 import type {
-  WsConnectionEngine,
-  WsConnectionEngineBinder,
-  WsHandlers,
+  WsRouteConnectionEngine,
+  WsRouteConnectionEngineBinder,
 } from '../engine'
-import type { ServiceBase } from '../../contracts'
 import type { WithPath } from '../../http'
+import type { WithHandlers, WithOnConnection } from '../composition'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
 import { WsConnectionURI, WsURI } from '../uri'
 
 export interface WsRouteConnection
   extends
-    Pick<ServiceBase, 'env' | 'middlewares' | 'postprocessors' | 'onError'>,
+    Pick<
+      ApplicationService,
+      'env' | 'middlewares' | 'postprocessors' | 'onError'
+    >,
     WithPath,
-    Tag<WsConnectionURI> {
-  handlers: WsHandlers[]
-  onConnection?: Pick<ServiceBase, 'guardian' | 'handler'>
-}
+    WithOnConnection,
+    WithHandlers,
+    Tag<WsConnectionURI> {}
 
 export function WsRouteConnection({
   path,
@@ -36,8 +38,8 @@ export function WsRouteConnection({
   onConnection,
   onError,
   env,
-}: WsRouteConnectionConfig): WsConnectionEngineBinder {
-  const target = (engine: WsConnectionEngine) =>
+}: WsRouteConnectionConfig): WsRouteConnectionEngineBinder {
+  const target = (engine: WsRouteConnectionEngine) =>
     engine.mount({
       path,
       handlers,
