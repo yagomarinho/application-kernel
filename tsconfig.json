@@ -11,7 +11,7 @@
     "useUnknownInCatchVariables": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": false,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "skipLibCheck": true,
     "noEmit": true
   }

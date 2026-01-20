@@ -12,7 +12,12 @@ import type {
   WsMixedEventHandler,
   WsMixedEventHandlerConfig,
 } from '../../mixed.event'
-import type { WsURI } from '../../uri'
+import type {
+  WsCommandHandlerURI,
+  WsEventHandlerURI,
+  WsMixedEventHandlerURI,
+  WsURI,
+} from '../../uri'
 import { resolveWsHandlersDefaults, WsHandlersDefaults } from './defaults'
 import { mountWsHandlers } from './mount'
 
@@ -23,8 +28,15 @@ export type WsHandlersConfig =
 
 export type WsHandlers = WsCommandHandler | WsEventHandler | WsMixedEventHandler
 
-export type WsHandlersMapper<C extends WsHandlersConfig> =
-  C extends WsCommandHandlerConfig ? WsCommandHandler : WsEventHandler
+type Mapper = {
+  [WsCommandHandlerURI]: WsCommandHandler
+  [WsEventHandlerURI]: WsEventHandler
+  [WsMixedEventHandlerURI]: WsMixedEventHandler
+}
+
+export type WsHandlersMapper<C extends WsHandlersConfig> = Mapper[NonNullable<
+  C['tag']
+>]
 
 export interface WsHandlersEngine extends Engine<WsHandlersConfig, WsHandlers> {
   mount: <C extends WsHandlersConfig>(

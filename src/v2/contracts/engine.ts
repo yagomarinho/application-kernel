@@ -7,13 +7,9 @@
 
 import { Resource, Tag } from '@yagomarinho/domain-kernel'
 
-export type RequiredTaggable<C extends Partial<Tag>> = C extends {
-  tag?: string
+export type RequiredTaggable<C extends { tag?: string }> = C & {
+  tag: NonNullable<C['tag']>
 }
-  ? {
-      [K in Exclude<keyof C, 'tag'>]: C[K]
-    } & { tag: NonNullable<C['tag']> }
-  : any
 
 export type EngineBinder<E extends Engine, T extends string> = ((
   engine: E,

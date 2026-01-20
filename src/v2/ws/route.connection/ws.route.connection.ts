@@ -17,7 +17,7 @@ import type { WithPath } from '../../http'
 import type { WithHandlers, WithOnConnection } from '../composition'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
-import { WsConnectionURI, WsURI } from '../uri'
+import { WsRouteConnectionURI, WsURI } from '../uri'
 
 export interface WsRouteConnection
   extends
@@ -28,7 +28,7 @@ export interface WsRouteConnection
     WithPath,
     WithOnConnection,
     WithHandlers,
-    Tag<WsConnectionURI> {}
+    Tag<WsRouteConnectionURI> {}
 
 export function WsRouteConnection({
   path,
@@ -48,7 +48,7 @@ export function WsRouteConnection({
       onConnection,
       onError,
       env,
-      tag: WsConnectionURI,
+      tag: WsRouteConnectionURI,
     })
 
   return applyEntry('resource', WsURI)(target)
