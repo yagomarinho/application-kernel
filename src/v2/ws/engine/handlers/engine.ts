@@ -13,20 +13,39 @@ import type {
   WsMixedEventHandlerConfig,
 } from '../../mixed.event'
 import type { WsURI } from '../../uri'
+import { resolveWsHandlersDefaults, WsHandlersDefaults } from './defaults'
+import { mountWsHandlers } from './mount'
 
-type Config =
+export type WsHandlersConfig =
   | WsCommandHandlerConfig
   | WsEventHandlerConfig
   | WsMixedEventHandlerConfig
 
 export type WsHandlers = WsCommandHandler | WsEventHandler | WsMixedEventHandler
 
-type TypeMapper<C extends Config> = C extends WsCommandHandlerConfig
-  ? WsCommandHandler
-  : WsEventHandler
+export type WsHandlersMapper<C extends WsHandlersConfig> =
+  C extends WsCommandHandlerConfig ? WsCommandHandler : WsEventHandler
 
-export interface WsHandlersEngine extends Engine<Config, WsHandlers> {
-  mount: <C extends Config>(config: RequiredTaggable<C>) => TypeMapper<C>
+export interface WsHandlersEngine extends Engine<WsHandlersConfig, WsHandlers> {
+  mount: <C extends WsHandlersConfig>(
+    config: RequiredTaggable<C>,
+  ) => WsHandlersMapper<C>
 }
 
 export type WsHandlersEngineBinder = EngineBinder<WsHandlersEngine, WsURI>
+
+export interface WsHandlersEngineOptions {
+  defaults?: Partial<WsHandlersDefaults>
+}
+
+export function WsHandlersEngine({
+  defaults,
+}: WsHandlersEngineOptions = {}): WsHandlersEngine {
+  const ensureDefaults = resolveWsHandlersDefaults(defaults)
+
+  const mount: WsHandlersEngine['mount'] = mountWsHandlers(ensureDefaults)
+
+  return {
+    mount,
+  }
+}

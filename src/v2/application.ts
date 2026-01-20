@@ -11,31 +11,37 @@ import {
   MessagingEngineBinder,
   MessagingURI,
 } from './messaging'
-import { WsConnectionEngine, WsConnectionEngineBinder, WsURI } from './ws'
+import {
+  WsRouteConnectionEngineBinder,
+  WsRouteConnectionEngine,
+  WsURI,
+  WsHandlersEngine,
+} from './ws'
 
-interface ApplicationConfig {
-  routes: (
-    | HttpEngineBinder
-    | MessagingEngineBinder
-    | WsConnectionEngineBinder
-  )[]
+export type AcceptBinders =
+  | HttpEngineBinder
+  | MessagingEngineBinder
+  | WsRouteConnectionEngineBinder
+
+export interface ApplicationConfig {
+  routes: AcceptBinders[]
 }
 
-interface Application {
+export interface Application {
   mount: () => void
 }
 
 type Engines = {
   [HttpURI]: HttpEngine
   [MessagingURI]: MessagingEngine
-  [WsURI]: WsConnectionEngine
+  [WsURI]: WsRouteConnectionEngine
 }
 
 export function createApplication({ routes }: ApplicationConfig): Application {
   const engines: Engines = {
     [HttpURI]: HttpEngine(),
     [MessagingURI]: MessagingEngine(),
-    [WsURI]: WsEngine(),
+    [WsURI]: WsRouteConnectionEngine({ handlerEngine: WsHandlersEngine() }),
   }
 
   const mount: Application['mount'] = () => {

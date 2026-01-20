@@ -7,4 +7,3 @@
 
 export * from './engine'
 export * from './application.service'
-export * from './application.service.defaults'

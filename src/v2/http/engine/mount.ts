@@ -7,7 +7,7 @@
 
 import type { RequiredTaggable } from '../../contracts'
 import type { HttpRoute, HttpRouteConfig } from '../route'
-import type { HttpRouteDefaults } from './http.defaults'
+import type { HttpRouteDefaults } from './defaults'
 
 import { mountApplicationService } from '../../application.service'
 

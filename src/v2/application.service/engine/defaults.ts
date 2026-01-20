@@ -12,7 +12,7 @@ import type {
   Guardian,
   Middleware,
   Postprocessor,
-} from '../contracts'
+} from '../../contracts'
 
 export interface ApplicationServiceDefaults {
   readonly env: EnvHandler

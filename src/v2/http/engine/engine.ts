@@ -10,7 +10,7 @@ import type { Engine, EngineBinder } from '../../contracts'
 import type { HttpURI } from '../uri'
 
 import { mountHttpRoute } from './mount'
-import { resolveHttpRouteDefaults, HttpRouteDefaults } from './http.defaults'
+import { resolveHttpRouteDefaults, HttpRouteDefaults } from './defaults'
 
 export interface HttpEngine extends Engine<HttpRouteConfig, HttpRoute> {}
 

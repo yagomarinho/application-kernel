@@ -11,7 +11,7 @@ import { ApplicationService } from '../application.service'
 import {
   ApplicationServiceDefaults,
   resolveApplicationServiceDefaults,
-} from '../application.service.defaults'
+} from './defaults'
 import { mountApplicationService } from './mount'
 
 type RequiredKeys = 'handler'

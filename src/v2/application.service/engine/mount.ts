@@ -6,7 +6,7 @@
  */
 
 import { ApplicationService } from '../application.service'
-import { ApplicationServiceDefaults } from '../application.service.defaults'
+import { ApplicationServiceDefaults } from './defaults'
 import { ApplicationServiceConfig } from './engine'
 
 export function mountApplicationService(defaults: ApplicationServiceDefaults) {
