@@ -8,7 +8,7 @@
 import type { Execution } from './execution'
 import type { Job } from './job'
 
-export interface Compilation<J extends Job = Job> {
+export interface Compilation<J extends Job = Job, In = any, Out = any> {
   job: J
-  execution: Execution
+  execution: Execution<In, Out>
 }

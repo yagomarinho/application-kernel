@@ -6,6 +6,7 @@
  */
 
 export * from './application.pipeline'
+export * from './bind'
 export * from './by.pass.failure'
 export * from './map.resolvable'
 export * from './pointer'

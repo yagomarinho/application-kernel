@@ -20,11 +20,14 @@ import {
   runHttpRoute,
 } from './methods'
 import { HttpURI } from '../uri'
+import { HttpRequest, HttpResponse } from '../ports'
 
 export interface HttpEngine extends Engine<
   HttpRouteConfig,
   HttpRoute,
-  HttpJob
+  HttpJob,
+  HttpRequest,
+  HttpResponse
 > {}
 
 export type HttpEngineBinder = EngineBinder<HttpEngine, HttpURI>
@@ -42,26 +45,19 @@ export function HttpEngine({
   uid,
   registry,
 }: HttpEngineOptions): HttpEngine {
-  const ensureDefaults = resolveHttpRouteDefaults(defaults)
-
-  const declare: HttpEngine['declare'] = declareHttpRoute({
-    defaults: ensureDefaults,
-    applicationServiceEngine,
-  })
-
-  const compile: HttpEngine['compile'] = compileHttpRoute({
-    applicationServiceEngine,
-    uid,
-  })
-
-  const run: HttpEngine['run'] = runHttpRoute({ registry })
-
-  const jobs: HttpEngine['jobs'] = jobsHttpRoute({ registry })
-
   return {
-    declare,
-    compile,
-    run,
-    jobs,
+    declare: declareHttpRoute({
+      defaults: resolveHttpRouteDefaults(defaults),
+      applicationServiceEngine,
+    }),
+
+    compile: compileHttpRoute({
+      applicationServiceEngine,
+      uid,
+    }),
+
+    jobs: jobsHttpRoute({ registry }),
+
+    run: runHttpRoute({ registry }),
   }
 }

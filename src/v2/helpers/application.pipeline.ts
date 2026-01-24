@@ -6,39 +6,31 @@
  */
 
 import {
-  ExecutionContext,
   Failure,
   isFailure,
-  Resolvable,
-  Result,
   Successful,
-  UseCase,
+  type ExecutionContext,
+  type Resolvable,
+  type Result,
+  type UseCase,
 } from '@yagomarinho/domain-kernel'
 import { concatenate } from '@yagomarinho/utils-toolkit'
+import { pipe } from '@yagomarinho/smooth/pipe'
 
 import {
-  ErrorHandler,
-  ExtendedFailure,
-  ExtendedMiddleware,
-  ExtendedPostProcessor,
-  Guardian,
-  MiddlewareResult,
+  type ErrorHandler,
+  type ExtendedMiddleware,
+  type ExtendedPostProcessor,
+  type Guardian,
+  type MiddlewareResult,
+  type ExtendedFailure,
+  type ExtendedResult,
+  type ExtendedSuccessful,
   Next,
 } from '../contracts'
 
 import { mapResolvable } from './map.resolvable'
-import { byPassFailure, NonFailure } from './by.pass.failure'
-
-export interface ExtendedSuccessful extends Successful {
-  ctx: ExecutionContext
-}
-
-function bind<A, B>(
-  resolvable: Resolvable<A>,
-  fn: (value: NonFailure<A>) => B,
-) {
-  return mapResolvable(resolvable, byPassFailure(fn))
-}
+import { bind } from './bind'
 
 type Step = (input: any, env: any, ctx: ExecutionContext) => Resolvable<Result>
 
@@ -52,10 +44,6 @@ function mapToStep(fn: Step, env: any) {
   return (resolvable: Resolvable<MiddlewareResult>) => step(resolvable, fn, env)
 }
 
-function pipe(...fns: ((arg: any) => any)[]) {
-  return (value: any) => fns.reduce((output, fn) => fn(output), value)
-}
-
 export function applicationPipeline(
   middleware: ExtendedMiddleware,
   guardian: Guardian,
@@ -63,7 +51,7 @@ export function applicationPipeline(
   postprocessor: ExtendedPostProcessor,
   onError: ErrorHandler,
 ) {
-  return (input: any, env: any, ctx: any) => {
+  return (input: any, env: any, ctx: any): Resolvable<ExtendedResult> => {
     const afterMiddleware = middleware(input, env, ctx)
 
     const afterCalculation = pipe(

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Resolvable, Result, Tag } from '@yagomarinho/domain-kernel'
+import type { Resolvable, Tag } from '@yagomarinho/domain-kernel'
 import type { ApplicationPayload } from './application.payload'
 import type { Compilation } from './compilation'
 import { Job } from './job'
@@ -23,9 +23,11 @@ export interface Engine<
   Config extends Partial<Tag> = any,
   Declaration = any,
   J extends Job = any,
+  In = any,
+  Out = any,
 > {
   declare: (config: RequiredTaggable<Config>) => Declaration
-  compile: (declaration: Declaration) => Compilation<J>[]
-  run: (job: J, payload: ApplicationPayload) => Resolvable<Result>
+  compile: (declaration: Declaration) => Compilation<J, In, Out>[]
+  run: (job: J, payload: ApplicationPayload<In>) => Resolvable<Out>
   jobs: () => ReadonlyArray<J>
 }

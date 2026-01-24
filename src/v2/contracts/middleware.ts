@@ -5,12 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { ExtendedFailure } from './extended.result'
+
 import {
-  ExecutionContext,
-  Failure,
   isFailure,
-  Resolvable,
-  Tag,
+  type ExecutionContext,
+  type Failure,
+  type Resolvable,
+  type Tag,
 } from '@yagomarinho/domain-kernel'
 import { mapResolvable, Pointer } from '../helpers'
 
@@ -25,10 +27,6 @@ export interface Next<Data = any> extends Tag<NextURI> {
 export type MiddlewareResult<Error = any, Data = any> =
   | Failure<Error>
   | Next<Data>
-
-export interface ExtendedFailure extends Failure {
-  ctx: ExecutionContext
-}
 
 export type ExtendedMiddlewareResult = ExtendedFailure | Next
 

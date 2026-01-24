@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { RequiredTaggable } from '../../../contracts'
+import { RequiredTaggable } from '../../../../contracts'
 import {
   WsRouteConnection,
   WsRouteConnectionConfig,
-} from '../../route.connection'
-import { WsHandlersEngine } from '../handlers'
-import { WsRouteConnectionDefaults } from './defaults'
+} from '../../../route.connection'
+import { WsHandlersEngine } from '../../handlers'
+import { WsRouteConnectionDefaults } from '../defaults'
 
 export function declareWsRouteConnection(
   defaults: WsRouteConnectionDefaults,

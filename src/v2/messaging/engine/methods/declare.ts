@@ -10,14 +10,16 @@ import type { CommandHandler, CommandHandlerConfig } from '../../command'
 import type { EventHandler, EventHandlerConfig } from '../../event'
 import type { MessagingDefaults } from '../defaults'
 import type { MessagingHandlerConfig, MessagingHandlerMapper } from '../engine'
-
-import { declareApplicationService } from '../../../application.service'
+import type { ApplicationServiceEngine } from '../../../application.service'
 
 function declareCommandHandler(
   defaults: MessagingDefaults,
   { on, emits, ...rest }: RequiredTaggable<CommandHandlerConfig>,
+  applicationServiceEngine: ApplicationServiceEngine,
 ): CommandHandler {
-  const applicationService = declareApplicationService(defaults)(rest)
+  const applicationService = applicationServiceEngine.declare(rest, {
+    defaults,
+  })
 
   return {
     ...applicationService,
@@ -30,8 +32,11 @@ function declareCommandHandler(
 function declareEventHandler(
   defaults: MessagingDefaults,
   { on, ...rest }: RequiredTaggable<EventHandlerConfig>,
+  applicationServiceEngine: ApplicationServiceEngine,
 ): EventHandler {
-  const applicationService = declareApplicationService(defaults)(rest)
+  const applicationService = applicationServiceEngine.declare(rest, {
+    defaults,
+  })
 
   return {
     ...applicationService,
@@ -40,7 +45,15 @@ function declareEventHandler(
   }
 }
 
-export function declareMessagingHandler(defaults: MessagingDefaults) {
+interface DeclareMessagingHandler {
+  defaults: MessagingDefaults
+  applicationServiceEngine: ApplicationServiceEngine
+}
+
+export function declareMessagingHandler({
+  applicationServiceEngine,
+  defaults,
+}: DeclareMessagingHandler) {
   return <C extends MessagingHandlerConfig>(
     config: RequiredTaggable<C>,
   ): MessagingHandlerMapper<C> => {
@@ -49,6 +62,6 @@ export function declareMessagingHandler(defaults: MessagingDefaults) {
         ? declareCommandHandler
         : declareEventHandler
 
-    return declare(defaults, config as any) as any
+    return declare(defaults, config as any, applicationServiceEngine) as any
   }
 }

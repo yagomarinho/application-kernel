@@ -5,12 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { isFailure, Result } from '@yagomarinho/domain-kernel'
 import {
   ApplicationServiceDefaults,
   resolveApplicationServiceDefaults,
   identity,
 } from '../../application.service'
 import { HttpAdapters } from '../composition'
+import { HttpResponse } from '../ports'
+
+function responseAdapterDefault(result: Result): HttpResponse {
+  return isFailure(result)
+    ? { status: 500, body: result.error, headers: {} }
+    : { status: 200, body: result.data, headers: {} }
+}
 
 export interface HttpRouteDefaults extends ApplicationServiceDefaults {
   readonly adapters: HttpAdapters
@@ -19,7 +27,7 @@ export interface HttpRouteDefaults extends ApplicationServiceDefaults {
 export function resolveHttpRouteDefaults({
   adapters = {
     requestAdapter: identity,
-    responseAdapter: identity,
+    responseAdapter: responseAdapterDefault,
   },
   ...rest
 }: Partial<HttpRouteDefaults> = {}): HttpRouteDefaults {

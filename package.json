@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@yagomarinho/domain-kernel": "^0.2.0",
+    "@yagomarinho/smooth": "^0.2.0",
     "@yagomarinho/utils-toolkit": "^0.2.0"
   },
   "publishConfig": {

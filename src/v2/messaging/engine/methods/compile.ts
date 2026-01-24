@@ -22,6 +22,7 @@ export interface CompileMessagingHandler {
 export function compileMessagingHandler({ applicationServiceEngine, uid }) {
   return (declaration: MessagingHandler): Compilation<MessagingJob>[] => {
     const [{ execution }] = applicationServiceEngine.compile(declaration)
+
     const uri = declaration.tag
     const compilation: Compilation = {
       job: concatenate(

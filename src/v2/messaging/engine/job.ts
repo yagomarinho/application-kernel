@@ -7,11 +7,15 @@
 
 import { Job } from '../../contracts'
 import { AcceptIncoming, EndsEmits } from '../composition'
-import { CommandhandlerURI, EventHandlerURI } from '../uri'
+import { CommandhandlerURI, EventHandlerURI, MessagingURI } from '../uri'
 
-export interface EventJob extends Job<EventHandlerURI>, AcceptIncoming {}
+export interface EventJob extends Job<MessagingURI>, AcceptIncoming {
+  type: EventHandlerURI
+}
 
 export interface CommandJob
-  extends Job<CommandhandlerURI>, AcceptIncoming, EndsEmits {}
+  extends Job<MessagingURI>, AcceptIncoming, EndsEmits {
+  type: CommandhandlerURI
+}
 
 export type MessagingJob = EventJob | CommandJob

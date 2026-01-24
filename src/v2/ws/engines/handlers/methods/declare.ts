@@ -5,22 +5,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { declareApplicationService } from '../../../application.service'
-import { RequiredTaggable } from '../../../contracts'
-import { WsCommandHandler, WsCommandHandlerConfig } from '../../command'
-import { WsEventHandler, WsEventHandlerConfig } from '../../event'
+import { declareApplicationService } from '../../../../application.service'
+import { RequiredTaggable } from '../../../../contracts'
+import { WsCommandHandler, WsCommandHandlerConfig } from '../../../command'
+import { WsEventHandler, WsEventHandlerConfig } from '../../../event'
 import {
   WsMixedEventHandler,
   WsMixedEventHandlerConfig,
-} from '../../mixed.event'
+} from '../../../mixed.event'
 import {
   WsCommandHandlerURI,
   WsEventHandlerURI,
   WsMixedEventHandlerURI,
-} from '../../uri'
+} from '../../../uri'
 
-import { WsHandlersDefaults } from './defaults'
-import { WsHandlersConfig, WsHandlersMapper } from './engine'
+import { WsHandlersDefaults } from '../defaults'
+import { WsHandlersConfig, WsHandlersMapper } from '../engine'
 
 export function declareWsCommandHandler(
   defaults: WsHandlersDefaults,

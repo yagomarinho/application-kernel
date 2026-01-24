@@ -7,13 +7,15 @@
 
 import type { HttpRoute } from '../../route'
 import type { HttpJob } from '../job'
+import type { UID } from '../../../uid'
 
 import { concatenate } from '@yagomarinho/utils-toolkit'
 
-import { type Compilation, Job } from '../../../contracts'
+import { ApplicationPayload, type Compilation, Job } from '../../../contracts'
 import { HttpURI } from '../../uri'
 import { ApplicationServiceEngine } from '../../../application.service'
-import { UID } from '../../../uid'
+import { HttpRequest, HttpResponse } from '../../ports'
+import { mapResolvable } from '../../../helpers'
 
 interface CompileHttpRoute {
   applicationServiceEngine: ApplicationServiceEngine
@@ -24,15 +26,38 @@ export function compileHttpRoute({
   applicationServiceEngine,
   uid,
 }: CompileHttpRoute) {
-  return (declaration: HttpRoute): Compilation<HttpJob>[] => {
-    const [{ execution }] = applicationServiceEngine.compile(declaration)
+  return ({
+    adapters,
+    env,
+    guardian,
+    handler,
+    method,
+    middlewares,
+    onError,
+    path,
+    postprocessors,
+  }: HttpRoute): Compilation<HttpJob, HttpRequest, HttpResponse>[] => {
+    const [{ execution }] = applicationServiceEngine.compile({
+      env,
+      guardian,
+      handler,
+      middlewares,
+      onError,
+      postprocessors,
+    })
 
-    const compilation: Compilation<HttpJob> = {
+    const execute = ({ context, data }: ApplicationPayload<HttpRequest>) =>
+      mapResolvable(
+        execution.execute({ data: adapters.requestAdapter(data), context }),
+        result => adapters.responseAdapter(result),
+      )
+
+    const compilation: Compilation<HttpJob, HttpRequest, HttpResponse> = {
       job: concatenate(Job(uid.generate(), HttpURI), {
-        path: declaration.path,
-        method: declaration.method,
+        path,
+        method,
       }),
-      execution,
+      execution: { execute },
     }
 
     return [compilation]

@@ -19,7 +19,7 @@ import type {
   WsURI,
 } from '../../uri'
 import { resolveWsHandlersDefaults, WsHandlersDefaults } from './defaults'
-import { declareWsHandlers } from './declare'
+import { declareWsHandlers } from './methods'
 
 export type WsHandlersConfig =
   | WsCommandHandlerConfig

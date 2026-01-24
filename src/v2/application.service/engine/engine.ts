@@ -5,11 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Tag } from '@yagomarinho/domain-kernel'
-import { Engine, EngineBinder, Job } from '../../contracts'
-import { ApplicationService } from '../application.service'
+import type { Tag } from '@yagomarinho/domain-kernel'
+
+import type { WithGlobalEnvGetter, WithRegistry } from '../composition'
+import type { Engine, EngineBinder, ExtendedResult, Job } from '../../contracts'
+import type { ApplicationService } from '../application.service'
+
 import {
-  ApplicationServiceDefaults,
+  type ApplicationServiceDefaults,
   resolveApplicationServiceDefaults,
 } from './defaults'
 import {
@@ -18,7 +21,6 @@ import {
   jobsApplicationService,
   runApplicationService,
 } from './methods'
-import { WithGlobalEnvGetter, WithRegistry } from '../composition'
 
 type RequiredKeys = 'handler'
 
@@ -31,7 +33,9 @@ export type ApplicationServiceConfig = Partial<
 export interface ApplicationServiceEngine extends Engine<
   ApplicationServiceConfig,
   ApplicationService,
-  Job
+  Job,
+  any,
+  ExtendedResult
 > {
   declare: (
     config: ApplicationServiceConfig,
@@ -55,10 +59,10 @@ export function ApplicationServiceEngine({
   registry,
   globalEnv,
 }: ApplicationServiceEngineOptions): ApplicationServiceEngine {
-  const ensureDefaults = resolveApplicationServiceDefaults(defaults)
-
   const declare: ApplicationServiceEngine['declare'] = (config, options) =>
-    declareApplicationService(options?.defaults ?? ensureDefaults)(config)
+    declareApplicationService(
+      options?.defaults ?? resolveApplicationServiceDefaults(defaults),
+    )(config)
 
   const compile: ApplicationServiceEngine['compile'] =
     compileApplicationService({ globalEnv })

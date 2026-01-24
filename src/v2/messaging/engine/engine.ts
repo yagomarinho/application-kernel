@@ -56,10 +56,10 @@ export function MessagingEngine({
   uid,
   registry,
 }: MessagingEngineOptions): MessagingEngine {
-  const ensureDefaults = resolveMessagingDefaults(defaults)
-
-  const declare: MessagingEngine['declare'] =
-    declareMessagingHandler(ensureDefaults)
+  const declare: MessagingEngine['declare'] = declareMessagingHandler({
+    defaults: resolveMessagingDefaults(defaults),
+    applicationServiceEngine,
+  })
 
   const compile: MessagingEngine['compile'] = compileMessagingHandler({
     applicationServiceEngine,

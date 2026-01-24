@@ -5,7 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Engine, EngineBinder } from '../../../contracts'
+import { pipe } from '@yagomarinho/smooth'
+import { ApplicationServiceEngine } from '../../../application.service'
+import type { Compilation, Engine, EngineBinder } from '../../../contracts'
+import { Registry } from '../../../registry'
+import { UID } from '../../../uid'
 
 import {
   WsRouteConnection,
@@ -13,15 +17,21 @@ import {
 } from '../../route.connection'
 import type { WsURI } from '../../uri'
 import { WsHandlersEngine } from '../handlers'
+import { WsJobs } from '../jobs'
 import {
   resolveWsRouteConnectionDefaults,
   WsRouteConnectionDefaultsToResolve,
 } from './defaults'
-import { declareWsRouteConnection } from './declare'
+import { declareWsRouteConnection } from './methods'
+import {
+  WithGlobalEnvGetter,
+  WithRegistry,
+} from '../../../application.service/composition'
 
 export interface WsRouteConnectionEngine extends Engine<
   WsRouteConnectionConfig,
-  WsRouteConnection
+  WsRouteConnection,
+  WsJobs
 > {}
 
 export type WsRouteConnectionEngineBinder = EngineBinder<
@@ -29,14 +39,21 @@ export type WsRouteConnectionEngineBinder = EngineBinder<
   WsURI
 >
 
-export interface WsRouteConnectionEngineOptions {
+export interface WsRouteConnectionEngineOptions
+  extends WithGlobalEnvGetter, WithRegistry {
   defaults?: WsRouteConnectionDefaultsToResolve
   handlersEngine: WsHandlersEngine
+  applicationServiceEngine: ApplicationServiceEngine
+  uid: UID
 }
 
 export function WsRouteConnectionEngine({
   defaults,
   handlersEngine,
+  applicationServiceEngine,
+  registry,
+  uid,
+  globalEnv,
 }: WsRouteConnectionEngineOptions): WsRouteConnectionEngine {
   const ensureDefaults = resolveWsRouteConnectionDefaults(defaults)
 
@@ -45,7 +62,42 @@ export function WsRouteConnectionEngine({
     handlersEngine,
   )
 
+  const compile: WsRouteConnectionEngine['compile'] = ({
+    env,
+    handlers,
+    incomingAdapter,
+    middlewares,
+    onConnection,
+    onError,
+    path,
+    postprocessors,
+    tag,
+  }: WsRouteConnection): Compilation<WsJobs>[] => {
+    const [{ execution }] = applicationServiceEngine.compile({
+      env: pipe(env, onConnection.env),
+      guardian: onConnection.guardian,
+      handler: onConnection.handler,
+      middlewares: middlewares.concat(onConnection.middlewares),
+      onError: (err, e, ctx) =>
+        onError(onConnection.onError(err, e, ctx), env(globalEnv()), ctx),
+      postprocessors: postprocessors.concat(onConnection.postprocessors),
+    })
+  }
+
+  const jobs: WsRouteConnectionEngine['jobs'] = declareWsRouteConnection(
+    ensureDefaults,
+    handlersEngine,
+  )
+
+  const run: WsRouteConnectionEngine['run'] = declareWsRouteConnection(
+    ensureDefaults,
+    handlersEngine,
+  )
+
   return {
     declare,
+    compile,
+    jobs,
+    run,
   }
 }

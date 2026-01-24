@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Resolvable, Result } from '@yagomarinho/domain-kernel'
+import type { Resolvable } from '@yagomarinho/domain-kernel'
 import type { ApplicationPayload } from './application.payload'
 
-export interface Execution {
-  execute: (payload: ApplicationPayload) => Resolvable<Result>
+export interface Execution<In = any, Out = any> {
+  execute: (payload: ApplicationPayload<In>) => Resolvable<Out>
 }
