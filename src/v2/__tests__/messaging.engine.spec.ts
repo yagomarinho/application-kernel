@@ -6,12 +6,12 @@ import {
 } from '../messaging'
 
 describe('MessagingEngine', () => {
-  it('mounts a CommandHandler with defaults', () => {
+  it('declares a CommandHandler with defaults', () => {
     const engine = MessagingEngine()
     const handler = jest.fn()
     const emits = 'event'
 
-    const command = engine.mount({
+    const command = engine.declare({
       tag: CommandhandlerURI,
       on: 'user.create',
       emits,
@@ -29,11 +29,11 @@ describe('MessagingEngine', () => {
     expect(command.onError).toBe(identity)
   })
 
-  it('mounts an EventHandler with defaults', () => {
+  it('declares an EventHandler with defaults', () => {
     const engine = MessagingEngine()
     const handler = jest.fn()
 
-    const event = engine.mount({
+    const event = engine.declare({
       tag: EventHandlerURI,
       on: 'user.created',
       handler,
@@ -67,14 +67,14 @@ describe('MessagingEngine', () => {
       },
     })
 
-    const command = engine.mount({
+    const command = engine.declare({
       tag: CommandhandlerURI,
       on: 'order.create',
       emits: 'event',
       handler,
     })
 
-    const event = engine.mount({
+    const event = engine.declare({
       tag: EventHandlerURI,
       on: 'order.create',
       handler,
@@ -103,7 +103,7 @@ describe('MessagingEngine', () => {
 
     const engine = MessagingEngine()
 
-    const command = engine.mount({
+    const command = engine.declare({
       tag: CommandhandlerURI,
       on: 'order.create',
       emits: 'event',
@@ -115,7 +115,7 @@ describe('MessagingEngine', () => {
       onError,
     })
 
-    const event = engine.mount({
+    const event = engine.declare({
       tag: EventHandlerURI,
       on: 'order.create',
       handler,
@@ -139,17 +139,17 @@ describe('MessagingEngine', () => {
     expect(event.onError).toBe(onError)
   })
 
-  it('does not share state between mounts', () => {
+  it('does not share state between declares', () => {
     const engine = MessagingEngine()
 
-    const commandA = engine.mount({
+    const commandA = engine.declare({
       tag: CommandhandlerURI,
       on: 'a',
       emits: 'event',
       handler: jest.fn(),
     })
 
-    const commandB = engine.mount({
+    const commandB = engine.declare({
       tag: CommandhandlerURI,
       on: 'b',
       emits: 'event',

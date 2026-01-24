@@ -7,12 +7,12 @@ import {
 } from '../ws'
 
 describe('WsHandlersEngine', () => {
-  it('mounts a WsCommandHandler with defaults', () => {
+  it('declares a WsCommandHandler with defaults', () => {
     const engine = WsHandlersEngine()
     const handler = jest.fn()
     const emits = 'event'
 
-    const command = engine.mount({
+    const command = engine.declare({
       tag: WsCommandHandlerURI,
       on: 'user.join',
       emits,
@@ -31,11 +31,11 @@ describe('WsHandlersEngine', () => {
     expect(command.onError).toBe(identity)
   })
 
-  it('mounts a WsEventHandler with defaults', () => {
+  it('declares a WsEventHandler with defaults', () => {
     const engine = WsHandlersEngine()
     const handler = jest.fn()
 
-    const event = engine.mount({
+    const event = engine.declare({
       tag: WsEventHandlerURI,
       on: 'room.joined',
       handler,
@@ -52,11 +52,11 @@ describe('WsHandlersEngine', () => {
     expect(event.onError).toBe(identity)
   })
 
-  it('mounts a WsMixedEventHandler with ws source and resolves incomingAdapter', () => {
+  it('declares a WsMixedEventHandler with ws source and resolves incomingAdapter', () => {
     const engine = WsHandlersEngine()
     const handler = jest.fn()
 
-    const mixed = engine.mount({
+    const mixed = engine.declare({
       tag: WsMixedEventHandlerURI,
       on: {
         source: 'ws',
@@ -93,7 +93,7 @@ describe('WsHandlersEngine', () => {
 
     const engine = WsHandlersEngine()
 
-    const command = engine.mount({
+    const command = engine.declare({
       tag: WsCommandHandlerURI,
       on: 'override.adapter',
       emits: 'event',
@@ -121,7 +121,7 @@ describe('WsHandlersEngine', () => {
       },
     })
 
-    const event = engine.mount({
+    const event = engine.declare({
       tag: WsEventHandlerURI,
       on: 'custom.defaults',
       handler: jest.fn(),
@@ -134,16 +134,16 @@ describe('WsHandlersEngine', () => {
     expect(event.onError).toBe(onError)
   })
 
-  it('does not share state between mounts', () => {
+  it('does not share state between declares', () => {
     const engine = WsHandlersEngine()
 
-    const a = engine.mount({
+    const a = engine.declare({
       tag: WsEventHandlerURI,
       on: 'a',
       handler: jest.fn(),
     })
 
-    const b = engine.mount({
+    const b = engine.declare({
       tag: WsEventHandlerURI,
       on: 'b',
       handler: jest.fn(),

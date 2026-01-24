@@ -9,7 +9,7 @@ import type { HttpRoute, HttpRouteConfig } from '../route'
 import type { Engine, EngineBinder } from '../../contracts'
 import type { HttpURI } from '../uri'
 
-import { mountHttpRoute } from './mount'
+import { declareHttpRoute } from './declare'
 import { resolveHttpRouteDefaults, HttpRouteDefaults } from './defaults'
 
 export interface HttpEngine extends Engine<HttpRouteConfig, HttpRoute> {}
@@ -23,9 +23,9 @@ export interface HttpEngineOptions {
 export function HttpEngine({ defaults }: HttpEngineOptions = {}): HttpEngine {
   const ensureDefaults = resolveHttpRouteDefaults(defaults)
 
-  const mount: HttpEngine['mount'] = mountHttpRoute(ensureDefaults)
+  const declare: HttpEngine['declare'] = declareHttpRoute(ensureDefaults)
 
   return {
-    mount,
+    declare,
   }
 }

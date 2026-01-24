@@ -35,7 +35,7 @@ export function EventHandler({
   env,
 }: EventHandlerConfig): MessagingEngineBinder {
   const target = (engine: MessagingEngine) =>
-    engine.mount({
+    engine.declare({
       on,
       middlewares,
       guardian,

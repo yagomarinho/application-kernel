@@ -6,10 +6,16 @@
  */
 
 import { ApplicationService } from '../../application.service'
+import { EndsEmits } from '../../messaging'
+import { DerivedEndsEmits } from './derived.ends.emits'
 import { WithWsAdapter } from './with.ws.adapter'
 
-export interface OnConnection
-  extends Pick<ApplicationService, 'guardian' | 'handler'>, WithWsAdapter {}
+export type OnConnectionEvent = Omit<ApplicationService, 'tag'> & WithWsAdapter
+
+export type OnConnectionCommand = OnConnectionEvent &
+  (EndsEmits | DerivedEndsEmits)
+
+export type OnConnection = OnConnectionEvent | OnConnectionCommand
 
 export interface WithOnConnection {
   onConnection: OnConnection

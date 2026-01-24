@@ -13,9 +13,9 @@ import {
 import { WsHandlersEngine } from '../handlers'
 import { WsRouteConnectionDefaults } from './defaults'
 
-export function mountWsRouteConnection(
+export function declareWsRouteConnection(
   defaults: WsRouteConnectionDefaults,
-  handlerEngine: WsHandlersEngine,
+  handlersEngine: WsHandlersEngine,
 ) {
   return ({
     path,
@@ -25,20 +25,24 @@ export function mountWsRouteConnection(
     middlewares = defaults.middlewares,
     onError = defaults.onError,
     postprocessors = defaults.postprocessors,
+    incomingAdapter = defaults.incomingAdapter,
     tag,
   }: RequiredTaggable<WsRouteConnectionConfig>): WsRouteConnection => ({
     env,
-    handlers: handlers.map(binder => binder(handlerEngine)),
+    handlers: handlers.map(binder => binder(handlersEngine)),
     middlewares,
     onConnection: {
+      ...defaults.onConnection,
       guardian: onConnection?.guardian ?? defaults.onConnection.guardian,
       handler: onConnection?.handler ?? defaults.onConnection.handler,
       incomingAdapter:
         onConnection?.incomingAdapter ?? defaults.onConnection.incomingAdapter,
+      emits: onConnection?.emits,
     },
     onError,
     path,
     postprocessors,
+    incomingAdapter,
     tag,
   })
 }

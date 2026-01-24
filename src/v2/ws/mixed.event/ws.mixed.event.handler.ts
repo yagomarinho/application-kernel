@@ -8,7 +8,7 @@
 import type { Tag } from '@yagomarinho/domain-kernel'
 
 import type { DerivedAcceptIncoming, DerivedEndsEmits } from '../composition'
-import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engine'
+import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engines'
 import type { WsMixedEventHandlerConfig } from './ws.mixed.event.handler.config'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
@@ -34,7 +34,7 @@ export function WsMixedEventHandler({
   env,
 }: WsMixedEventHandlerConfig): WsHandlersEngineBinder {
   const target = (engine: WsHandlersEngine) =>
-    engine.mount({
+    engine.declare({
       on,
       emits,
       middlewares,

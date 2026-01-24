@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { WsHandlers } from '../engine'
+import { WsHandlers } from '../engines'
 
 export interface WithHandlers {
   handlers: WsHandlers[]

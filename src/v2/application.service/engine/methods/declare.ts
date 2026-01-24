@@ -5,11 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ApplicationService } from '../application.service'
-import { ApplicationServiceDefaults } from './defaults'
-import { ApplicationServiceConfig } from './engine'
+import { ApplicationService } from '../../application.service'
+import { ApplicationServiceDefaults } from '../defaults'
+import { ApplicationServiceConfig } from '../engine'
 
-export function mountApplicationService(defaults: ApplicationServiceDefaults) {
+export function declareApplicationService(
+  defaults: ApplicationServiceDefaults,
+) {
   return ({
     env = defaults.env,
     middlewares = defaults.middlewares,

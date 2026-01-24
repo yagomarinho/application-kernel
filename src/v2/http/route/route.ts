@@ -38,7 +38,7 @@ export function HttpRoute({
   adapters,
 }: HttpRouteConfig): HttpEngineBinder {
   const target = (engine: HttpEngine) =>
-    engine.mount({
+    engine.declare({
       method,
       path,
       middlewares,

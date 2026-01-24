@@ -12,9 +12,13 @@ import type { WsRouteConnectionConfig } from './ws.route.connection.config'
 import type {
   WsRouteConnectionEngine,
   WsRouteConnectionEngineBinder,
-} from '../engine'
+} from '../engines'
 import type { WithPath } from '../../http'
-import type { WithHandlers, WithOnConnection } from '../composition'
+import type {
+  WithHandlers,
+  WithOnConnection,
+  WithWsAdapter,
+} from '../composition'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
 import { WsRouteConnectionURI, WsURI } from '../uri'
@@ -28,6 +32,7 @@ export interface WsRouteConnection
     WithPath,
     WithOnConnection,
     WithHandlers,
+    WithWsAdapter,
     Tag<WsRouteConnectionURI> {}
 
 export function WsRouteConnection({
@@ -38,9 +43,10 @@ export function WsRouteConnection({
   onConnection,
   onError,
   env,
+  incomingAdapter,
 }: WsRouteConnectionConfig): WsRouteConnectionEngineBinder {
   const target = (engine: WsRouteConnectionEngine) =>
-    engine.mount({
+    engine.declare({
       path,
       handlers,
       middlewares,
@@ -48,6 +54,7 @@ export function WsRouteConnection({
       onConnection,
       onError,
       env,
+      incomingAdapter,
       tag: WsRouteConnectionURI,
     })
 

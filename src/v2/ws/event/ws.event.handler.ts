@@ -10,7 +10,7 @@ import type { Tag } from '@yagomarinho/domain-kernel'
 import type { WsEventHandlerConfig } from './ws.event.handler.config'
 import type { EventHandler } from '../../messaging'
 import type { WithWsAdapter } from '../composition'
-import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engine'
+import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engines'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
 
@@ -30,7 +30,7 @@ export function WsEventHandler({
   incomingAdapter,
 }: WsEventHandlerConfig): WsHandlersEngineBinder {
   const target = (engine: WsHandlersEngine) =>
-    engine.mount({
+    engine.declare({
       on,
       middlewares,
       guardian,

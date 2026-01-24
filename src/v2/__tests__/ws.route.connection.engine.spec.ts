@@ -1,4 +1,4 @@
-import { doneDefault, identity } from '../application.service'
+import { doneDefault, EMPTY_ARRAY, identity } from '../application.service'
 import {
   WsEventHandler,
   WsHandlersEngine,
@@ -7,15 +7,15 @@ import {
 } from '../ws'
 
 describe('WsRouteConnectionEngine', () => {
-  it('mounts a ws route connection with defaults', () => {
-    const handlerEngine = WsHandlersEngine()
+  it('declares a ws route connection with defaults', () => {
+    const handlersEngine = WsHandlersEngine()
     const engine = WsRouteConnectionEngine({
-      handlerEngine,
+      handlersEngine,
     })
 
     const handler = jest.fn()
 
-    const route = engine.mount({
+    const route = engine.declare({
       tag: WsRouteConnectionURI,
       path: '/ws',
       handlers: [
@@ -34,8 +34,12 @@ describe('WsRouteConnectionEngine', () => {
     expect(route.onError).toBe(identity)
 
     expect(route.onConnection).toEqual({
+      middlewares: EMPTY_ARRAY,
+      postprocessors: EMPTY_ARRAY,
       guardian: doneDefault,
       handler: doneDefault,
+      env: identity,
+      onError: identity,
       incomingAdapter: identity,
     })
 
@@ -44,16 +48,16 @@ describe('WsRouteConnectionEngine', () => {
   })
 
   it('overrides onConnection defaults', () => {
-    const handlerEngine = WsHandlersEngine()
+    const handlersEngine = WsHandlersEngine()
     const engine = WsRouteConnectionEngine({
-      handlerEngine,
+      handlersEngine,
     })
 
     const onConnectionGuardian = jest.fn()
     const onConnectionHandler = jest.fn()
     const incomingAdapter = jest.fn()
 
-    const route = engine.mount({
+    const route = engine.declare({
       tag: WsRouteConnectionURI,
       path: '/custom',
       handlers: [],
@@ -68,6 +72,10 @@ describe('WsRouteConnectionEngine', () => {
       guardian: onConnectionGuardian,
       handler: onConnectionHandler,
       incomingAdapter,
+      env: identity,
+      onError: identity,
+      middlewares: EMPTY_ARRAY,
+      postprocessors: EMPTY_ARRAY,
     })
   })
 
@@ -80,10 +88,10 @@ describe('WsRouteConnectionEngine', () => {
     const middlewares = []
     const postprocessors = []
 
-    const handlerEngine = WsHandlersEngine()
+    const handlersEngine = WsHandlersEngine()
 
     const engine = WsRouteConnectionEngine({
-      handlerEngine,
+      handlersEngine,
       defaults: {
         env,
         onError,
@@ -97,7 +105,7 @@ describe('WsRouteConnectionEngine', () => {
       },
     })
 
-    const route = engine.mount({
+    const route = engine.declare({
       tag: WsRouteConnectionURI,
       path: '/override',
       handlers: [],
@@ -111,14 +119,14 @@ describe('WsRouteConnectionEngine', () => {
   })
 
   it('binds handlers using the provided handler engine', () => {
-    const handlerEngine = WsHandlersEngine()
+    const handlersEngine = WsHandlersEngine()
     const engine = WsRouteConnectionEngine({
-      handlerEngine,
+      handlersEngine,
     })
 
     const handler = jest.fn()
 
-    const route = engine.mount({
+    const route = engine.declare({
       tag: WsRouteConnectionURI,
       path: '/bind',
       handlers: [
@@ -134,19 +142,19 @@ describe('WsRouteConnectionEngine', () => {
     expect(route.handlers[0].handler).toBe(handler)
   })
 
-  it('does not share state between mounts', () => {
-    const handlerEngine = WsHandlersEngine()
+  it('does not share state between declares', () => {
+    const handlersEngine = WsHandlersEngine()
     const engine = WsRouteConnectionEngine({
-      handlerEngine,
+      handlersEngine,
     })
 
-    const a = engine.mount({
+    const a = engine.declare({
       tag: WsRouteConnectionURI,
       path: '/a',
       handlers: [],
     })
 
-    const b = engine.mount({
+    const b = engine.declare({
       tag: WsRouteConnectionURI,
       path: '/b',
       handlers: [],

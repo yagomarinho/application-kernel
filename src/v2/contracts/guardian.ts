@@ -13,7 +13,7 @@ import {
 
 export interface Guardian<Input = any, Output = any, Env = any, Error = any> {
   (
-    request: Input,
+    input: Input,
     env: Env,
     ctx: ExecutionContext,
   ): Resolvable<Result<Error, Output>>

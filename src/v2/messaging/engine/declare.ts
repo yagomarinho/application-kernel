@@ -8,16 +8,16 @@
 import type { RequiredTaggable } from '../../contracts'
 import type { CommandHandler, CommandHandlerConfig } from '../command'
 import type { EventHandler, EventHandlerConfig } from '../event'
-import type { MessagingDefaults } from './messaging.defaults'
+import type { MessagingDefaults } from './defaults'
 import type { MessagingHandlerConfig, MessagingHandlerMapper } from './engine'
 
-import { mountApplicationService } from '../../application.service'
+import { declareApplicationService } from '../../application.service'
 
-function mountCommandHandler(
+function declareCommandHandler(
   defaults: MessagingDefaults,
   { on, emits, ...rest }: RequiredTaggable<CommandHandlerConfig>,
 ): CommandHandler {
-  const applicationService = mountApplicationService(defaults)(rest)
+  const applicationService = declareApplicationService(defaults)(rest)
 
   return {
     ...applicationService,
@@ -27,11 +27,11 @@ function mountCommandHandler(
   }
 }
 
-function mountEventHandler(
+function declareEventHandler(
   defaults: MessagingDefaults,
   { on, ...rest }: RequiredTaggable<EventHandlerConfig>,
 ): EventHandler {
-  const applicationService = mountApplicationService(defaults)(rest)
+  const applicationService = declareApplicationService(defaults)(rest)
 
   return {
     ...applicationService,
@@ -40,13 +40,15 @@ function mountEventHandler(
   }
 }
 
-export function mountMessagingHandler(defaults: MessagingDefaults) {
+export function declareMessagingHandler(defaults: MessagingDefaults) {
   return <C extends MessagingHandlerConfig>(
     config: RequiredTaggable<C>,
   ): MessagingHandlerMapper<C> => {
-    const mount =
-      config.tag === 'command.handler' ? mountCommandHandler : mountEventHandler
+    const declare =
+      config.tag === 'command.handler'
+        ? declareCommandHandler
+        : declareEventHandler
 
-    return mount(defaults, config as any) as any
+    return declare(defaults, config as any) as any
   }
 }

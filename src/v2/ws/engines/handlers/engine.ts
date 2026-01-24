@@ -19,7 +19,7 @@ import type {
   WsURI,
 } from '../../uri'
 import { resolveWsHandlersDefaults, WsHandlersDefaults } from './defaults'
-import { mountWsHandlers } from './mount'
+import { declareWsHandlers } from './declare'
 
 export type WsHandlersConfig =
   | WsCommandHandlerConfig
@@ -39,7 +39,7 @@ export type WsHandlersMapper<C extends WsHandlersConfig> = Mapper[NonNullable<
 >]
 
 export interface WsHandlersEngine extends Engine<WsHandlersConfig, WsHandlers> {
-  mount: <C extends WsHandlersConfig>(
+  declare: <C extends WsHandlersConfig>(
     config: RequiredTaggable<C>,
   ) => WsHandlersMapper<C>
 }
@@ -55,9 +55,9 @@ export function WsHandlersEngine({
 }: WsHandlersEngineOptions = {}): WsHandlersEngine {
   const ensureDefaults = resolveWsHandlersDefaults(defaults)
 
-  const mount: WsHandlersEngine['mount'] = mountWsHandlers(ensureDefaults)
+  const declare: WsHandlersEngine['declare'] = declareWsHandlers(ensureDefaults)
 
   return {
-    mount,
+    declare,
   }
 }

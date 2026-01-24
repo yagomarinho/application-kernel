@@ -56,7 +56,7 @@ export function CommandHandler({
   env,
 }: CommandHandlerConfig): MessagingEngineBinder {
   const target = (engine: MessagingEngine) =>
-    engine.mount({
+    engine.declare({
       on,
       emits,
       middlewares,

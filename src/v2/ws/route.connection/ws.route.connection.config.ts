@@ -5,15 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { IncomingAdapter, OnConnection } from '../composition'
-import { WsHandlersEngineBinder } from '../engine'
+import { ApplicationServiceConfig } from '../../application.service'
+import { EndsEmits } from '../../messaging'
+import { DerivedEndsEmits, IncomingAdapter } from '../composition'
+import { WsHandlersEngineBinder } from '../engines'
 import type { WsRouteConnection } from './ws.route.connection'
 
 type RequiredKeys = 'path' | 'handlers'
 
 type Config = Omit<WsRouteConnection, 'handlers' | 'onConnection'> & {
-  onConnection: Omit<OnConnection, 'incomingAdapter'> & {
+  onConnection: Omit<ApplicationServiceConfig, 'tag'> & {
     incomingAdapter?: IncomingAdapter
+    emits?: EndsEmits['emits'] | DerivedEndsEmits['emits']
   }
   handlers: WsHandlersEngineBinder[]
 }

@@ -9,16 +9,16 @@ import type { RequiredTaggable } from '../../contracts'
 import type { HttpRoute, HttpRouteConfig } from '../route'
 import type { HttpRouteDefaults } from './defaults'
 
-import { mountApplicationService } from '../../application.service'
+import { declareApplicationService } from '../../application.service'
 
-export function mountHttpRoute(defaults: HttpRouteDefaults) {
+export function declareHttpRoute(defaults: HttpRouteDefaults) {
   return ({
     method,
     path,
     adapters,
     ...rest
   }: RequiredTaggable<HttpRouteConfig>): HttpRoute => {
-    const applicationService = mountApplicationService(defaults)(rest)
+    const applicationService = declareApplicationService(defaults)(rest)
 
     return {
       ...applicationService,

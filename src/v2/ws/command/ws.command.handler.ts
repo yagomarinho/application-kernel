@@ -9,7 +9,7 @@ import type { Tag } from '@yagomarinho/domain-kernel'
 
 import type { CommandHandler } from '../../messaging'
 import type { WithWsAdapter } from '../composition'
-import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engine'
+import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engines'
 import type { WsCommandHandlerConfig } from './ws.command.handler.config'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
@@ -34,7 +34,7 @@ export function WsCommandHandler({
   incomingAdapter,
 }: WsCommandHandlerConfig): WsHandlersEngineBinder {
   const target = (engine: WsHandlersEngine) =>
-    engine.mount({
+    engine.declare({
       on,
       emits,
       middlewares,

@@ -2,11 +2,11 @@ import { doneDefault, identity } from '../application.service'
 import { HttpEngine, HttpMethod, HttpRouteURI } from '../http'
 
 describe('HttpEngine', () => {
-  it('mounts an http route with required fields', () => {
+  it('declares an http route with required fields', () => {
     const engine = HttpEngine()
     const handler = jest.fn()
 
-    const route = engine.mount({
+    const route = engine.declare({
       method: HttpMethod.GET,
       path: '/users',
       handler,
@@ -50,7 +50,7 @@ describe('HttpEngine', () => {
       },
     })
 
-    const route = engine.mount({
+    const route = engine.declare({
       tag: HttpRouteURI,
       method: HttpMethod.POST,
       path: '/custom',
@@ -85,7 +85,7 @@ describe('HttpEngine', () => {
 
     const engine = HttpEngine()
 
-    const route = engine.mount({
+    const route = engine.declare({
       tag: HttpRouteURI,
       method: HttpMethod.POST,
       path: '/custom',
@@ -113,19 +113,19 @@ describe('HttpEngine', () => {
     })
   })
 
-  it('does not share state between mounts', () => {
+  it('does not share state between declares', () => {
     const engine = HttpEngine()
     const tag = HttpRouteURI
     const method = HttpMethod.GET
 
-    const routeA = engine.mount({
+    const routeA = engine.declare({
       tag,
       method,
       path: '/a',
       handler: jest.fn(),
     })
 
-    const routeB = engine.mount({
+    const routeB = engine.declare({
       tag,
       method,
       path: '/b',

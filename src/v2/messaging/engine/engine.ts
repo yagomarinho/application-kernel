@@ -12,11 +12,8 @@ import { CommandHandlerConfig } from '../command/command.handler.config'
 import { EventHandler } from '../event/event.handler'
 import { EventHandlerConfig } from '../event/event.handler.config'
 import { MessagingURI } from '../uri'
-import {
-  resolveMessagingDefaults,
-  MessagingDefaults,
-} from './messaging.defaults'
-import { mountMessagingHandler } from './mount'
+import { resolveMessagingDefaults, MessagingDefaults } from './defaults'
+import { declareMessagingHandler } from './declare'
 
 export type MessagingHandlerConfig = CommandHandlerConfig | EventHandlerConfig
 
@@ -29,7 +26,7 @@ export interface MessagingEngine extends Engine<
   MessagingHandlerConfig,
   MessagingHandler
 > {
-  mount: <C extends MessagingHandlerConfig>(
+  declare: <C extends MessagingHandlerConfig>(
     config: RequiredTaggable<C>,
   ) => MessagingHandlerMapper<C>
 }
@@ -45,9 +42,10 @@ export function MessagingEngine({
 }: MessagingEngineOptions = {}): MessagingEngine {
   const ensureDefaults = resolveMessagingDefaults(defaults)
 
-  const mount: MessagingEngine['mount'] = mountMessagingHandler(ensureDefaults)
+  const declare: MessagingEngine['declare'] =
+    declareMessagingHandler(ensureDefaults)
 
   return {
-    mount,
+    declare,
   }
 }

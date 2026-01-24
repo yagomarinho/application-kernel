@@ -12,7 +12,7 @@ import {
   ApplicationServiceDefaults,
   resolveApplicationServiceDefaults,
 } from './defaults'
-import { mountApplicationService } from './mount'
+import { declareApplicationService } from './methods'
 
 type RequiredKeys = 'handler'
 
@@ -41,10 +41,10 @@ export function ApplicationServiceEngine({
 }: ApplicationServiceEngineOptions = {}): ApplicationServiceEngine {
   const ensureDefaults = resolveApplicationServiceDefaults(defaults)
 
-  const mount: ApplicationServiceEngine['mount'] =
-    mountApplicationService(ensureDefaults)
+  const declare: ApplicationServiceEngine['declare'] =
+    declareApplicationService(ensureDefaults)
 
   return {
-    mount,
+    declare,
   }
 }

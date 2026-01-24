@@ -15,9 +15,9 @@ import type { WsURI } from '../../uri'
 import { WsHandlersEngine } from '../handlers'
 import {
   resolveWsRouteConnectionDefaults,
-  WsRouteConnectionDefaults,
+  WsRouteConnectionDefaultsToResolve,
 } from './defaults'
-import { mountWsRouteConnection } from './mount'
+import { declareWsRouteConnection } from './declare'
 
 export interface WsRouteConnectionEngine extends Engine<
   WsRouteConnectionConfig,
@@ -30,22 +30,22 @@ export type WsRouteConnectionEngineBinder = EngineBinder<
 >
 
 export interface WsRouteConnectionEngineOptions {
-  defaults?: Partial<WsRouteConnectionDefaults>
-  handlerEngine: WsHandlersEngine
+  defaults?: WsRouteConnectionDefaultsToResolve
+  handlersEngine: WsHandlersEngine
 }
 
 export function WsRouteConnectionEngine({
   defaults,
-  handlerEngine,
+  handlersEngine,
 }: WsRouteConnectionEngineOptions): WsRouteConnectionEngine {
   const ensureDefaults = resolveWsRouteConnectionDefaults(defaults)
 
-  const mount: WsRouteConnectionEngine['mount'] = mountWsRouteConnection(
+  const declare: WsRouteConnectionEngine['declare'] = declareWsRouteConnection(
     ensureDefaults,
-    handlerEngine,
+    handlersEngine,
   )
 
   return {
-    mount,
+    declare,
   }
 }

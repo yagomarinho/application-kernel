@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { mountApplicationService } from '../../../application.service'
+import { declareApplicationService } from '../../../application.service'
 import { RequiredTaggable } from '../../../contracts'
 import { WsCommandHandler, WsCommandHandlerConfig } from '../../command'
 import { WsEventHandler, WsEventHandlerConfig } from '../../event'
@@ -22,7 +22,7 @@ import {
 import { WsHandlersDefaults } from './defaults'
 import { WsHandlersConfig, WsHandlersMapper } from './engine'
 
-export function mountWsCommandHandler(
+export function declareWsCommandHandler(
   defaults: WsHandlersDefaults,
   {
     on,
@@ -31,7 +31,7 @@ export function mountWsCommandHandler(
     ...rest
   }: RequiredTaggable<WsCommandHandlerConfig>,
 ): WsCommandHandler {
-  const applicationService = mountApplicationService(defaults)(rest)
+  const applicationService = declareApplicationService(defaults)(rest)
 
   return {
     on,
@@ -42,11 +42,11 @@ export function mountWsCommandHandler(
   }
 }
 
-export function mountWsEventHandler(
+export function declareWsEventHandler(
   defaults: WsHandlersDefaults,
   { on, incomingAdapter, ...rest }: RequiredTaggable<WsEventHandlerConfig>,
 ): WsEventHandler {
-  const applicationService = mountApplicationService(defaults)(rest)
+  const applicationService = declareApplicationService(defaults)(rest)
 
   return {
     on,
@@ -56,11 +56,11 @@ export function mountWsEventHandler(
   }
 }
 
-export function mountWsMixedEventHandler(
+export function declareWsMixedEventHandler(
   defaults: WsHandlersDefaults,
   { on, emits, ...rest }: RequiredTaggable<WsMixedEventHandlerConfig>,
 ): WsMixedEventHandler {
-  const applicationService = mountApplicationService(defaults)(rest)
+  const applicationService = declareApplicationService(defaults)(rest)
 
   return {
     on:
@@ -76,18 +76,18 @@ export function mountWsMixedEventHandler(
   }
 }
 
-export function mountWsHandlers(defaults: WsHandlersDefaults) {
+export function declareWsHandlers(defaults: WsHandlersDefaults) {
   return <C extends WsHandlersConfig>(
     config: RequiredTaggable<C>,
   ): WsHandlersMapper<C> => {
-    const mounts = {
-      [WsCommandHandlerURI]: mountWsCommandHandler,
-      [WsEventHandlerURI]: mountWsEventHandler,
-      [WsMixedEventHandlerURI]: mountWsMixedEventHandler,
+    const declares = {
+      [WsCommandHandlerURI]: declareWsCommandHandler,
+      [WsEventHandlerURI]: declareWsEventHandler,
+      [WsMixedEventHandlerURI]: declareWsMixedEventHandler,
     }
 
-    const mount = mounts[config.tag]
+    const declare = declares[config.tag]
 
-    return mount(defaults, config as any) as any
+    return declare(defaults, config as any) as any
   }
 }
