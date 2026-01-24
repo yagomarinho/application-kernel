@@ -5,3 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { ApplicationPayload, Job } from '../../../contracts'
+import { WithRegistry } from '../../composition'
+
+export interface RunApplicationService extends WithRegistry {}
+
+export function runApplicationService({ registry }: RunApplicationService) {
+  return (job: Job, payload: ApplicationPayload) => {
+    const execution = registry.resolve(job)
+    return execution.execute(payload)
+  }
+}

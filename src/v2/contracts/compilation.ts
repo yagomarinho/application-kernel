@@ -5,7 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './defaults'
-export * from './engine'
-export * from './job'
-export * from './methods'
+import type { Execution } from './execution'
+import type { Job } from './job'
+
+export interface Compilation<J extends Job = Job> {
+  job: J
+  execution: Execution
+}

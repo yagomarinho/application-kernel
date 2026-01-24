@@ -14,6 +14,8 @@ import {
   Successful,
   UseCase,
 } from '@yagomarinho/domain-kernel'
+import { concatenate } from '@yagomarinho/utils-toolkit'
+
 import {
   ErrorHandler,
   ExtendedFailure,
@@ -23,6 +25,7 @@ import {
   MiddlewareResult,
   Next,
 } from '../contracts'
+
 import { mapResolvable } from './map.resolvable'
 import { byPassFailure, NonFailure } from './by.pass.failure'
 
@@ -75,21 +78,23 @@ export function applicationPipeline(
           return mapResolvable(
             onError(output.error, env, output.ctx as any),
             error =>
-              ({ ...Failure(error), ctx: output.ctx }) as ExtendedFailure,
+              concatenate(Failure(error), {
+                ctx: output.ctx,
+              }) as ExtendedFailure,
           )
 
         return bind(afterMiddleware, next =>
           mapResolvable(
             onError(output.error, env, next.ctx),
-            error => ({ ...Failure(error), ctx: next.ctx }) as ExtendedFailure,
+            error =>
+              concatenate(Failure(error), { ctx: next.ctx }) as ExtendedFailure,
           ),
         )
       }
 
-      return {
-        ...Successful(output.data),
+      return concatenate(Successful(output.data), {
         ctx: output.ctx,
-      } as ExtendedSuccessful
+      }) as ExtendedSuccessful
     })
   }
 }

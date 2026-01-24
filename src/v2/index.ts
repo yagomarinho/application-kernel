@@ -6,7 +6,9 @@
  */
 
 export * from './application'
+export * from './application.service'
 export * from './contracts'
+export * from './helpers'
 export * from './http'
 export * from './messaging'
 export * from './ws'

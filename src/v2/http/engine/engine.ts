@@ -6,26 +6,62 @@
  */
 
 import type { HttpRoute, HttpRouteConfig } from '../route'
+import type { UID } from '../../uid'
 import type { Engine, EngineBinder } from '../../contracts'
-import type { HttpURI } from '../uri'
+import type { HttpJob } from './job'
+import type { Registry } from '../../registry'
+import type { ApplicationServiceEngine } from '../../application.service'
 
-import { declareHttpRoute } from './declare'
 import { resolveHttpRouteDefaults, HttpRouteDefaults } from './defaults'
+import {
+  declareHttpRoute,
+  compileHttpRoute,
+  jobsHttpRoute,
+  runHttpRoute,
+} from './methods'
+import { HttpURI } from '../uri'
 
-export interface HttpEngine extends Engine<HttpRouteConfig, HttpRoute> {}
+export interface HttpEngine extends Engine<
+  HttpRouteConfig,
+  HttpRoute,
+  HttpJob
+> {}
 
 export type HttpEngineBinder = EngineBinder<HttpEngine, HttpURI>
 
 export interface HttpEngineOptions {
   defaults?: Partial<HttpRouteDefaults>
+  applicationServiceEngine: ApplicationServiceEngine
+  uid: UID
+  registry: Registry
 }
 
-export function HttpEngine({ defaults }: HttpEngineOptions = {}): HttpEngine {
+export function HttpEngine({
+  defaults,
+  applicationServiceEngine,
+  uid,
+  registry,
+}: HttpEngineOptions): HttpEngine {
   const ensureDefaults = resolveHttpRouteDefaults(defaults)
 
-  const declare: HttpEngine['declare'] = declareHttpRoute(ensureDefaults)
+  const declare: HttpEngine['declare'] = declareHttpRoute({
+    defaults: ensureDefaults,
+    applicationServiceEngine,
+  })
+
+  const compile: HttpEngine['compile'] = compileHttpRoute({
+    applicationServiceEngine,
+    uid,
+  })
+
+  const run: HttpEngine['run'] = runHttpRoute({ registry })
+
+  const jobs: HttpEngine['jobs'] = jobsHttpRoute({ registry })
 
   return {
     declare,
+    compile,
+    run,
+    jobs,
   }
 }

@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { RequiredTaggable } from '../../contracts'
-import type { CommandHandler, CommandHandlerConfig } from '../command'
-import type { EventHandler, EventHandlerConfig } from '../event'
-import type { MessagingDefaults } from './defaults'
-import type { MessagingHandlerConfig, MessagingHandlerMapper } from './engine'
+import type { RequiredTaggable } from '../../../contracts'
+import type { CommandHandler, CommandHandlerConfig } from '../../command'
+import type { EventHandler, EventHandlerConfig } from '../../event'
+import type { MessagingDefaults } from '../defaults'
+import type { MessagingHandlerConfig, MessagingHandlerMapper } from '../engine'
 
-import { declareApplicationService } from '../../application.service'
+import { declareApplicationService } from '../../../application.service'
 
 function declareCommandHandler(
   defaults: MessagingDefaults,

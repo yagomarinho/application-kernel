@@ -6,51 +6,44 @@
  */
 
 import {
-  ApplicationPayload,
   Compilation,
   Execution,
+  Job,
   middlewareChain,
   postprocessorsChain,
 } from '../../../contracts'
 import { applicationPipeline } from '../../../helpers'
 import { ApplicationService } from '../../application.service'
+import { WithGlobalEnvGetter } from '../../composition'
 
-export interface EnvGetter {
-  (): any
-}
+interface CompileApplication extends WithGlobalEnvGetter {}
 
-interface WithEnvGetter {
-  globalEnv: EnvGetter
-}
+export function compileApplicationService({ globalEnv }: CompileApplication) {
+  return ({
+    env: Env,
+    guardian,
+    handler,
+    middlewares,
+    onError,
+    postprocessors,
+  }: ApplicationService): Compilation[] => {
+    const pipeline = applicationPipeline(
+      middlewareChain(middlewares),
+      guardian,
+      handler,
+      postprocessorsChain(postprocessors),
+      onError,
+    )
 
-interface CompileApplication extends ApplicationService, WithEnvGetter {}
+    const execution: Execution = {
+      execute: ({ data, context }) => pipeline(data, Env(globalEnv()), context),
+    }
 
-export function compileApplicationService<Payload extends ApplicationPayload>({
-  globalEnv,
-  env: Env,
-  guardian,
-  handler,
-  middlewares,
-  onError,
-  postprocessors,
-}: CompileApplication): Compilation<void, Payload> {
-  // aqui é onde eu tenho que construir a pipeline todinha
-  const execution: Execution<Payload> = {
-    execute: ({ data, context }) => {
-      const pipeline = applicationPipeline(
-        middlewareChain(middlewares),
-        guardian,
-        handler,
-        postprocessorsChain(postprocessors),
-        onError,
-      )
-
-      return pipeline(data, Env(globalEnv()), context)
-    },
-  }
-
-  return {
-    job: undefined,
-    execution,
+    return [
+      {
+        job: Job(),
+        execution,
+      },
+    ]
   }
 }

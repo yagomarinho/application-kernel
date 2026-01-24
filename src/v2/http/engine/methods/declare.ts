@@ -5,20 +5,29 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { RequiredTaggable } from '../../contracts'
-import type { HttpRoute, HttpRouteConfig } from '../route'
-import type { HttpRouteDefaults } from './defaults'
+import type { ApplicationServiceEngine } from '../../../application.service'
+import type { RequiredTaggable } from '../../../contracts'
+import type { HttpRoute, HttpRouteConfig } from '../../route'
+import type { HttpRouteDefaults } from '../defaults'
 
-import { declareApplicationService } from '../../application.service'
+interface DeclareHttpRoute {
+  defaults: HttpRouteDefaults
+  applicationServiceEngine: ApplicationServiceEngine
+}
 
-export function declareHttpRoute(defaults: HttpRouteDefaults) {
+export function declareHttpRoute({
+  defaults,
+  applicationServiceEngine,
+}: DeclareHttpRoute) {
   return ({
     method,
     path,
     adapters,
     ...rest
   }: RequiredTaggable<HttpRouteConfig>): HttpRoute => {
-    const applicationService = declareApplicationService(defaults)(rest)
+    const applicationService = applicationServiceEngine.declare(rest, {
+      defaults,
+    })
 
     return {
       ...applicationService,

@@ -5,7 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './defaults'
-export * from './engine'
-export * from './job'
-export * from './methods'
+import { ExecutionContext } from '@yagomarinho/domain-kernel'
+
+export interface ApplicationPayload<T = any> {
+  data: T
+  context: ExecutionContext
+}

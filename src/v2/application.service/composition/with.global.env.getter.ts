@@ -5,7 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './defaults'
-export * from './engine'
-export * from './job'
-export * from './methods'
+export interface Getter<T = any> {
+  (): T
+}
+
+export interface WithGlobalEnvGetter {
+  globalEnv: Getter
+}
