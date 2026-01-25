@@ -12,12 +12,12 @@ import type { HttpRouteDefaults } from '../defaults'
 
 interface DeclareHttpRoute {
   defaults: HttpRouteDefaults
-  applicationServiceEngine: ApplicationServiceEngine
+  serviceEngine: ApplicationServiceEngine
 }
 
 export function declareHttpRoute({
   defaults,
-  applicationServiceEngine,
+  serviceEngine,
 }: DeclareHttpRoute) {
   return ({
     method,
@@ -25,12 +25,12 @@ export function declareHttpRoute({
     adapters,
     ...rest
   }: RequiredTaggable<HttpRouteConfig>): HttpRoute => {
-    const applicationService = applicationServiceEngine.declare(rest, {
+    const serviceDeclaration = serviceEngine.declare(rest, {
       defaults,
     })
 
     return {
-      ...applicationService,
+      ...serviceDeclaration,
       method,
       path,
       adapters: {

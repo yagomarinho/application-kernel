@@ -18,14 +18,11 @@ import { HttpRequest, HttpResponse } from '../../ports'
 import { mapResolvable } from '../../../helpers'
 
 interface CompileHttpRoute {
-  applicationServiceEngine: ApplicationServiceEngine
+  serviceEngine: ApplicationServiceEngine
   uid: UID
 }
 
-export function compileHttpRoute({
-  applicationServiceEngine,
-  uid,
-}: CompileHttpRoute) {
+export function compileHttpRoute({ serviceEngine, uid }: CompileHttpRoute) {
   return ({
     adapters,
     env,
@@ -37,7 +34,7 @@ export function compileHttpRoute({
     path,
     postprocessors,
   }: HttpRoute): Compilation<HttpJob, HttpRequest, HttpResponse>[] => {
-    const [{ execution }] = applicationServiceEngine.compile({
+    const [{ execution }] = serviceEngine.compile({
       env,
       guardian,
       handler,

@@ -5,13 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Result } from '@yagomarinho/domain-kernel'
-
+import type { ExtendedResult } from '../../contracts'
 import type { HttpRequest, HttpResponse } from '../ports'
 
 export interface HttpAdapters {
   requestAdapter: (request: HttpRequest) => any
-  responseAdapter: (data: Result) => HttpResponse
+  responseAdapter: (data: ExtendedResult) => HttpResponse
 }
 
 export interface WithHttpAdapters {

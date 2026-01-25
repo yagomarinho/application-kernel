@@ -12,5 +12,5 @@ interface JobsApplicationService {
 }
 
 export function jobsApplicationService({ registry }: JobsApplicationService) {
-  return (tag?: string) => registry.listJobs(tag)
+  return (tag?: string) => registry.jobs.list(tag)
 }

@@ -5,16 +5,29 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-interface EmitsWsOutput {
-  target: 'ws'
-  event: string
+import type { ExecutionContext, Resolvable } from '@yagomarinho/domain-kernel'
+import type { Emits } from '../../messaging'
+import type { Audience } from '../ports'
+
+export interface AudienceResolver {
+  (
+    audience: Audience[],
+    env: any,
+    ctx: ExecutionContext,
+  ): Resolvable<Audience[]>
 }
 
-interface EmitsEmitterOutput {
-  target: 'emitter'
-  event: string
+export interface EmitsWsOutput extends Emits {
+  target: 'ws'
+  audience: AudienceResolver[]
 }
+
+export interface EmitsEmitterOutput extends Emits {
+  target: 'emitter'
+}
+
+export type DerivedEmits = EmitsWsOutput | EmitsEmitterOutput
 
 export interface DerivedEndsEmits {
-  emits: EmitsWsOutput | EmitsEmitterOutput
+  emits: DerivedEmits
 }

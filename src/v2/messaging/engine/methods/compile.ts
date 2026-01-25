@@ -6,36 +6,56 @@
  */
 
 import type { MessagingHandler } from '../engine'
-import type { MessagingJob } from '../job'
-import type { CommandHandler } from '../../command'
+import type { CommandJob, EventJob, MessagingJob } from '../job'
 import type { ApplicationServiceEngine } from '../../../application.service'
 import type { UID } from '../../../uid'
 
-import { concatenate } from '@yagomarinho/utils-toolkit'
-import { type Compilation, Job } from '../../../contracts'
+import { type Compilation, ExtendedResult } from '../../../contracts'
+import { CommandhandlerURI, EventHandlerURI, MessagingURI } from '../../uri'
 
 export interface CompileMessagingHandler {
-  applicationServiceEngine: ApplicationServiceEngine
+  serviceEngine: ApplicationServiceEngine
   uid: UID
 }
 
-export function compileMessagingHandler({ applicationServiceEngine, uid }) {
+export function compileMessagingHandler({
+  serviceEngine,
+  uid,
+}: CompileMessagingHandler) {
   return (declaration: MessagingHandler): Compilation<MessagingJob>[] => {
-    const [{ execution }] = applicationServiceEngine.compile(declaration)
+    const [{ execution }] = serviceEngine.compile(declaration)
 
-    const uri = declaration.tag
-    const compilation: Compilation = {
-      job: concatenate(
-        Job(uid.generate(), uri),
-        uri === 'command.handler'
-          ? {
-              on: declaration.on,
-              emits: (declaration as CommandHandler).emits,
-            }
-          : { on: declaration.on },
-      ),
+    const id = uid.generate()
+    const compilation: Compilation<MessagingJob, any, ExtendedResult> = {
+      job:
+        declaration.tag === 'command.handler'
+          ? CommandJob(id, declaration.on, declaration.emits)
+          : EventJob(id, declaration.on),
       execution,
     }
-    return [compilation as Compilation<MessagingJob>]
+    return [compilation]
+  }
+}
+
+function EventJob(id: string, on: EventJob['on']): EventJob {
+  return {
+    id,
+    on,
+    tag: MessagingURI,
+    type: EventHandlerURI,
+  }
+}
+
+function CommandJob(
+  id: string,
+  on: CommandJob['on'],
+  emits: CommandJob['emits'],
+): CommandJob {
+  return {
+    emits,
+    id,
+    on,
+    tag: MessagingURI,
+    type: CommandhandlerURI,
   }
 }

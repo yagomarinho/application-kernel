@@ -43,14 +43,14 @@ export interface WsRouteConnectionEngineOptions
   extends WithGlobalEnvGetter, WithRegistry {
   defaults?: WsRouteConnectionDefaultsToResolve
   handlersEngine: WsHandlersEngine
-  applicationServiceEngine: ApplicationServiceEngine
+  serviceEngine: ApplicationServiceEngine
   uid: UID
 }
 
 export function WsRouteConnectionEngine({
   defaults,
   handlersEngine,
-  applicationServiceEngine,
+  serviceEngine,
   registry,
   uid,
   globalEnv,
@@ -73,7 +73,7 @@ export function WsRouteConnectionEngine({
     postprocessors,
     tag,
   }: WsRouteConnection): Compilation<WsJobs>[] => {
-    const [{ execution }] = applicationServiceEngine.compile({
+    const [{ execution }] = serviceEngine.compile({
       env: pipe(env, onConnection.env),
       guardian: onConnection.guardian,
       handler: onConnection.handler,

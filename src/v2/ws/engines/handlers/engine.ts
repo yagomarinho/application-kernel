@@ -5,21 +5,33 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Engine, EngineBinder, RequiredTaggable } from '../../../contracts'
+import { ApplicationServiceEngine } from '../../../application.service'
+import { WithRegistry } from '../../../application.service/composition'
+import type {
+  Compilation,
+  Engine,
+  EngineBinder,
+  ExtendedResult,
+  RequiredTaggable,
+} from '../../../contracts'
+import { UID } from '../../../uid'
 import type { WsCommandHandler, WsCommandHandlerConfig } from '../../command'
 import type { WsEventHandler, WsEventHandlerConfig } from '../../event'
 import type {
+  EmitterIncomingWsOut,
   WsMixedEventHandler,
   WsMixedEventHandlerConfig,
 } from '../../mixed.event'
-import type {
+import type { Audience, WsIncomingMessage } from '../../ports'
+import {
   WsCommandHandlerURI,
   WsEventHandlerURI,
   WsMixedEventHandlerURI,
   WsURI,
 } from '../../uri'
+import type { WsHandlersJob } from './jobs'
 import { resolveWsHandlersDefaults, WsHandlersDefaults } from './defaults'
-import { declareWsHandlers } from './methods'
+import { compileWsHandlers, declareWsHandlers } from './methods'
 
 export type WsHandlersConfig =
   | WsCommandHandlerConfig
@@ -38,26 +50,54 @@ export type WsHandlersMapper<C extends WsHandlersConfig> = Mapper[NonNullable<
   C['tag']
 >]
 
-export interface WsHandlersEngine extends Engine<WsHandlersConfig, WsHandlers> {
+export type WsHandlersIncomingMapper<D extends WsHandlers> =
+  D extends EmitterIncomingWsOut ? any : WsIncomingMessage
+
+export type ResultWithAudience = ExtendedResult & { audience: Audience[] }
+
+export type WsHandlersOutgoingMapper<D extends WsHandlers> =
+  D extends EmitterIncomingWsOut ? ResultWithAudience : ExtendedResult
+
+export interface WsHandlersEngine extends Engine<
+  WsHandlersConfig,
+  WsHandlers,
+  WsHandlersJob
+> {
   declare: <C extends WsHandlersConfig>(
     config: RequiredTaggable<C>,
   ) => WsHandlersMapper<C>
+
+  compile: <D extends WsHandlers>(
+    declaration: D,
+  ) => Compilation<
+    WsHandlersJob,
+    WsHandlersIncomingMapper<D>,
+    WsHandlersOutgoingMapper<D>
+  >[]
 }
 
 export type WsHandlersEngineBinder = EngineBinder<WsHandlersEngine, WsURI>
 
-export interface WsHandlersEngineOptions {
+export interface WsHandlersEngineOptions extends WithRegistry {
   defaults?: Partial<WsHandlersDefaults>
+  serviceEngine: ApplicationServiceEngine
+  uid: UID
 }
 
 export function WsHandlersEngine({
   defaults,
-}: WsHandlersEngineOptions = {}): WsHandlersEngine {
-  const ensureDefaults = resolveWsHandlersDefaults(defaults)
-
-  const declare: WsHandlersEngine['declare'] = declareWsHandlers(ensureDefaults)
-
+  serviceEngine,
+  uid,
+}: WsHandlersEngineOptions): WsHandlersEngine {
   return {
-    declare,
+    declare: declareWsHandlers({
+      defaults: resolveWsHandlersDefaults(defaults),
+      serviceEngine,
+    }),
+
+    compile: compileWsHandlers({ serviceEngine, uid }),
+
+    jobs,
+    run,
   }
 }

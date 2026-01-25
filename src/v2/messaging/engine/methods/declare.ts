@@ -15,16 +15,19 @@ import type { ApplicationServiceEngine } from '../../../application.service'
 function declareCommandHandler(
   defaults: MessagingDefaults,
   { on, emits, ...rest }: RequiredTaggable<CommandHandlerConfig>,
-  applicationServiceEngine: ApplicationServiceEngine,
+  serviceEngine: ApplicationServiceEngine,
 ): CommandHandler {
-  const applicationService = applicationServiceEngine.declare(rest, {
+  const serviceDeclaration = serviceEngine.declare(rest, {
     defaults,
   })
 
   return {
-    ...applicationService,
+    ...serviceDeclaration,
     on,
-    emits,
+    emits:
+      typeof emits === 'string'
+        ? { onSuccess: emits, onError: emits }
+        : { onSuccess: emits.onSuccess, onError: emits.onError },
     tag: rest.tag,
   }
 }
@@ -32,14 +35,14 @@ function declareCommandHandler(
 function declareEventHandler(
   defaults: MessagingDefaults,
   { on, ...rest }: RequiredTaggable<EventHandlerConfig>,
-  applicationServiceEngine: ApplicationServiceEngine,
+  serviceEngine: ApplicationServiceEngine,
 ): EventHandler {
-  const applicationService = applicationServiceEngine.declare(rest, {
+  const serviceDeclaration = serviceEngine.declare(rest, {
     defaults,
   })
 
   return {
-    ...applicationService,
+    ...serviceDeclaration,
     on,
     tag: rest.tag,
   }
@@ -47,11 +50,11 @@ function declareEventHandler(
 
 interface DeclareMessagingHandler {
   defaults: MessagingDefaults
-  applicationServiceEngine: ApplicationServiceEngine
+  serviceEngine: ApplicationServiceEngine
 }
 
 export function declareMessagingHandler({
-  applicationServiceEngine,
+  serviceEngine,
   defaults,
 }: DeclareMessagingHandler) {
   return <C extends MessagingHandlerConfig>(
@@ -62,6 +65,6 @@ export function declareMessagingHandler({
         ? declareCommandHandler
         : declareEventHandler
 
-    return declare(defaults, config as any, applicationServiceEngine) as any
+    return declare(defaults, config as any, serviceEngine) as any
   }
 }

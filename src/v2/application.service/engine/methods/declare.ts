@@ -9,9 +9,13 @@ import { ApplicationService } from '../../application.service'
 import { ApplicationServiceDefaults } from '../defaults'
 import { ApplicationServiceConfig } from '../engine'
 
-export function declareApplicationService(
-  defaults: ApplicationServiceDefaults,
-) {
+interface DeclareApplicationService {
+  defaults: ApplicationServiceDefaults
+}
+
+export function declareApplicationService({
+  defaults,
+}: DeclareApplicationService) {
   return ({
     env = defaults.env,
     middlewares = defaults.middlewares,

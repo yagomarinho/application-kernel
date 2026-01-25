@@ -6,7 +6,12 @@
  */
 
 import { ApplicationServiceEngine } from '../../application.service'
-import { Engine, EngineBinder, RequiredTaggable } from '../../contracts'
+import {
+  Engine,
+  EngineBinder,
+  ExtendedResult,
+  RequiredTaggable,
+} from '../../contracts'
 import { UID } from '../../uid'
 
 import { CommandHandler } from '../command/command.handler'
@@ -34,7 +39,9 @@ export type MessagingHandlerMapper<C extends MessagingHandlerConfig> =
 export interface MessagingEngine extends Engine<
   MessagingHandlerConfig,
   MessagingHandler,
-  MessagingJob
+  MessagingJob,
+  any,
+  ExtendedResult
 > {
   declare: <C extends MessagingHandlerConfig>(
     config: RequiredTaggable<C>,
@@ -45,37 +52,32 @@ export type MessagingEngineBinder = EngineBinder<MessagingEngine, MessagingURI>
 
 export interface MessagingEngineOptions {
   defaults?: Partial<MessagingDefaults>
-  applicationServiceEngine: ApplicationServiceEngine
+  serviceEngine: ApplicationServiceEngine
   uid: UID
   registry: Registry
 }
 
 export function MessagingEngine({
   defaults,
-  applicationServiceEngine,
+  serviceEngine,
   uid,
   registry,
 }: MessagingEngineOptions): MessagingEngine {
-  const declare: MessagingEngine['declare'] = declareMessagingHandler({
-    defaults: resolveMessagingDefaults(defaults),
-    applicationServiceEngine,
-  })
-
-  const compile: MessagingEngine['compile'] = compileMessagingHandler({
-    applicationServiceEngine,
-    uid,
-  })
-
-  const jobs: MessagingEngine['jobs'] = jobsMessagingHandler({
-    registry,
-  })
-
-  const run: MessagingEngine['run'] = runMessagingHandler({ registry })
-
   return {
-    declare,
-    compile,
-    jobs,
-    run,
+    declare: declareMessagingHandler({
+      defaults: resolveMessagingDefaults(defaults),
+      serviceEngine,
+    }),
+
+    compile: compileMessagingHandler({
+      serviceEngine,
+      uid,
+    }),
+
+    jobs: jobsMessagingHandler({
+      registry,
+    }),
+
+    run: runMessagingHandler({ registry }),
   }
 }

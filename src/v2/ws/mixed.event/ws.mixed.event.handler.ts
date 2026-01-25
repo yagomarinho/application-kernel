@@ -7,7 +7,12 @@
 
 import type { Tag } from '@yagomarinho/domain-kernel'
 
-import type { DerivedAcceptIncoming, DerivedEndsEmits } from '../composition'
+import type {
+  AcceptEmitterIncoming,
+  AcceptWsIncoming,
+  EmitsEmitterOutput,
+  EmitsWsOutput,
+} from '../composition'
 import type { WsHandlersEngine, WsHandlersEngineBinder } from '../engines'
 import type { WsMixedEventHandlerConfig } from './ws.mixed.event.handler.config'
 
@@ -16,12 +21,19 @@ import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
 import { WsMixedEventHandlerURI, WsURI } from '../uri'
 import { ApplicationService } from '../../application.service'
 
-export interface WsMixedEventHandler
-  extends
-    ApplicationService,
-    DerivedAcceptIncoming,
-    DerivedEndsEmits,
-    Tag<WsMixedEventHandlerURI> {}
+export interface WsIncomingEmitterOut
+  extends ApplicationService, Tag<WsMixedEventHandlerURI> {
+  on: AcceptWsIncoming
+  emits: EmitsEmitterOutput
+}
+
+export interface EmitterIncomingWsOut
+  extends ApplicationService, Tag<WsMixedEventHandlerURI> {
+  on: AcceptEmitterIncoming
+  emits: EmitsWsOutput
+}
+
+export type WsMixedEventHandler = WsIncomingEmitterOut | EmitterIncomingWsOut
 
 export function WsMixedEventHandler({
   on,
@@ -33,6 +45,8 @@ export function WsMixedEventHandler({
   onError,
   env,
 }: WsMixedEventHandlerConfig): WsHandlersEngineBinder {
+  // O correto a se fazer é uma validação antes de empurrar para o engine
+  // fica como próxima tarefa
   const target = (engine: WsHandlersEngine) =>
     engine.declare({
       on,
@@ -44,7 +58,7 @@ export function WsMixedEventHandler({
       onError,
       env,
       tag: WsMixedEventHandlerURI,
-    })
+    } as any)
 
   return applyEntry('resource', WsURI)(target)
 }

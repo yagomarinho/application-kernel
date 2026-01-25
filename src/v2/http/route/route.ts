@@ -7,13 +7,13 @@
 
 import type { Tag } from '@yagomarinho/domain-kernel'
 
+import type { ApplicationService } from '../../application.service'
 import type { WithHttpAdapters, WithHttpMethod, WithPath } from '../composition'
 import type { HttpRouteConfig } from './config'
 import type { HttpEngine, HttpEngineBinder } from '../engine'
 
 import { applyEntry } from '@yagomarinho/utils-toolkit/apply.entry'
 import { HttpURI } from '../uri'
-import { ApplicationService } from '../../application.service'
 
 export const HttpRouteURI = 'http.route'
 export type HttpRouteURI = typeof HttpRouteURI

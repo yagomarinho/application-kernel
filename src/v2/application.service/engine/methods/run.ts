@@ -12,7 +12,7 @@ export interface RunApplicationService extends WithRegistry {}
 
 export function runApplicationService({ registry }: RunApplicationService) {
   return (job: Job, payload: ApplicationPayload) => {
-    const execution = registry.resolve(job)
+    const execution = registry.jobs.resolve(job)
     return execution.execute(payload)
   }
 }

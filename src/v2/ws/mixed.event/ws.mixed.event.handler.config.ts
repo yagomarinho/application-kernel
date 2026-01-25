@@ -6,21 +6,40 @@
  */
 
 import {
-  AcceptEmitterIncoming,
   AcceptWsIncoming,
+  EmitsEmitterOutput,
+  EmitsWsOutput,
   IncomingAdapter,
 } from '../composition'
-import type { WsMixedEventHandler } from './ws.mixed.event.handler'
+import type {
+  EmitterIncomingWsOut,
+  WsIncomingEmitterOut,
+} from './ws.mixed.event.handler'
 
 type RequiredKeys = 'on' | 'emits' | 'handler'
 
-type Config = Omit<WsMixedEventHandler, 'on'> & {
-  on:
-    | AcceptEmitterIncoming
-    | (Omit<AcceptWsIncoming, 'incomingAdapter'> & {
-        incomingAdapter?: IncomingAdapter
-      })
+type ConfigWsToEmitter = Omit<WsIncomingEmitterOut, 'on' | 'emits'> & {
+  on: Omit<AcceptWsIncoming, 'incomingAdapter'> & {
+    incomingAdapter?: IncomingAdapter
+  }
+  emits: { target: 'emitter'; event: string } | EmitsEmitterOutput
 }
 
-export type WsMixedEventHandlerConfig = Partial<Omit<Config, RequiredKeys>> &
+type ConfigEmitterToWs = Omit<EmitterIncomingWsOut, 'emits'> & {
+  emits:
+    | (Omit<EmitsWsOutput, 'onSuccess' | 'onError'> & { event: string })
+    | EmitsWsOutput
+}
+
+type ApplyConfigKeys<Config extends Record<RequiredKeys, unknown>> = Partial<
+  Omit<Config, RequiredKeys>
+> &
   Pick<Config, RequiredKeys>
+
+export type WsIncomingEmitterOutConfig = ApplyConfigKeys<ConfigWsToEmitter>
+
+export type EmitterIncomingWsOutConfig = ApplyConfigKeys<ConfigEmitterToWs>
+
+export type WsMixedEventHandlerConfig =
+  | WsIncomingEmitterOutConfig
+  | EmitterIncomingWsOutConfig

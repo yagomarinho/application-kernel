@@ -6,10 +6,7 @@
  */
 
 import type { Job } from '../../contracts'
-import type { HttpMethod } from '../ports'
+import type { WithHttpMethod, WithPath } from '../composition'
 import type { HttpURI } from '../uri'
 
-export interface HttpJob extends Job<HttpURI> {
-  path: string
-  method: HttpMethod
-}
+export interface HttpJob extends Job<HttpURI>, WithHttpMethod, WithPath {}

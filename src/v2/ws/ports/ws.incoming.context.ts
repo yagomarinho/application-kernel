@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface WsIncomingContext<S = any> {
+export interface WsIncomingMessage<S = any> {
   endpoint: string
   headers: Record<string, string>
   query: Record<string, string>

@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { WsIncomingContext } from '../ports'
+import type { WsIncomingMessage } from '../ports'
 
-export type IncomingAdapter = (incoming: WsIncomingContext) => any
+export type IncomingAdapter = (incoming: WsIncomingMessage) => any
 
 export interface WithWsAdapter {
   incomingAdapter: IncomingAdapter

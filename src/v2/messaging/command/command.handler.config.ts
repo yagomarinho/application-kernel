@@ -5,9 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { Emits } from '../composition'
 import type { CommandHandler } from './command.handler'
 
 type RequiredKeys = 'on' | 'emits' | 'handler'
 
+type ConfigWithEndsEmitsVariant = Omit<CommandHandler, 'emits'> & {
+  emits: string | Emits
+}
+
 export type CommandHandlerConfig = Partial<Omit<CommandHandler, RequiredKeys>> &
-  Pick<CommandHandler, RequiredKeys>
+  Pick<ConfigWithEndsEmitsVariant, RequiredKeys>

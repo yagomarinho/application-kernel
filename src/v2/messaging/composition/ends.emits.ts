@@ -5,6 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export interface Emits {
+  onSuccess: string
+  onError: string
+}
 export interface EndsEmits {
   /**
    * Identifies the expected result of the Command.
@@ -13,5 +17,5 @@ export interface EndsEmits {
    * - May be transformed or enriched by postprocessors
    * - Always expected to be produced (success or failure)
    */
-  emits: string
+  emits: Emits
 }

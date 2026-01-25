@@ -11,16 +11,16 @@ import type { Engine, EngineBinder } from '../../contracts'
 import type { HttpJob } from './job'
 import type { Registry } from '../../registry'
 import type { ApplicationServiceEngine } from '../../application.service'
+import type { HttpRequest, HttpResponse } from '../ports'
+import type { HttpURI } from '../uri'
 
-import { resolveHttpRouteDefaults, HttpRouteDefaults } from './defaults'
+import { resolveHttpRouteDefaults, type HttpRouteDefaults } from './defaults'
 import {
   declareHttpRoute,
   compileHttpRoute,
   jobsHttpRoute,
   runHttpRoute,
 } from './methods'
-import { HttpURI } from '../uri'
-import { HttpRequest, HttpResponse } from '../ports'
 
 export interface HttpEngine extends Engine<
   HttpRouteConfig,
@@ -34,25 +34,25 @@ export type HttpEngineBinder = EngineBinder<HttpEngine, HttpURI>
 
 export interface HttpEngineOptions {
   defaults?: Partial<HttpRouteDefaults>
-  applicationServiceEngine: ApplicationServiceEngine
+  serviceEngine: ApplicationServiceEngine
   uid: UID
   registry: Registry
 }
 
 export function HttpEngine({
   defaults,
-  applicationServiceEngine,
+  serviceEngine,
   uid,
   registry,
 }: HttpEngineOptions): HttpEngine {
   return {
     declare: declareHttpRoute({
       defaults: resolveHttpRouteDefaults(defaults),
-      applicationServiceEngine,
+      serviceEngine,
     }),
 
     compile: compileHttpRoute({
-      applicationServiceEngine,
+      serviceEngine,
       uid,
     }),
 

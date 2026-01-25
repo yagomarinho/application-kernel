@@ -5,11 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { Emits } from '../../messaging'
 import type { WsCommandHandler } from './ws.command.handler'
 
 type RequiredKeys = 'on' | 'emits' | 'handler'
 
+type ConfigWithEndsEmitsVariant = Omit<WsCommandHandler, 'emits'> & {
+  emits: string | Emits
+}
+
 export type WsCommandHandlerConfig = Partial<
   Omit<WsCommandHandler, RequiredKeys>
 > &
-  Pick<WsCommandHandler, RequiredKeys>
+  Pick<ConfigWithEndsEmitsVariant, RequiredKeys>
