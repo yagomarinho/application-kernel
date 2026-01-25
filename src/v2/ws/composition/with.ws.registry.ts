@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './registry'
-export * from './state'
-export * from './ws.registry'
+import { WsRegistry } from '../../registry'
+
+export interface WithWsRegistry {
+  registry: WsRegistry
+}

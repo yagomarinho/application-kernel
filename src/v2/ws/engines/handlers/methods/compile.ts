@@ -5,6 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { WsCommandHandler } from '../../../command'
+import type { WsEventHandler } from '../../../event'
+import type { IncomingAdapter, WithWsRegistry } from '../../../composition'
 import type {
   ResultWithAudience,
   WsHandlers,
@@ -17,32 +20,51 @@ import type {
   Execution,
   ExtendedResult,
 } from '../../../../contracts'
-import type { ApplicationServiceEngine } from '../../../../application.service'
 import type { UID } from '../../../../uid'
 import type { WsIncomingMessage } from '../../../ports'
 import type {
-  EmitterIncomingWsOutJob,
-  WsCommandHandlerJob,
-  WsEventHandlerJob,
-  WsHandlersJob,
-  WsMixedEventHandlerJob,
+  ApplicationServiceEngine,
+  WithGlobalEnvGetter,
+} from '../../../../application.service'
+import {
+  type EmitterIncomingWsOutJob,
+  type WsCommandHandlerJob,
+  type WsEventHandlerJob,
+  type WsHandlersJob,
+  type WsMixedEventHandlerJob,
 } from '../jobs'
+
+import type {
+  EmitterIncomingWsOut,
+  WsMixedEventHandler,
+} from '../../../mixed.event'
 
 import {
   WsCommandHandlerURI,
   WsEventHandlerURI,
+  WsHandlersURI,
   WsMixedEventHandlerURI,
-  WsURI,
 } from '../../../uri'
-import { WsCommandHandler } from '../../../command'
-import { WsEventHandler } from '../../../event'
-import { IncomingAdapter } from '../../../composition'
-import { EmitterIncomingWsOut, WsMixedEventHandler } from '../../../mixed.event'
-import { bindResolvableArray, mapResolvable } from '../../../../helpers'
-import { WsRegistry } from '../../../../registry'
-import { WithGlobalEnvGetter } from '../../../../application.service/composition'
 
-export interface CompileWsHandlers {
+import { bindResolvableArray, mapResolvable } from '../../../../helpers'
+
+interface RouteHandlerToExecution {
+  execution: Execution
+  declaration: WsEventHandler | WsCommandHandler
+}
+interface CreateExecution extends WithGlobalEnvGetter, WithWsRegistry {
+  execution: Execution<any, ExtendedResult>
+  declaration: WsMixedEventHandler
+  job: EmitterIncomingWsOutJob
+}
+
+interface CreateExecutionWithAudienceOutgoing extends Omit<
+  CreateExecution,
+  'declaration'
+> {
+  declaration: EmitterIncomingWsOut
+}
+export interface CompileWsHandlers extends WithGlobalEnvGetter, WithWsRegistry {
   serviceEngine: ApplicationServiceEngine
   uid: UID
 }
@@ -68,21 +90,11 @@ function createExecutionWithAdapter({
 function routeHandlerToExecution({
   execution,
   declaration,
-}: {
-  execution: Execution
-  declaration: WsEventHandler | WsCommandHandler
-}) {
+}: RouteHandlerToExecution) {
   return createExecutionWithAdapter({
     execution,
     incomingAdapter: declaration.incomingAdapter,
   })
-}
-
-interface CreateExecution extends WithGlobalEnvGetter {
-  execution: Execution<any, ExtendedResult>
-  declaration: EmitterIncomingWsOut
-  job: EmitterIncomingWsOutJob
-  registry: WsRegistry
 }
 
 function createExecutionWithAudienceOutgoing({
@@ -91,7 +103,7 @@ function createExecutionWithAudienceOutgoing({
   declaration,
   job,
   registry,
-}: CreateExecution): Execution<any, ResultWithAudience> {
+}: CreateExecutionWithAudienceOutgoing): Execution<any, ResultWithAudience> {
   const execute: Execution<any, ResultWithAudience>['execute'] = ({
     context,
     data,
@@ -125,11 +137,9 @@ function routeMixedEventExecution({
   execution,
   declaration,
   job,
-}: {
-  execution: Execution
-  declaration: WsMixedEventHandler
-  job: WsMixedEventHandlerJob
-}) {
+  registry,
+  globalEnv,
+}: CreateExecution) {
   return declaration.on.source === 'ws'
     ? createExecutionWithAdapter({
         execution,
@@ -137,12 +147,19 @@ function routeMixedEventExecution({
       })
     : createExecutionWithAudienceOutgoing({
         execution,
-        declaration,
+        declaration: declaration as EmitterIncomingWsOut,
         job,
-      } as any)
+        globalEnv,
+        registry,
+      })
 }
 
-export function compileWsHandlers({ serviceEngine, uid }: CompileWsHandlers) {
+export function compileWsHandlers({
+  serviceEngine,
+  uid,
+  globalEnv,
+  registry,
+}: CompileWsHandlers) {
   return <D extends WsHandlers>(
     declaration: D,
   ): Compilation<
@@ -170,11 +187,17 @@ export function compileWsHandlers({ serviceEngine, uid }: CompileWsHandlers) {
       (declaration as any).emits,
     )
 
-    const [{ execution }] = serviceEngine.compile(declaration)
+    const [{ execution }] = serviceEngine.compile(declaration, { globalEnv })
 
     const compilation: Compilation<any, any, any> = {
       job,
-      execution: executions[uri]({ execution, declaration, job } as any),
+      execution: executions[uri]({
+        execution,
+        declaration,
+        job,
+        globalEnv,
+        registry,
+      } as any),
     }
     return [compilation]
   }
@@ -187,7 +210,7 @@ function WsEventHandlerJob(
   return {
     id,
     on,
-    tag: WsURI,
+    tag: WsHandlersURI,
     type: WsEventHandlerURI,
   }
 }
@@ -201,7 +224,7 @@ function WsCommandHandlerJob(
     id,
     on,
     emits,
-    tag: WsURI,
+    tag: WsHandlersURI,
     type: WsCommandHandlerURI,
   }
 }
@@ -215,7 +238,7 @@ function WsMixedEventHandlerJob(
     id,
     on,
     emits,
-    tag: WsURI,
+    tag: WsHandlersURI,
     type: WsMixedEventHandlerURI,
   } as any
 }

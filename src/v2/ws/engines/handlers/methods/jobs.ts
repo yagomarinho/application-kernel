@@ -5,3 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { jobsApplicationService } from '../../../../application.service'
+import { WsRegistry } from '../../../../registry'
+import { WsHandlersURI } from '../../../uri'
+import { WsHandlersJob } from '../jobs'
+
+interface JobsWsHandlers {
+  registry: WsRegistry
+}
+
+export function jobsWsHandlers({ registry }: JobsWsHandlers) {
+  return (): WsHandlersJob[] =>
+    jobsApplicationService({ registry })(WsHandlersURI) as WsHandlersJob[]
+}

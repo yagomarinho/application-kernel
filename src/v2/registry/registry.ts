@@ -6,11 +6,8 @@
  */
 
 import type { Compilation, Execution, Job } from '../contracts'
-import type { State } from './state'
 
 export interface Registry {
-  readonly state: State
-
   compilation: {
     attach: (compilation: Compilation) => void
   }

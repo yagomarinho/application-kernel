@@ -5,8 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ApplicationServiceEngine } from '../../../application.service'
-import { WithRegistry } from '../../../application.service/composition'
+import {
+  ApplicationServiceEngine,
+  WithGlobalEnvGetter,
+} from '../../../application.service'
 import type {
   Compilation,
   Engine,
@@ -31,7 +33,13 @@ import {
 } from '../../uri'
 import type { WsHandlersJob } from './jobs'
 import { resolveWsHandlersDefaults, WsHandlersDefaults } from './defaults'
-import { compileWsHandlers, declareWsHandlers } from './methods'
+import {
+  compileWsHandlers,
+  declareWsHandlers,
+  jobsWsHandlers,
+  runWsHandlers,
+} from './methods'
+import { WithWsRegistry } from '../../composition'
 
 export type WsHandlersConfig =
   | WsCommandHandlerConfig
@@ -69,6 +77,7 @@ export interface WsHandlersEngine extends Engine<
 
   compile: <D extends WsHandlers>(
     declaration: D,
+    options?: WithGlobalEnvGetter,
   ) => Compilation<
     WsHandlersJob,
     WsHandlersIncomingMapper<D>,
@@ -78,16 +87,19 @@ export interface WsHandlersEngine extends Engine<
 
 export type WsHandlersEngineBinder = EngineBinder<WsHandlersEngine, WsURI>
 
-export interface WsHandlersEngineOptions extends WithRegistry {
+export interface WsHandlersEngineOptions
+  extends WithGlobalEnvGetter, WithWsRegistry {
   defaults?: Partial<WsHandlersDefaults>
   serviceEngine: ApplicationServiceEngine
   uid: UID
 }
 
 export function WsHandlersEngine({
+  globalEnv,
   defaults,
   serviceEngine,
   uid,
+  registry,
 }: WsHandlersEngineOptions): WsHandlersEngine {
   return {
     declare: declareWsHandlers({
@@ -95,9 +107,16 @@ export function WsHandlersEngine({
       serviceEngine,
     }),
 
-    compile: compileWsHandlers({ serviceEngine, uid }),
+    compile: (declaration, options) =>
+      compileWsHandlers({
+        globalEnv: options?.globalEnv ?? globalEnv,
+        serviceEngine,
+        uid,
+        registry,
+      })(declaration),
 
-    jobs,
-    run,
+    jobs: jobsWsHandlers({ registry }),
+
+    run: runWsHandlers({ registry }),
   }
 }

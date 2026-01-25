@@ -5,5 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export * from './composition'
 export * from './engine'
 export * from './application.service'

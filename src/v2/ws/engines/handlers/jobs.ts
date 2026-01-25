@@ -16,26 +16,26 @@ import {
 import {
   WsCommandHandlerURI,
   WsEventHandlerURI,
+  WsHandlersURI,
   WsMixedEventHandlerURI,
-  WsURI,
 } from '../../uri'
 
-export interface WsEventHandlerJob extends Job<WsURI>, AcceptIncoming {
+export interface WsEventHandlerJob extends Job<WsHandlersURI>, AcceptIncoming {
   type: WsEventHandlerURI
 }
 
 export interface WsCommandHandlerJob
-  extends Job<WsURI>, AcceptIncoming, EndsEmits {
+  extends Job<WsHandlersURI>, AcceptIncoming, EndsEmits {
   type: WsCommandHandlerURI
 }
 
-export interface WsIncomingEmitterOutJob extends Job<WsURI> {
+export interface WsIncomingEmitterOutJob extends Job<WsHandlersURI> {
   on: AcceptWsIncoming
   emits: EmitsEmitterOutput
   type: WsMixedEventHandlerURI
 }
 
-export interface EmitterIncomingWsOutJob extends Job<WsURI> {
+export interface EmitterIncomingWsOutJob extends Job<WsHandlersURI> {
   on: AcceptEmitterIncoming
   emits: EmitsWsOutput
   type: WsMixedEventHandlerURI

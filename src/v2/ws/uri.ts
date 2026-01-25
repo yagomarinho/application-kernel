@@ -8,6 +8,9 @@
 export const WsURI = 'ws'
 export type WsURI = typeof WsURI
 
+export const WsHandlersURI = 'ws.handlers'
+export type WsHandlersURI = typeof WsHandlersURI
+
 export const WsRouteConnectionURI = 'ws.connection'
 export type WsRouteConnectionURI = typeof WsRouteConnectionURI
 

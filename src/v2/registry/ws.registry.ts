@@ -1,10 +1,15 @@
-import type { Job } from '../contracts'
+/*
+ * Copyright (c) 2025 Yago Marinho
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import type { Audience } from '../ws'
-import type { State } from './state'
+import type { Job } from '../contracts'
+import type { Registry } from './registry'
 
-export interface WsRegistry {
-  readonly state: State
-
+export interface WsRegistry extends Registry {
   audiences: {
     register(job: Job, audience: Audience): void
     resolve(job: Job): Audience[]
