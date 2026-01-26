@@ -5,6 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface EnvHandler<Environment = any, LocalEnvironment = Environment> {
-  (env: Environment): LocalEnvironment
+export function identity<A>(value: A): A {
+  return value
 }

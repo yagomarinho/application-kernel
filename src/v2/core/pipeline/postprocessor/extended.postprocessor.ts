@@ -8,13 +8,9 @@
 import type {
   ExecutionContext,
   Resolvable,
-  Result,
+  Successful,
 } from '@yagomarinho/domain-kernel'
 
-export interface Guardian<Input = any, Output = any, Env = any, Error = any> {
-  (
-    input: Input,
-    env: Env,
-    ctx: ExecutionContext,
-  ): Resolvable<Result<Error, Output>>
+export interface ExtendedPostProcessor {
+  (input: any, env: any, ctx: ExecutionContext): Resolvable<Successful>
 }

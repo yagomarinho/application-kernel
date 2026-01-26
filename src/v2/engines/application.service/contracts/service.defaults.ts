@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface EnvHandler<Environment = any, LocalEnvironment = Environment> {
-  (env: Environment): LocalEnvironment
-}
+import { RequiredKeys } from '../../http'
+import { ApplicationService } from './application.service'
+
+export type ServiceDefaults = Omit<ApplicationService, RequiredKeys>

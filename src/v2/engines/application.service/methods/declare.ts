@@ -5,12 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ApplicationService } from '../../../core/application/application.service'
-import { ApplicationServiceDefaults } from '../../../core/application/application.defaults'
-import { ApplicationServiceConfig } from '../engine'
+import { ServiceConfig, ServiceDefaults } from '../contracts'
+import { ApplicationService } from '../contracts/application.service'
 
 interface DeclareApplicationService {
-  defaults: ApplicationServiceDefaults
+  defaults: ServiceDefaults
 }
 
 export function declareApplicationService({
@@ -23,7 +22,7 @@ export function declareApplicationService({
     handler,
     postprocessors = defaults.postprocessors,
     onError = defaults.onError,
-  }: ApplicationServiceConfig): ApplicationService => ({
+  }: ServiceConfig): ApplicationService => ({
     env,
     middlewares,
     guardian,

@@ -5,29 +5,26 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Resolvable, Tag } from '@yagomarinho/domain-kernel'
-import type { ApplicationPayload } from '../data/application.payload'
-import type { Compilation } from '../meta/compilation'
-import { Job } from '../data/job'
+import type { Resolvable } from '@yagomarinho/domain-kernel'
 
-export type RequiredTaggable<C extends { tag?: string }> = C & {
-  tag: NonNullable<C['tag']>
-}
-
-export interface WithDefaults<D> {
-  defaults: D
-}
+import type { ApplicationPayload, Job } from '../data'
+import type { Compilation } from '../meta'
+import type { WithDefaults } from '../capabilities'
+import type { RequiredTaggable } from '../primitives'
 
 export interface DeclareOptions<D> extends WithDefaults<D> {}
 export interface Engine<
-  Config extends Partial<Tag> = any,
+  Config = any,
   Declaration = any,
   J extends Job = any,
   In = any,
   Out = any,
 > {
   declare: (config: RequiredTaggable<Config>) => Declaration
+
   compile: (declaration: Declaration) => Compilation<J, In, Out>[]
+
   run: (job: J, payload: ApplicationPayload<In>) => Resolvable<Out>
+
   jobs: () => ReadonlyArray<J>
 }

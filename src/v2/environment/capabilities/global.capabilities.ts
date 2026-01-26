@@ -6,9 +6,11 @@
  */
 
 import type { Compilation, Execution, Job } from '../../core'
-import { getOrInitMap } from '../../shared'
+
 import { Environment } from '../environment'
 import { createEnvironmentKey } from '../environment.key'
+
+import { getOrInitMap } from '../../shared'
 
 export interface Registry {
   compilation: {

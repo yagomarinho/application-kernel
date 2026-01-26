@@ -6,13 +6,13 @@
  */
 
 import {
-  ApplicationServiceDefaults,
-  resolveApplicationServiceDefaults,
+  ServiceDefaults,
+  resolveServiceDefaults,
   identity,
 } from '../../../application.service'
 import { IncomingAdapter } from '../../composition'
 
-export interface WsHandlersDefaults extends ApplicationServiceDefaults {
+export interface WsHandlersDefaults extends ServiceDefaults {
   incomingAdapter: IncomingAdapter
 }
 
@@ -20,7 +20,7 @@ export function resolveWsHandlersDefaults({
   incomingAdapter = identity,
   ...rest
 }: Partial<WsHandlersDefaults> = {}): WsHandlersDefaults {
-  const serviceDefaults = resolveApplicationServiceDefaults(rest)
+  const serviceDefaults = resolveServiceDefaults(rest)
 
   return {
     incomingAdapter,

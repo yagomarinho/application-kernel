@@ -7,4 +7,4 @@
 
 export * from '../../core/capabilities'
 export * from './engine'
-export * from '../../core/application/application.service'
+export * from './contracts/application.service'

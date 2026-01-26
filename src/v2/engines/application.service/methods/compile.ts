@@ -5,20 +5,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import type { ApplicationService } from '../contracts'
+
 import {
-  Compilation,
-  Execution,
-  Job,
-  middlewareChain,
+  type Compilation,
+  type Execution,
+  type WithEnvironment,
   postprocessorsChain,
+  middlewareChain,
 } from '../../../core'
-import { applicationPipeline } from '../../../../helpers'
-import { ApplicationService } from '../../../core/application/application.service'
-import { WithEnvironment } from '../../../core/capabilities'
+import { applicationPipeline } from '../../../shared'
 
-interface CompileApplication extends WithEnvironment {}
+export interface CompileApplicationService extends WithEnvironment {}
 
-export function compileApplicationService({ environment }: CompileApplication) {
+export function compileApplicationService({
+  environment,
+}: CompileApplicationService) {
   return ({
     env,
     guardian,
@@ -41,7 +43,7 @@ export function compileApplicationService({ environment }: CompileApplication) {
 
     return [
       {
-        job: Job(),
+        job: { id: '', tag: '' },
         execution,
       },
     ]

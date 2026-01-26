@@ -12,7 +12,7 @@ import type {
   Middleware,
   Postprocessor,
   ErrorHandler,
-} from '../pipeline'
+} from '../../../core'
 
 export interface ApplicationService {
   /**

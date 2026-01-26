@@ -5,6 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface EnvHandler<Environment = any, LocalEnvironment = Environment> {
-  (env: Environment): LocalEnvironment
-}
+import { Tag } from '@yagomarinho/domain-kernel'
+
+export type RequiredTaggable<C> =
+  C extends Tag<any>
+    ? C & {
+        tag: NonNullable<C['tag']>
+      }
+    : C

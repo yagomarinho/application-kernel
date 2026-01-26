@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Environment, EnvironmentKey } from '../../core'
+import type { Environment, EnvironmentKey } from '../../environment'
 
 export function getOrInitMap<K, V>(
   env: Environment,

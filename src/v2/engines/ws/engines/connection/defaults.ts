@@ -6,8 +6,8 @@
  */
 
 import {
-  ApplicationServiceDefaults,
-  resolveApplicationServiceDefaults,
+  ServiceDefaults,
+  resolveServiceDefaults,
   identity,
   doneDefault,
 } from '../../../application.service'
@@ -23,7 +23,7 @@ interface WithOnConnectionDefaults {
 
 export interface WsRouteConnectionDefaults
   extends
-    Omit<ApplicationServiceDefaults, OmittedKeys>,
+    Omit<ServiceDefaults, OmittedKeys>,
     WithOnConnectionDefaults,
     WithWsAdapter {}
 
@@ -37,14 +37,12 @@ export function resolveWsRouteConnectionDefaults({
   onConnection,
   ...rest
 }: WsRouteConnectionDefaultsToResolve = {}): WsRouteConnectionDefaults {
-  const onConnectionServiceDefaults =
-    resolveApplicationServiceDefaults(onConnection)
+  const onConnectionServiceDefaults = resolveServiceDefaults(onConnection)
 
-  const { env, middlewares, onError, postprocessors } =
-    resolveApplicationServiceDefaults({
-      guardian: identity,
-      ...rest,
-    })
+  const { env, middlewares, onError, postprocessors } = resolveServiceDefaults({
+    guardian: identity,
+    ...rest,
+  })
 
   return {
     env,

@@ -6,7 +6,12 @@
  */
 
 import type { ExecutionContext, Resolvable } from '@yagomarinho/domain-kernel'
+import type { ExtendedMiddlewareResult } from './extended.middleware.result'
 
-export interface ErrorHandler<Output = any, Env = any, Error = any> {
-  (error: Error, env: Env, ctx: ExecutionContext): Resolvable<Output>
+export interface ExtendedMiddleware {
+  (
+    input: any,
+    env: any,
+    ctx: ExecutionContext,
+  ): Resolvable<ExtendedMiddlewareResult>
 }

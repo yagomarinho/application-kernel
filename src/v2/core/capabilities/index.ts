@@ -5,4 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export * from './with.defaults'
 export * from './with.environment'

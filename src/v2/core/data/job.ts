@@ -5,10 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Identifiable, Tag } from '@yagomarinho/domain-kernel'
+import type { Identifiable, Tag } from '@yagomarinho/domain-kernel'
 
 export interface Job<T extends string = string> extends Identifiable, Tag<T> {}
-
-export function Job<T extends string = string>(id = '', tag = '' as T): Job<T> {
-  return { id, tag }
-}

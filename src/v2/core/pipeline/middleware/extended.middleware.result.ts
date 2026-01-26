@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface EnvHandler<Environment = any, LocalEnvironment = Environment> {
-  (env: Environment): LocalEnvironment
-}
+import type { ExtendedFailure } from '../../data'
+import type { Next } from './next'
+
+export type ExtendedMiddlewareResult = ExtendedFailure | Next

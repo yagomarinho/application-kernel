@@ -8,9 +8,10 @@
 import type { Audience } from '../engines/ws'
 import type { Job } from '../core'
 import type { Environment } from './environment'
+
 import { createEnvironmentKey } from './environment.key'
+import { globalCapabilities } from './capabilities'
 import { getOrInitArray, getOrInitMap } from '../shared'
-import { globalCapabilities } from './capabilities/global.capabilities'
 
 export interface Assignment {
   job: Job

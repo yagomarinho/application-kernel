@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Execution } from '../pipeline/execution/execution'
-import type { Job } from '../data/job'
+import type { Execution } from '../pipeline'
+import type { Job } from '../data'
 
 export interface Compilation<J extends Job = Job, In = any, Out = any> {
   job: J

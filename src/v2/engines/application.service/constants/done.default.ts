@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface EnvHandler<Environment = any, LocalEnvironment = Environment> {
-  (env: Environment): LocalEnvironment
+import { Successful } from '@yagomarinho/domain-kernel'
+
+export function doneDefault<A>(input: A): Successful<A> {
+  return Successful(input)
 }

@@ -6,10 +6,10 @@
  */
 
 import {
-  ApplicationServiceDefaults,
-  resolveApplicationServiceDefaults,
+  ServiceDefaults,
+  resolveServiceDefaults,
 } from '../../application.service'
 
-export interface MessagingDefaults extends ApplicationServiceDefaults {}
+export interface MessagingDefaults extends ServiceDefaults {}
 
-export const resolveMessagingDefaults = resolveApplicationServiceDefaults
+export const resolveMessagingDefaults = resolveServiceDefaults

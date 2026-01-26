@@ -5,6 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface EnvHandler<Environment = any, LocalEnvironment = Environment> {
-  (env: Environment): LocalEnvironment
-}
+export const ApplicationServiceURI = 'application.service'
+export type ApplicationServiceURI = typeof ApplicationServiceURI

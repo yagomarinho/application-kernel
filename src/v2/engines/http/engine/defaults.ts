@@ -7,8 +7,8 @@
 
 import { isFailure, Result } from '@yagomarinho/domain-kernel'
 import {
-  ApplicationServiceDefaults,
-  resolveApplicationServiceDefaults,
+  ServiceDefaults,
+  resolveServiceDefaults,
   identity,
 } from '../../application.service'
 import { HttpAdapters } from '../composition'
@@ -20,7 +20,7 @@ function responseAdapterDefault(result: Result): HttpResponse {
     : { status: 200, body: result.data, headers: {} }
 }
 
-export interface HttpRouteDefaults extends ApplicationServiceDefaults {
+export interface HttpRouteDefaults extends ServiceDefaults {
   readonly adapters: HttpAdapters
 }
 
@@ -31,7 +31,7 @@ export function resolveHttpRouteDefaults({
   },
   ...rest
 }: Partial<HttpRouteDefaults> = {}): HttpRouteDefaults {
-  const serviceDefaults = resolveApplicationServiceDefaults(rest)
+  const serviceDefaults = resolveServiceDefaults(rest)
   return {
     ...serviceDefaults,
     adapters,

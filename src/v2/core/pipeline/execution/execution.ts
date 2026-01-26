@@ -6,7 +6,7 @@
  */
 
 import type { Resolvable } from '@yagomarinho/domain-kernel'
-import type { ApplicationPayload } from '../../data/application.payload'
+import type { ApplicationPayload } from '../../data'
 
 export interface Execution<In = any, Out = any> {
   execute: (payload: ApplicationPayload<In>) => Resolvable<Out>

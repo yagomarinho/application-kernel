@@ -5,4 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export * from './extended.middleware'
+export * from './extended.middleware.result'
 export * from './middleware'
+export * from './middleware.chain'
+export * from './middleware.result'
+export * from './next'
