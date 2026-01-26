@@ -13,11 +13,11 @@ import { type ExecutionContext, Successful } from '@yagomarinho/domain-kernel'
 export function postprocessorsChain(
   processors: Postprocessor[],
 ): ExtendedPostProcessor {
-  return (input: any, env: any, ctx: ExecutionContext): Successful => {
+  return (input: any, env: any, context: ExecutionContext): Successful => {
     if (!processors.length) return Successful(input)
 
     const resp = processors.reduce(
-      (output, processor) => processor(output, env, ctx),
+      (output, processor) => processor(output, env, context),
       input,
     )
 

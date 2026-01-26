@@ -6,8 +6,6 @@
  */
 
 export * from './application.service'
-export * from './service.config'
-export * from './service.defaults'
-export * from './service.engine'
-export * from './service.engine.binder'
-export * from './service.required.keys'
+export * from './capabilities'
+export * from './config'
+export * from './engine'

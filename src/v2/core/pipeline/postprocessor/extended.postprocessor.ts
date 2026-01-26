@@ -12,5 +12,5 @@ import type {
 } from '@yagomarinho/domain-kernel'
 
 export interface ExtendedPostProcessor {
-  (input: any, env: any, ctx: ExecutionContext): Resolvable<Successful>
+  (input: any, env: any, context: ExecutionContext): Resolvable<Successful>
 }

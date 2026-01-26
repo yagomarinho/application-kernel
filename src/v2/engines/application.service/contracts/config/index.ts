@@ -5,5 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './resolve.service.defaults'
-export * from './resolve.service.pipeline'
+export * from './service.config'
+export * from './service.defaults'
+export * from './service.required.keys'

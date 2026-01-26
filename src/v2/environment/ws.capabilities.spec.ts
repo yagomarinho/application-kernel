@@ -1,9 +1,3 @@
-import { Execution } from '../../core'
-import { Audience } from '../../engines/ws'
-import { createEnvironment } from '../environment'
-import { globalCapabilities } from '../capabilities'
-import { wsCapabilities, audienceKey } from '../ws.capabilities'
-
 describe('wsCapabilities', () => {
   const createJob = (overrides = {}) => ({
     id: 'job-1',
@@ -15,7 +9,7 @@ describe('wsCapabilities', () => {
   const createAudience = (id: string): Audience => ({ id }) as any
 
   it('throws if trying to register audience for unknown job', () => {
-    const env = createEnvironment()
+    const env = createAmbient()
     const ws = wsCapabilities(env)
 
     const job = createJob()
@@ -26,7 +20,7 @@ describe('wsCapabilities', () => {
   })
 
   it('throws if trying to resolve audience for unknown job', () => {
-    const env = createEnvironment()
+    const env = createAmbient()
     const ws = wsCapabilities(env)
 
     expect(() => ws.audiences.resolve(createJob())).toThrow(
@@ -35,7 +29,7 @@ describe('wsCapabilities', () => {
   })
 
   it('throws if trying to resolve audience for unknown job', () => {
-    const env = createEnvironment()
+    const env = createAmbient()
     const ws = wsCapabilities(env)
 
     expect(() => ws.audiences.resolve(createJob())).toThrow(
@@ -44,9 +38,9 @@ describe('wsCapabilities', () => {
   })
 
   it('registers audience for an existing job', () => {
-    const env = createEnvironment()
+    const env = createAmbient()
 
-    const globals = globalCapabilities(env)
+    const globals = createApplicationView(env)
     const ws = wsCapabilities(env)
 
     const job = createJob()
@@ -64,9 +58,9 @@ describe('wsCapabilities', () => {
   })
 
   it('supports multiple audiences for the same job', () => {
-    const env = createEnvironment()
+    const env = createAmbient()
 
-    const globals = globalCapabilities(env)
+    const globals = createApplicationView(env)
     const ws = wsCapabilities(env)
 
     const job = createJob()
@@ -83,9 +77,9 @@ describe('wsCapabilities', () => {
   })
 
   it('isolates audiences by job id', () => {
-    const env = createEnvironment()
+    const env = createAmbient()
 
-    const globals = globalCapabilities(env)
+    const globals = createApplicationView(env)
     const ws = wsCapabilities(env)
 
     const job1 = { id: '1', tag: 'ws' }
@@ -101,9 +95,9 @@ describe('wsCapabilities', () => {
   })
 
   it('returns the same audience array reference on resolve', () => {
-    const env = createEnvironment()
+    const env = createAmbient()
 
-    const globals = globalCapabilities(env)
+    const globals = createApplicationView(env)
     const ws = wsCapabilities(env)
 
     const job = createJob()

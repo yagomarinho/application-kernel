@@ -1,8 +1,12 @@
-import { Execution } from '../../core'
-import { createEnvironment } from '../environment'
-import { compilationKey, globalCapabilities, jobsKey } from '../capabilities'
+import type { Execution } from '../../../pipeline'
+import { createAmbient } from '../../ambient'
+import {
+  compilationKey,
+  createApplicationView,
+  jobsKey,
+} from '../create.application.view'
 
-describe('globalCapabilities', () => {
+describe('create application view testing', () => {
   const createJob = (overrides = {}) => ({
     id: 'job-1',
     tag: 'default',
@@ -12,13 +16,13 @@ describe('globalCapabilities', () => {
   const createExecution = (): Execution => ({ id: 'exec-1' }) as any
 
   it('registers a compilation for a job', () => {
-    const env = createEnvironment()
-    const registry = globalCapabilities(env)
+    const env = createAmbient()
+    const applicationView = createApplicationView(env)
 
     const job = createJob()
     const execution = createExecution()
 
-    registry.compilation.attach({ job, execution })
+    applicationView.compilation.attach({ job, execution })
 
     const map = env.get(compilationKey)
 
@@ -27,14 +31,14 @@ describe('globalCapabilities', () => {
   })
 
   it('returns empty list when no jobs are registered', () => {
-    const env = createEnvironment()
-    const registry = globalCapabilities(env)
+    const env = createAmbient()
+    const applicationView = createApplicationView(env)
 
-    expect(registry.jobs.list()).toEqual([])
+    expect(applicationView.jobs.list()).toEqual([])
   })
 
   it('lists all jobs across all tags', () => {
-    const env = createEnvironment(
+    const env = createAmbient(
       new Map([
         [
           jobsKey.id,
@@ -46,16 +50,16 @@ describe('globalCapabilities', () => {
       ]),
     )
 
-    const registry = globalCapabilities(env)
+    const applicationView = createApplicationView(env)
 
-    expect(registry.jobs.list()).toEqual([
+    expect(applicationView.jobs.list()).toEqual([
       { id: '1', tag: 'a' },
       { id: '2', tag: 'b' },
     ])
   })
 
   it('lists jobs filtered by tag', () => {
-    const env = createEnvironment(
+    const env = createAmbient(
       new Map([
         [
           jobsKey.id,
@@ -67,48 +71,48 @@ describe('globalCapabilities', () => {
       ]),
     )
 
-    const registry = globalCapabilities(env)
+    const applicationView = createApplicationView(env)
 
-    expect(registry.jobs.list('a')).toEqual([{ id: '1', tag: 'a' }])
-    expect(registry.jobs.list('c')).toEqual([])
+    expect(applicationView.jobs.list('a')).toEqual([{ id: '1', tag: 'a' }])
+    expect(applicationView.jobs.list('c')).toEqual([])
   })
 
   it('resolves a job to its execution', () => {
-    const env = createEnvironment()
-    const registry = globalCapabilities(env)
+    const env = createAmbient()
+    const applicationView = createApplicationView(env)
 
     const job = createJob()
     const execution = createExecution()
 
-    registry.compilation.attach({ job, execution })
+    applicationView.compilation.attach({ job, execution })
 
-    expect(registry.jobs.resolve(job)).toBe(execution)
+    expect(applicationView.jobs.resolve(job)).toBe(execution)
   })
 
   it('throws if no compilation exists for job', () => {
-    const env = createEnvironment()
-    const registry = globalCapabilities(env)
+    const env = createAmbient()
+    const applicationView = createApplicationView(env)
 
     const job = createJob()
 
-    expect(() => registry.jobs.resolve(job)).toThrow(
+    expect(() => applicationView.jobs.resolve(job)).toThrow(
       `No compilation found for job ${job.id}`,
     )
   })
 
   it('throws if job tag mismatches compilation tag', () => {
-    const env = createEnvironment()
-    const registry = globalCapabilities(env)
+    const env = createAmbient()
+    const applicationView = createApplicationView(env)
 
     const job = createJob({ tag: 'a' })
     const execution = createExecution()
 
-    registry.compilation.attach({
+    applicationView.compilation.attach({
       job: { ...job, tag: 'b' },
       execution,
     })
 
-    expect(() => registry.jobs.resolve(job)).toThrow(
+    expect(() => applicationView.jobs.resolve(job)).toThrow(
       `Job tag mismatch: expected b, got a`,
     )
   })

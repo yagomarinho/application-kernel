@@ -5,5 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './resolve.service.defaults'
-export * from './resolve.service.pipeline'
+import { Execution } from '../pipeline'
+
+export interface WithExecution<In = any, Out = any> {
+  execution: Execution<In, Out>
+}

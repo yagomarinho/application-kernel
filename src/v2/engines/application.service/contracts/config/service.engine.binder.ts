@@ -6,6 +6,10 @@
  */
 
 import type { EngineBinder } from '../../../core'
-import type { ServiceEngine } from './service.engine'
+import type { ApplicationServiceURI } from '../uri'
+import type { ServiceEngine } from '../engine/service.engine'
 
-export type ServiceEngineBinder = EngineBinder<ServiceEngine, string>
+export type ServiceEngineBinder = EngineBinder<
+  ServiceEngine,
+  ApplicationServiceURI
+>

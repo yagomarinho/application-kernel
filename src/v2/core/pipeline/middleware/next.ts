@@ -6,20 +6,20 @@
  */
 
 import type { ExecutionContext, Tag } from '@yagomarinho/domain-kernel'
+import type { WithContext } from '../../capabilities'
 
 export const NextURI = 'next'
 export type NextURI = typeof NextURI
 
-export interface Next<Data = any> extends Tag<NextURI> {
+export interface Next<Data = any> extends Tag<NextURI>, WithContext {
   data: Data
-  ctx: ExecutionContext
 }
 
-export function Next<Data>(data: Data, ctx: ExecutionContext): Next<Data> {
+export function Next<Data>(data: Data, context: ExecutionContext): Next<Data> {
   return {
     tag: NextURI,
     data,
-    ctx,
+    context,
   }
 }
 

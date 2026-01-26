@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Environment } from '../../environment'
-
-export interface WithEnvironment {
-  environment: Environment
-}
+export * from './compose.views'
+export * from './create.application.view'
+export * from './merge.view'
+export * from './application.view'
+export * from './view'

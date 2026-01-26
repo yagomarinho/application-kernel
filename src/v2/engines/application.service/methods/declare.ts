@@ -5,10 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ServiceConfig, ServiceDefaults } from '../contracts'
-import { ApplicationService } from '../contracts/application.service'
+import type {
+  ApplicationService,
+  ServiceConfig,
+  ServiceDefaults,
+} from '../contracts'
 
-interface DeclareApplicationService {
+export interface DeclareApplicationService {
   defaults: ServiceDefaults
 }
 

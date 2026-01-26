@@ -12,6 +12,6 @@ export interface Middleware<Input = any, Output = any, Env = any, Error = any> {
   (
     input: Input,
     env: Env,
-    ctx: ExecutionContext,
+    context: ExecutionContext,
   ): Resolvable<MiddlewareResult<Error, Output>>
 }

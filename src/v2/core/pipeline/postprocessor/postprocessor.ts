@@ -8,5 +8,5 @@
 import type { ExecutionContext, Resolvable } from '@yagomarinho/domain-kernel'
 
 export interface Postprocessor<Input = any, Output = any, Env = any> {
-  (input: Input, env: Env, ctx: ExecutionContext): Resolvable<Output>
+  (input: Input, env: Env, context: ExecutionContext): Resolvable<Output>
 }

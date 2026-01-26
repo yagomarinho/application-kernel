@@ -5,5 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './resolve.service.defaults'
-export * from './resolve.service.pipeline'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export interface AmbientKey<T> {
+  readonly id: symbol
+}

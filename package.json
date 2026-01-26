@@ -16,6 +16,7 @@
     "test": "jest",
     "test:core": "jest src/v2/core",
     "test:environment": "jest src/v2/environment",
+    "test:service-engine": "jest src/v2/engines/application.service",
     "typecheck": "tsc --noEmit"
   },
   "author": {

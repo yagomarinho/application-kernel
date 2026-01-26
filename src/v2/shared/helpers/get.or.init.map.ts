@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Environment, EnvironmentKey } from '../../environment'
+import type { Ambient, AmbientKey } from '../../core'
 
 export function getOrInitMap<K, V>(
-  env: Environment,
-  key: EnvironmentKey<Map<K, V>>,
+  env: Ambient,
+  key: AmbientKey<Map<K, V>>,
 ): Map<K, V> {
   const map = env.get(key)
   if (map) return map

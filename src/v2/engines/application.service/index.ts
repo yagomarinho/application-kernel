@@ -5,6 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from '../../core/capabilities'
+export * from './constants'
+export * from './contracts'
 export * from './engine'
-export * from './contracts/application.service'
+export * from './methods'
+export * from './resolvers'
+export * from './uri'

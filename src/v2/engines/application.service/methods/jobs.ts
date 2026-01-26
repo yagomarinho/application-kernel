@@ -5,14 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { composeCapabilities, globalCapabilities } from '../../../environment'
-import { WithEnvironment } from '../../../core/capabilities'
+import type { WithEnvironment } from '../../../core'
 
-interface JobsApplicationService extends WithEnvironment {}
+import { globalCapabilities } from '../../../environment'
+
+export interface JobsApplicationService extends WithEnvironment {}
 
 export function jobsApplicationService({
   environment,
 }: JobsApplicationService) {
-  const registry = composeCapabilities(environment, globalCapabilities)
+  const registry = globalCapabilities(environment)
   return (tag?: string) => registry.jobs.list(tag)
 }

@@ -5,5 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './resolve.service.defaults'
-export * from './resolve.service.pipeline'
+import { Job } from '../data'
+
+export interface WithJob<J extends Job = Job> {
+  job: J
+}

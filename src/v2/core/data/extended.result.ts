@@ -5,18 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {
-  ExecutionContext,
-  Failure,
-  Successful,
-} from '@yagomarinho/domain-kernel'
+import type { Failure, Successful } from '@yagomarinho/domain-kernel'
+import type { WithContext } from '../capabilities'
 
-export interface ExtendedSuccessful extends Successful {
-  ctx: ExecutionContext
-}
+export interface ExtendedSuccessful extends Successful, WithContext {}
 
-export interface ExtendedFailure extends Failure {
-  ctx: ExecutionContext
-}
+export interface ExtendedFailure extends Failure, WithContext {}
 
 export type ExtendedResult = ExtendedFailure | ExtendedSuccessful

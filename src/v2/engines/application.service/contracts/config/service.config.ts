@@ -8,7 +8,7 @@
 import type { WithRequiredKeys } from '@yagomarinho/ts-toolkit'
 
 import type { ServiceRequiredKeys } from './service.required.keys'
-import type { ApplicationService } from './application.service'
+import type { ApplicationService } from '../application.service'
 
 export type ServiceConfig = WithRequiredKeys<
   ApplicationService,

@@ -5,9 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ExecutionContext } from '@yagomarinho/domain-kernel'
+import type { WithContext } from '../capabilities'
 
-export interface ApplicationPayload<T = any> {
+export interface ApplicationPayload<T = any> extends WithContext {
   data: T
-  context: ExecutionContext
 }

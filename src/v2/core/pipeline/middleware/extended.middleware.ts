@@ -12,6 +12,6 @@ export interface ExtendedMiddleware {
   (
     input: any,
     env: any,
-    ctx: ExecutionContext,
+    context: ExecutionContext,
   ): Resolvable<ExtendedMiddlewareResult>
 }

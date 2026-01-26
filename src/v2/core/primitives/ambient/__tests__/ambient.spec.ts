@@ -1,11 +1,11 @@
-import { createEnvironment } from '../environment'
-import { createEnvironmentKey } from '../environment.key'
+import { createAmbient } from '../create.ambient'
+import { createAmbientKey } from '../create.ambient.key'
 
 describe('Environment', () => {
   it('sets and gets values by EnvironmentKey', () => {
-    const env = createEnvironment()
+    const env = createAmbient()
 
-    const key = createEnvironmentKey<number>('counter')
+    const key = createAmbientKey<number>('counter')
 
     env.set(key, 1)
 
@@ -13,15 +13,15 @@ describe('Environment', () => {
   })
 
   it('returns undefined for unknown keys', () => {
-    const env = createEnvironment()
-    const key = createEnvironmentKey<string>('missing')
+    const env = createAmbient()
+    const key = createAmbientKey<string>('missing')
 
     expect(env.get(key)).toBeUndefined()
   })
 
   it('has returns true only when key exists', () => {
-    const env = createEnvironment()
-    const key = createEnvironmentKey<boolean>('flag')
+    const env = createAmbient()
+    const key = createAmbientKey<boolean>('flag')
 
     expect(env.has(key)).toBe(false)
 
@@ -31,8 +31,8 @@ describe('Environment', () => {
   })
 
   it('clears a key and removes its value', () => {
-    const env = createEnvironment()
-    const key = createEnvironmentKey<string>('temp')
+    const env = createAmbient()
+    const key = createAmbientKey<string>('temp')
 
     env.set(key, 'value')
 
@@ -43,10 +43,10 @@ describe('Environment', () => {
   })
 
   it('isolates values by symbol identity, not by key name', () => {
-    const env = createEnvironment()
+    const env = createAmbient()
 
-    const keyA = createEnvironmentKey<string>('same-name')
-    const keyB = createEnvironmentKey<string>('same-name')
+    const keyA = createAmbientKey<string>('same-name')
+    const keyB = createAmbientKey<string>('same-name')
 
     env.set(keyA, 'a')
 
@@ -55,17 +55,17 @@ describe('Environment', () => {
   })
 
   it('supports initialization with a predefined map', () => {
-    const key = createEnvironmentKey<number>('init')
+    const key = createAmbientKey<number>('init')
 
-    const env = createEnvironment(new Map([[key.id, 42]]))
+    const env = createAmbient(new Map([[key.id, 42]]))
 
     expect(env.get(key)).toBe(42)
     expect(env.has(key)).toBe(true)
   })
 
   it('overwrites existing value when setting the same key again', () => {
-    const env = createEnvironment()
-    const key = createEnvironmentKey<number>('value')
+    const env = createAmbient()
+    const key = createAmbientKey<number>('value')
 
     env.set(key, 1)
     env.set(key, 2)

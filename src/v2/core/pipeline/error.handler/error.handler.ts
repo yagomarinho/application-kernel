@@ -8,5 +8,5 @@
 import type { ExecutionContext, Resolvable } from '@yagomarinho/domain-kernel'
 
 export interface ErrorHandler<Output = any, Env = any, Error = any> {
-  (error: Error, env: Env, ctx: ExecutionContext): Resolvable<Output>
+  (error: Error, env: Env, context: ExecutionContext): Resolvable<Output>
 }

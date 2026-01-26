@@ -15,6 +15,6 @@ export interface Guardian<Input = any, Output = any, Env = any, Error = any> {
   (
     input: Input,
     env: Env,
-    ctx: ExecutionContext,
+    context: ExecutionContext,
   ): Resolvable<Result<Error, Output>>
 }

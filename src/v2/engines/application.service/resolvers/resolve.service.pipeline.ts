@@ -14,6 +14,7 @@ import {
   type Result,
   type UseCase,
 } from '@yagomarinho/domain-kernel'
+
 import { concatenate } from '@yagomarinho/utils-toolkit/concatenate'
 import { pipe } from '@yagomarinho/smooth/pipe'
 
@@ -27,10 +28,8 @@ import {
   type ExtendedResult,
   type ExtendedSuccessful,
   Next,
-} from '../../core'
-
-import { mapResolvable } from './map.resolvable'
-import { bind } from './bind'
+} from '../../../core'
+import { bind, mapResolvable } from '../../../shared'
 
 type Step = (input: any, env: any, ctx: ExecutionContext) => Resolvable<Result>
 
@@ -44,7 +43,7 @@ function mapToStep(fn: Step, env: any) {
   return (resolvable: Resolvable<MiddlewareResult>) => step(resolvable, fn, env)
 }
 
-export function applicationPipeline(
+export function resolveServicePipeline(
   middleware: ExtendedMiddleware,
   guardian: Guardian,
   handler: UseCase,

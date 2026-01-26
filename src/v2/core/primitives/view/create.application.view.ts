@@ -5,43 +5,34 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Compilation, Execution, Job } from '../../core'
+import type { Job } from '../../data'
+import type { Compilation } from '../../meta'
+import type { ApplicationView } from './application.view'
 
-import { Environment } from '../environment'
-import { createEnvironmentKey } from '../environment.key'
-
-import { getOrInitMap } from '../../shared'
-
-export interface Registry {
-  compilation: {
-    attach: (compilation: Compilation) => void
-  }
-
-  jobs: {
-    list: (tag?: string) => ReadonlyArray<Job>
-    has: (job: Job) => boolean
-    resolve: (job: Job) => Execution
-  }
-}
+import { type Ambient, createAmbientKey } from '../ambient'
+import { getOrInitMap } from '../../../shared'
 
 export const compilationKey =
-  createEnvironmentKey<Map<string, Compilation>>('compilation')
-export const jobsKey = createEnvironmentKey<Map<string, Job[]>>('jobs')
+  createAmbientKey<Map<string, Compilation>>('compilation')
+export const jobsKey = createAmbientKey<Map<string, Job[]>>('jobs')
 
-export function globalCapabilities(env: Environment): Registry {
-  const attach: Registry['compilation']['attach'] = ({ job, execution }) => {
+export function createApplicationView(env: Ambient): ApplicationView {
+  const attach: ApplicationView['compilation']['attach'] = ({
+    job,
+    execution,
+  }) => {
     const compilationMap = getOrInitMap(env, compilationKey)
     compilationMap.set(job.id, { job, execution })
   }
 
-  const list: Registry['jobs']['list'] = tag => {
+  const list: ApplicationView['jobs']['list'] = tag => {
     const jobsMap = env.get(jobsKey)
     if (!jobsMap) return []
 
     return tag ? (jobsMap.get(tag) ?? []) : [...jobsMap.values()].flat()
   }
 
-  const has: Registry['jobs']['has'] = job => {
+  const has: ApplicationView['jobs']['has'] = job => {
     const compilationMap = env.get(compilationKey)
     const compilation = compilationMap?.get(job.id)
 
@@ -50,7 +41,7 @@ export function globalCapabilities(env: Environment): Registry {
     return true
   }
 
-  const resolve: Registry['jobs']['resolve'] = job => {
+  const resolve: ApplicationView['jobs']['resolve'] = job => {
     const compilationMap = env.get(compilationKey)
     const compilation = compilationMap?.get(job.id)
 

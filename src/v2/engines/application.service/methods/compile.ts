@@ -14,7 +14,7 @@ import {
   postprocessorsChain,
   middlewareChain,
 } from '../../../core'
-import { applicationPipeline } from '../../../shared'
+import { resolveServicePipeline } from '../resolvers'
 
 export interface CompileApplicationService extends WithEnvironment {}
 
@@ -29,7 +29,7 @@ export function compileApplicationService({
     onError,
     postprocessors,
   }: ApplicationService): Compilation[] => {
-    const pipeline = applicationPipeline(
+    const pipeline = resolveServicePipeline(
       middlewareChain(middlewares),
       guardian,
       handler,

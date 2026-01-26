@@ -22,12 +22,12 @@ import { mapResolvable, Pointer } from '../../../shared'
 function forwardResult(
   middleware: Middleware,
   env: any,
-  ctx: Pointer<ExecutionContext>,
+  context: Pointer<ExecutionContext>,
 ) {
   return (result: MiddlewareResult): Resolvable<MiddlewareResult> => {
     if (isNext(result)) {
-      ctx.set(result.ctx)
-      return middleware(result.data, env, result.ctx)
+      context.set(result.context)
+      return middleware(result.data, env, result.context)
     }
 
     return result
@@ -35,14 +35,14 @@ function forwardResult(
 }
 
 export function middlewareChain(middlewares: Middleware[]): ExtendedMiddleware {
-  return (input, env, ctx) => {
-    if (!middlewares.length) return Next(input, ctx)
+  return (input, env, context) => {
+    if (!middlewares.length) return Next(input, context)
 
-    const ctxPointer = Pointer(ctx)
+    const contextPointer = Pointer(context)
 
     const resp = middlewares.reduce(
       (result, middleware) => {
-        const apply = forwardResult(middleware, env, ctxPointer)
+        const apply = forwardResult(middleware, env, contextPointer)
 
         if (result instanceof Promise) {
           return result.then(apply)
@@ -50,14 +50,14 @@ export function middlewareChain(middlewares: Middleware[]): ExtendedMiddleware {
 
         return apply(result)
       },
-      Next(input, ctx) as Resolvable<MiddlewareResult>,
+      Next(input, context) as Resolvable<MiddlewareResult>,
     )
 
     return mapResolvable(resp, result => {
       if (isFailure(result))
         return {
           ...result,
-          ctx: ctxPointer.get(),
+          context: contextPointer.get(),
         }
 
       return result

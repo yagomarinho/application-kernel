@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './application.pipeline'
 export * from './bind'
 export * from './bind.resolvable.array'
 export * from './by.pass.failure'
