@@ -10,20 +10,20 @@ import {
   HttpEngineBinder,
   HttpRoute,
   HttpURI,
-} from '../protocols/http'
+} from '../engines/http'
 import {
   MessagingEngine,
   MessagingEngineBinder,
   MessagingHandler,
   MessagingURI,
-} from '../protocols/messaging'
+} from '../engines/messaging'
 import {
   WsRouteConnectionEngineBinder,
   WsRouteConnectionEngine,
   WsURI,
   WsHandlersEngine,
   WsRouteConnection,
-} from '../protocols/ws'
+} from '../engines/ws'
 
 export type AcceptBinders =
   | HttpEngineBinder
