@@ -1,0 +1,20 @@
+/*
+ * Copyright (c) 2025 Yago Marinho
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import { Environment, EnvironmentKey } from '../../core'
+
+export function getOrInitMap<K, V>(
+  env: Environment,
+  key: EnvironmentKey<Map<K, V>>,
+): Map<K, V> {
+  const map = env.get(key)
+  if (map) return map
+
+  const next = new Map<K, V>()
+  env.set(key, next)
+  return next
+}

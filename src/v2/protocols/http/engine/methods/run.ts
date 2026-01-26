@@ -5,4 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './bootstrap'
+import { runApplicationService } from '../../../../core/application.service'
+
+export const runHttpRoute = runApplicationService

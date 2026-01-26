@@ -5,4 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './bootstrap'
+export * from './application.service'
+export * from './contracts'
+export * from './environment'
