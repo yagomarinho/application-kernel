@@ -6,7 +6,7 @@
  */
 
 import { jobsApplicationService } from '../../../application.service'
-import { Registry } from '../../../registry'
+import { Registry } from '../../../environment'
 import { CommandhandlerURI, EventHandlerURI } from '../../uri'
 import { MessagingJob } from '../job'
 

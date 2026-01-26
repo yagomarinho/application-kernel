@@ -6,7 +6,7 @@
  */
 
 import { jobsApplicationService } from '../../../../application.service'
-import { WsRegistry } from '../../../../registry'
+import { WsRegistry } from '../../../../environment'
 import { WsHandlersURI } from '../../../uri'
 import { WsHandlersJob } from '../jobs'
 

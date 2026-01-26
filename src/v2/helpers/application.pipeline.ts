@@ -14,7 +14,7 @@ import {
   type Result,
   type UseCase,
 } from '@yagomarinho/domain-kernel'
-import { concatenate } from '@yagomarinho/utils-toolkit'
+import { concatenate } from '@yagomarinho/utils-toolkit/concatenate'
 import { pipe } from '@yagomarinho/smooth/pipe'
 
 import {

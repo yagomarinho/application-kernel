@@ -7,14 +7,8 @@
 
 import type { Tag } from '@yagomarinho/domain-kernel'
 
-import type { WithGlobalEnvGetter, WithRegistry } from '../composition'
-import type {
-  Compilation,
-  Engine,
-  EngineBinder,
-  ExtendedResult,
-  Job,
-} from '../../contracts'
+import type { WithEnvironment } from '../composition'
+import type { Engine, EngineBinder, ExtendedResult, Job } from '../../contracts'
 import type { ApplicationService } from '../application.service'
 
 import {
@@ -48,11 +42,6 @@ export interface ApplicationServiceEngine extends Engine<
     options?: { defaults: ApplicationServiceDefaults },
   ) => ApplicationService
 
-  compile: (
-    declaration: ApplicationService,
-    options?: { globalEnv: WithGlobalEnvGetter['globalEnv'] },
-  ) => Compilation[]
-
   jobs: (tag?: string) => ReadonlyArray<Job>
 }
 
@@ -61,15 +50,13 @@ export type ApplicationServiceEngineBinder = EngineBinder<
   string
 >
 
-export interface ApplicationServiceEngineOptions
-  extends WithGlobalEnvGetter, WithRegistry {
+export interface ApplicationServiceEngineOptions extends WithEnvironment {
   defaults?: Partial<ApplicationServiceDefaults>
 }
 
 export function ApplicationServiceEngine({
   defaults,
-  registry,
-  globalEnv,
+  environment,
 }: ApplicationServiceEngineOptions): ApplicationServiceEngine {
   return {
     declare: (config, options) =>
@@ -78,17 +65,10 @@ export function ApplicationServiceEngine({
           options?.defaults ?? resolveApplicationServiceDefaults(defaults),
       })(config),
 
-    compile: (declaration, options) =>
-      compileApplicationService({ globalEnv: options?.globalEnv ?? globalEnv })(
-        declaration,
-      ),
+    compile: compileApplicationService({ environment }),
 
-    jobs: jobsApplicationService({
-      registry,
-    }),
+    jobs: jobsApplicationService({ environment }),
 
-    run: runApplicationService({
-      registry,
-    }),
+    run: runApplicationService({ environment }),
   }
 }

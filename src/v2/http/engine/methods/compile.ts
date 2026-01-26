@@ -9,7 +9,7 @@ import type { HttpRoute } from '../../route'
 import type { HttpJob } from '../job'
 import type { UID } from '../../../uid'
 
-import { concatenate } from '@yagomarinho/utils-toolkit'
+import { concatenate } from '@yagomarinho/utils-toolkit/concatenate'
 
 import { ApplicationPayload, type Compilation, Job } from '../../../contracts'
 import { HttpURI } from '../../uri'

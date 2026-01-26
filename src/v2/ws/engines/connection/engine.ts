@@ -8,7 +8,7 @@
 import { pipe } from '@yagomarinho/smooth'
 import { ApplicationServiceEngine } from '../../../application.service'
 import type { Compilation, Engine, EngineBinder } from '../../../contracts'
-import { Registry } from '../../../registry'
+import { Registry } from '../../../environment'
 import { UID } from '../../../uid'
 
 import {

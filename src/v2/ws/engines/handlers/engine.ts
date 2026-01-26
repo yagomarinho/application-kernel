@@ -77,7 +77,6 @@ export interface WsHandlersEngine extends Engine<
 
   compile: <D extends WsHandlers>(
     declaration: D,
-    options?: WithGlobalEnvGetter,
   ) => Compilation<
     WsHandlersJob,
     WsHandlersIncomingMapper<D>,
@@ -107,13 +106,12 @@ export function WsHandlersEngine({
       serviceEngine,
     }),
 
-    compile: (declaration, options) =>
-      compileWsHandlers({
-        globalEnv: options?.globalEnv ?? globalEnv,
-        serviceEngine,
-        uid,
-        registry,
-      })(declaration),
+    compile: compileWsHandlers({
+      globalEnv,
+      serviceEngine,
+      uid,
+      registry,
+    }),
 
     jobs: jobsWsHandlers({ registry }),
 

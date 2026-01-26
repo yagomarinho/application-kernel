@@ -5,10 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface Getter<T = any> {
-  (): T
-}
-
-export interface WithGlobalEnvGetter {
-  globalEnv: Getter
-}
+export * from './capabilities'
+export * from './environment'
+export * from './environment.key'
+export * from './global.capabilities'
+export * from './ws.capabilities'

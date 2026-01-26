@@ -14,13 +14,13 @@ import {
 } from '../../../contracts'
 import { applicationPipeline } from '../../../helpers'
 import { ApplicationService } from '../../application.service'
-import { WithGlobalEnvGetter } from '../../composition'
+import { WithEnvironment } from '../../composition'
 
-interface CompileApplication extends WithGlobalEnvGetter {}
+interface CompileApplication extends WithEnvironment {}
 
-export function compileApplicationService({ globalEnv }: CompileApplication) {
+export function compileApplicationService({ environment }: CompileApplication) {
   return ({
-    env: Env,
+    env,
     guardian,
     handler,
     middlewares,
@@ -36,7 +36,7 @@ export function compileApplicationService({ globalEnv }: CompileApplication) {
     )
 
     const execution: Execution = {
-      execute: ({ data, context }) => pipeline(data, Env(globalEnv()), context),
+      execute: ({ data, context }) => pipeline(data, env(environment), context),
     }
 
     return [

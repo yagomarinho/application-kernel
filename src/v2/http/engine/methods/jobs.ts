@@ -6,7 +6,7 @@
  */
 
 import { jobsApplicationService } from '../../../application.service'
-import { Registry } from '../../../registry'
+import { Registry } from '../../../environment'
 import { HttpURI } from '../../uri'
 import { HttpJob } from '../job'
 

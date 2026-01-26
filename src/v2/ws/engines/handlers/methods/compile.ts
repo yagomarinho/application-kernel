@@ -187,7 +187,7 @@ export function compileWsHandlers({
       (declaration as any).emits,
     )
 
-    const [{ execution }] = serviceEngine.compile(declaration, { globalEnv })
+    const [{ execution }] = serviceEngine.compile(declaration)
 
     const compilation: Compilation<any, any, any> = {
       job,

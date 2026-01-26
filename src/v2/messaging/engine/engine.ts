@@ -27,7 +27,7 @@ import {
   jobsMessagingHandler,
   runMessagingHandler,
 } from './methods'
-import { Registry } from '../../registry'
+import { Registry } from '../../environment'
 
 export type MessagingHandlerConfig = CommandHandlerConfig | EventHandlerConfig
 

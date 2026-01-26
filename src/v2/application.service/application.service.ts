@@ -17,11 +17,11 @@ import type {
 export interface ApplicationService {
   /**
    * Route-scoped environment resolver.
-   * Receives the global application environment and
+   * Receives the global | local defined application environment and
    * derives a narrowed context used by the use case
    * and the execution pipeline of this route.
    */
-  env: (globalEnv: any) => any
+  env: (environment: any) => any
 
   /**
    * Technical pre-processing pipeline.

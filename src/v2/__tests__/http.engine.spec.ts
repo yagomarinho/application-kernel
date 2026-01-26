@@ -3,7 +3,12 @@ import { HttpEngine, HttpMethod, HttpRouteURI } from '../http'
 
 describe('HttpEngine', () => {
   it('declares an http route with required fields', () => {
-    const engine = HttpEngine()
+    const engine = HttpEngine({
+      registry,
+      serviceEngine,
+      uid,
+      defaults,
+    })
     const handler = jest.fn()
 
     const route = engine.declare({

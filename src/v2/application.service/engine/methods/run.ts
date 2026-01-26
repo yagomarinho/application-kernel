@@ -6,11 +6,14 @@
  */
 
 import { ApplicationPayload, Job } from '../../../contracts'
-import { WithRegistry } from '../../composition'
+import { composeCapabilities, globalCapabilities } from '../../../environment'
+import { WithEnvironment } from '../../composition'
 
-export interface RunApplicationService extends WithRegistry {}
+export interface RunApplicationService extends WithEnvironment {}
 
-export function runApplicationService({ registry }: RunApplicationService) {
+export function runApplicationService({ environment }: RunApplicationService) {
+  const registry = composeCapabilities(environment, globalCapabilities)
+
   return (job: Job, payload: ApplicationPayload) => {
     const execution = registry.jobs.resolve(job)
     return execution.execute(payload)
