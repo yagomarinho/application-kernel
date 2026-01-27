@@ -5,6 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { runApplicationService } from '../../../application.service'
+import { runApplicationService } from '../../application.service'
 
 export const runHttpRoute = runApplicationService

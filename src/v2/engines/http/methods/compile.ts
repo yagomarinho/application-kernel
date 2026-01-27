@@ -5,32 +5,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ApplicationPayload, Compilation } from '../../../core'
-import { mapResolvable } from '../../../shared'
-import { HttpJob, HttpRequest, HttpResponse, HttpRoute } from '../contracts'
-import { resolveHttpPipeline } from '../resolvers'
-import { HttpURI } from '../uri'
+import type { WithUID } from '../../../core'
+import type {
+  HttpCompilation,
+  HttpRoute,
+  WithServiceEngine,
+} from '../contracts'
+import { resolveHttpCompilation, resolveHttpPipeline } from '../resolvers'
 
-interface CompileHttpRoute {
-  serviceEngine: ApplicationServiceEngine
-  uid: UID
-}
+export interface CompileHttpRoute extends WithServiceEngine, WithUID {}
 
 export function compileHttpRoute({ serviceEngine, uid }: CompileHttpRoute) {
-  return (
-    declaration: HttpRoute,
-  ): Compilation<HttpJob, HttpRequest, HttpResponse>[] => {
+  return (declaration: HttpRoute): HttpCompilation[] => {
     const httpPipeline = resolveHttpPipeline({ declaration, serviceEngine })
 
-    const compilation: Compilation<HttpJob, HttpRequest, HttpResponse> = {
-      job: {
-        id: uid.generate(),
-        tag: HttpURI,
-        path,
-        method,
-      },
-      execution: { execute },
-    }
+    const compilation = resolveHttpCompilation({
+      uid,
+      declaration,
+      execution: { execute: httpPipeline },
+    })
 
     return [compilation]
   }

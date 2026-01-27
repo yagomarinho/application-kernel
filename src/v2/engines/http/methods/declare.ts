@@ -5,41 +5,36 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ApplicationServiceEngine } from '../../../application.service'
-import type { RequiredTaggable } from '../../../../core'
-import type { HttpRoute, HttpRouteConfig } from '../../route'
-import type { HttpRouteDefaults } from '../defaults'
+import type { RequiredTaggable, WithDefaults } from '../../../core'
+import type {
+  HttpConfig,
+  HttpDefaults,
+  HttpRoute,
+  WithServiceEngine,
+} from '../contracts'
 
-interface DeclareHttpRoute {
-  defaults: HttpRouteDefaults
-  serviceEngine: ApplicationServiceEngine
-}
+import { concatenate } from '@yagomarinho/smooth/concatenate'
+import { resolveHttpAdapters } from '../resolvers'
+
+export interface DeclareHttpRoute
+  extends WithDefaults<HttpDefaults>, WithServiceEngine {}
 
 export function declareHttpRoute({
   defaults,
   serviceEngine,
 }: DeclareHttpRoute) {
-  return ({
-    method,
-    path,
-    adapters,
-    ...rest
-  }: RequiredTaggable<HttpRouteConfig>): HttpRoute => {
-    const serviceDeclaration = serviceEngine.declare(rest, {
+  return (declaration: RequiredTaggable<HttpConfig>): HttpRoute => {
+    const serviceDeclaration = serviceEngine.declare(declaration, {
       defaults,
     })
 
-    return {
-      ...serviceDeclaration,
-      method,
-      path,
-      adapters: {
-        requestAdapter:
-          adapters?.requestAdapter ?? defaults.adapters.requestAdapter,
-        responseAdapter:
-          adapters?.responseAdapter ?? defaults.adapters.responseAdapter,
-      },
-      tag: rest.tag,
-    }
+    const adapters = resolveHttpAdapters({ declaration, defaults })
+
+    return concatenate(serviceDeclaration, {
+      adapters,
+      method: declaration.method,
+      path: declaration.path,
+      tag: declaration.tag,
+    })
   }
 }

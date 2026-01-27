@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './with.http.adapters'
-export * from './with.method'
-export * from './with.path'
-export * from './with.service.engine'
+import { ServiceEngine } from '../../../application.service'
+
+export interface WithServiceEngine {
+  serviceEngine: ServiceEngine
+}

@@ -8,7 +8,7 @@
 import type { Tag } from '@yagomarinho/domain-kernel'
 
 export type RequiredTaggable<C> =
-  C extends Tag<any>
+  C extends Partial<Tag<string>>
     ? C & {
         tag: NonNullable<C['tag']>
       }

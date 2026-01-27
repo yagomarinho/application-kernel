@@ -8,5 +8,5 @@
 import type { Job } from '../data'
 import type { WithExecution, WithJob } from '../capabilities'
 
-export interface Compilation<J extends Job = Job, In = any, Out = any>
+export interface Compilation<J extends Job = any, In = any, Out = any>
   extends WithJob<J>, WithExecution<In, Out> {}

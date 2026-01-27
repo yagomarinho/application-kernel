@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export * from './resolve.http.adapters'
 export * from './resolve.http.compilation'
 export * from './resolve.http.pipeline'
 export * from './resolve.http.route.defaults'

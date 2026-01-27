@@ -5,16 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { jobsApplicationService } from '../../../application.service'
-import { Registry } from '../../../../environment'
-import { HttpURI } from '../../uri'
-import { HttpJob } from '../job'
+import type { WithApplicationView } from '../../../core'
+import type { HttpJob } from '../contracts'
 
-interface JobsHttpRoute {
-  registry: Registry
-}
+import { jobsApplicationService } from '../../application.service'
+import { HttpURI } from '../uri'
 
-export function jobsHttpRoute({ registry }: JobsHttpRoute) {
-  return (): HttpJob[] =>
-    jobsApplicationService({ registry })(HttpURI) as HttpJob[]
+interface JobsHttpRoute extends WithApplicationView {}
+
+export function jobsHttpRoute({ view }: JobsHttpRoute) {
+  return (): HttpJob[] => jobsApplicationService({ view })(HttpURI) as HttpJob[]
 }

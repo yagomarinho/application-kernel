@@ -7,10 +7,10 @@
 
 import type { WithRequiredKeys } from '@yagomarinho/ts-toolkit'
 import type { HttpRoute } from '../http.route'
-import type { RequiredKeys } from './required.keys'
+import type { HttpRequiredKeys } from './required.keys'
 import type { WithPartialAdapters } from '../capabilities'
 
 interface HttpPreConfig
   extends Omit<HttpRoute, 'adapters'>, WithPartialAdapters {}
 
-export type HttpConfig = WithRequiredKeys<HttpPreConfig, RequiredKeys>
+export type HttpConfig = WithRequiredKeys<HttpPreConfig, HttpRequiredKeys>
