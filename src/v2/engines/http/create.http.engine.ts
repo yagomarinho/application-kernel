@@ -5,22 +5,37 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-interface Options {
-  defaults?: Partial<HttpRouteDefaults>
-  serviceEngine: ApplicationServiceEngine
-  uid: UID
-  registry: Registry
-}
+import type {
+  WithApplicationView,
+  WithPartialDefaults,
+  WithUID,
+} from '../../core'
+import type { HttpDefaults, HttpEngine, WithServiceEngine } from './contracts'
+
+import {
+  compileHttpRoute,
+  declareHttpRoute,
+  jobsHttpRoute,
+  runHttpRoute,
+} from './methods'
+import { resolveHttpDefaults } from './resolvers'
+
+interface Options
+  extends
+    WithPartialDefaults<HttpDefaults>,
+    WithServiceEngine,
+    WithApplicationView,
+    WithUID {}
 
 export function createHttpEngine({
   defaults,
   serviceEngine,
   uid,
-  registry,
+  view,
 }: Options): HttpEngine {
   return {
     declare: declareHttpRoute({
-      defaults: resolveHttpRouteDefaults(defaults),
+      defaults: resolveHttpDefaults(defaults),
       serviceEngine,
     }),
 
@@ -29,8 +44,8 @@ export function createHttpEngine({
       uid,
     }),
 
-    jobs: jobsHttpRoute({ registry }),
+    jobs: jobsHttpRoute({ view }),
 
-    run: runHttpRoute({ registry }),
+    run: runHttpRoute({ view }),
   }
 }

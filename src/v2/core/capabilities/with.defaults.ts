@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export type WithPartialDefaults<D> = Partial<WithDefaults<Partial<D>>>
+
 export interface WithDefaults<D> {
   defaults: D
 }

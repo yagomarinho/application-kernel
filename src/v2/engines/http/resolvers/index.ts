@@ -7,5 +7,5 @@
 
 export * from './resolve.http.adapters'
 export * from './resolve.http.compilation'
+export * from './resolve.http.defaults'
 export * from './resolve.http.pipeline'
-export * from './resolve.http.route.defaults'

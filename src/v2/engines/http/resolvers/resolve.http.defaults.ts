@@ -10,13 +10,15 @@ import type { HttpDefaults } from '../contracts'
 import { identity, resolveServiceDefaults } from '../../application.service'
 import { responseAdapter } from '../constants'
 
-export function resolveHttpRouteDefaults({
+export type ResolveHttpDefaults = Partial<HttpDefaults>
+
+export function resolveHttpDefaults({
   adapters = {
     requestAdapter: identity,
     responseAdapter,
   },
   ...rest
-}: Partial<HttpDefaults> = {}): HttpDefaults {
+}: ResolveHttpDefaults = {}): HttpDefaults {
   const serviceDefaults = resolveServiceDefaults(rest)
   return {
     ...serviceDefaults,

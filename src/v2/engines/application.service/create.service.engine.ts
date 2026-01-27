@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { WithDefaults, WithRuntimeView } from '../../core'
+import type { WithPartialDefaults, WithRuntimeView } from '../../core'
 import type { ServiceDefaults, ServiceEngine } from './contracts'
 
 import {
@@ -16,9 +16,8 @@ import {
 } from './methods'
 import { resolveServiceDefaults } from './resolvers'
 
-type WithPartialDefaults = WithDefaults<Partial<ServiceDefaults>>
-
-interface Options extends WithRuntimeView, WithPartialDefaults {}
+interface Options
+  extends WithRuntimeView, WithPartialDefaults<ServiceDefaults> {}
 
 export function createServiceEngine({
   defaults,
