@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export type HttpMethod = 'get' | 'post' | 'put' | 'patch' | 'delete'
-
 type HttpMethodMap = {
   GET: 'get'
   POST: 'post'

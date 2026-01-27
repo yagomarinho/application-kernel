@@ -8,6 +8,7 @@
 export * from './bind'
 export * from './bind.resolvable.array'
 export * from './by.pass.failure'
+export * from './failure.boundary'
 export * from './get.or.init.array'
 export * from './get.or.init.map'
 export * from './map.resolvable'

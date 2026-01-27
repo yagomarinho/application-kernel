@@ -29,7 +29,7 @@ import {
   type ExtendedSuccessful,
   Next,
 } from '../../../core'
-import { bind, mapResolvable } from '../../../shared'
+import { bind, failureBoundary, mapResolvable } from '../../../shared'
 
 type Step = (
   input: any,
@@ -60,16 +60,17 @@ export function resolveServicePipeline(
     const afterMiddleware = middleware(input, env, context)
 
     const afterCalculation = pipe(
-      mapToStep(guardian, env),
-      mapToStep(handler, env),
-      mapToStep(postprocessor, env),
+      mapToStep(failureBoundary(guardian), env),
+      mapToStep(failureBoundary(handler), env),
+      mapToStep(failureBoundary(postprocessor), env),
     )(afterMiddleware)
 
     return mapResolvable(afterCalculation, output => {
       if (isFailure(output)) {
+        const safeOnError = failureBoundary(onError)
         if ('context' in output)
           return mapResolvable(
-            onError(output.error, env, output.context as any),
+            safeOnError(output.error, env, output.context as any),
             error =>
               concatenate(Failure(error), {
                 context: output.context,
@@ -78,7 +79,7 @@ export function resolveServicePipeline(
 
         return bind(afterMiddleware, next =>
           mapResolvable(
-            onError(output.error, env, next.context),
+            safeOnError(output.error, env, next.context),
             error =>
               concatenate(Failure(error), {
                 context: next.context,

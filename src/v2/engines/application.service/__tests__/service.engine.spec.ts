@@ -5,7 +5,7 @@ import {
   createAmbient,
   createRuntimeView,
 } from '../../../core'
-import { createServiceEngine } from '../service.engine'
+import { createServiceEngine } from '../create.service.engine'
 
 describe('service engine testing', () => {
   const context = {} as ExecutionContext
@@ -131,16 +131,17 @@ describe('service engine testing', () => {
         env: env => env,
         middlewares: [],
         guardian: () => {
-          throw new Error('should not run')
+          throw new Error('boom')
         },
         postprocessors: [],
-        onError: error => `mapped:${error}`,
+        onError: error =>
+          error instanceof Error ? `mapped:${error.message}` : error,
       },
     })
 
     const service = engine.declare({
       handler: () => {
-        throw 'boom'
+        throw 'shold not run'
       },
     })
 

@@ -5,8 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export * from './adapters'
 export * from './capabilities'
+export * from './config'
+export * from './data'
 export * from './engine'
+export * from './http.route'
+export * from './meta'
 export * from './ports'
-export * from './route'
-export * from './uri'

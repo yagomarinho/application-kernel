@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { RequiredKeys } from '../../../http'
+import type { ServiceRequiredKeys } from './service.required.keys'
 import type { ApplicationService } from '../application.service'
 
-export type ServiceDefaults = Omit<ApplicationService, RequiredKeys>
+export type ServiceDefaults = Omit<ApplicationService, ServiceRequiredKeys>

@@ -16,8 +16,9 @@ import {
 } from './methods'
 import { resolveServiceDefaults } from './resolvers'
 
-interface Options
-  extends WithRuntimeView, WithDefaults<Partial<ServiceDefaults>> {}
+type WithPartialDefaults = WithDefaults<Partial<ServiceDefaults>>
+
+interface Options extends WithRuntimeView, WithPartialDefaults {}
 
 export function createServiceEngine({
   defaults,

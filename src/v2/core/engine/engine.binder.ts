@@ -9,6 +9,9 @@ import type { Resource } from '@yagomarinho/domain-kernel'
 
 import type { Engine } from './engine'
 
-export interface EngineBinder<E extends Engine, T extends string> {
-  (engine: E): ReturnType<E['declare']> & Resource<T>
+export interface EngineBinder<
+  E extends Engine,
+  T extends string,
+> extends Resource<T> {
+  (engine: E): ReturnType<E['declare']>
 }

@@ -7,24 +7,34 @@
 
 import type { Resolvable } from '@yagomarinho/domain-kernel'
 
-import type { ApplicationPayload, Job } from '../data'
+import type { ApplicationPayload } from '../data'
 import type { Compilation } from '../meta'
 import type { WithDefaults } from '../capabilities'
 import type { RequiredTaggable } from '../primitives'
+
+type InOut<In = any, Out = any> = {
+  in: In
+  out: Out
+}
+
+type JobFromCompilation<C extends Compilation> = C['job']
+type InOutFromCompilation<C extends Compilation> =
+  C extends Compilation<any, infer In, infer Out> ? InOut<In, Out> : InOut
 
 export interface DeclareOptions<D> extends WithDefaults<D> {}
 export interface Engine<
   Config = any,
   Declaration = any,
-  J extends Job = any,
-  In = any,
-  Out = any,
+  Comp extends Compilation = Compilation,
 > {
   declare: (config: RequiredTaggable<Config>) => Declaration
 
-  compile: (declaration: Declaration) => Compilation<J, In, Out>[]
+  compile: (declaration: Declaration) => Comp[]
 
-  run: (job: J, payload: ApplicationPayload<In>) => Resolvable<Out>
+  run: (
+    job: JobFromCompilation<Comp>,
+    payload: ApplicationPayload<InOutFromCompilation<Comp>['in']>,
+  ) => Resolvable<InOutFromCompilation<Comp>['out']>
 
-  jobs: () => ReadonlyArray<J>
+  jobs: () => JobFromCompilation<Comp>[]
 }

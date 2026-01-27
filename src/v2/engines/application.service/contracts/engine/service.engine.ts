@@ -5,21 +5,21 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Engine, ExtendedResult, Job } from '../../../../core'
+import type { Compilation, Engine, ExtendedResult, Job } from '../../../../core'
 import type { ApplicationService } from '../application.service'
 import type { ServiceConfig, ServiceDefaults } from '../config'
+
+export type ServiceCompilation = Compilation<Job, any, ExtendedResult>
 
 export interface ServiceEngine extends Engine<
   ServiceConfig,
   ApplicationService,
-  Job,
-  any,
-  ExtendedResult
+  ServiceCompilation
 > {
   declare: (
     config: ServiceConfig,
     options?: { defaults: ServiceDefaults },
   ) => ApplicationService
 
-  jobs: (tag?: string) => ReadonlyArray<Job>
+  jobs: (tag?: string) => Job[]
 }

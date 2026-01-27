@@ -5,8 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export const HttpURI = 'http'
-export type HttpURI = typeof HttpURI
-
-export const HttpRouteURI = 'http.route'
-export type HttpRouteURI = typeof HttpRouteURI
+export * from './http.method'
+export * from './response.adapter'

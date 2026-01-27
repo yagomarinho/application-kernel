@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export const HttpURI = 'http'
-export type HttpURI = typeof HttpURI
+import type { HttpRequest } from '../ports'
 
-export const HttpRouteURI = 'http.route'
-export type HttpRouteURI = typeof HttpRouteURI
+export interface RequestAdapter {
+  (request: HttpRequest): any
+}

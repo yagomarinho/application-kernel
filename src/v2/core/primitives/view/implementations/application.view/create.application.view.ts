@@ -11,10 +11,11 @@ import type { ApplicationView } from './application.view'
 import type { View } from '../../view'
 
 import { createAmbientKey } from '../../../ambient'
-import { getOrInitMap } from '../../../../../shared'
+import { getOrInitArray, getOrInitMap } from '../../../../../shared'
 
 export const compilationKey =
   createAmbientKey<Map<string, Compilation>>('compilation')
+
 export const jobsKey = createAmbientKey<Map<string, Job[]>>('jobs')
 
 export const createApplicationView: View<ApplicationView> = ambient => {
@@ -24,11 +25,14 @@ export const createApplicationView: View<ApplicationView> = ambient => {
   }) => {
     const compilationMap = getOrInitMap(ambient, compilationKey)
     compilationMap.set(job.id, { job, execution })
+
+    const jobsMap = getOrInitMap(ambient, jobsKey)
+    const arr = getOrInitArray(jobsMap, job.tag)
+    arr.push(job)
   }
 
   const list: ApplicationView['jobs']['list'] = tag => {
-    const jobsMap = ambient.get(jobsKey)
-    if (!jobsMap) return []
+    const jobsMap = getOrInitMap(ambient, jobsKey)
 
     return tag ? (jobsMap.get(tag) ?? []) : [...jobsMap.values()].flat()
   }

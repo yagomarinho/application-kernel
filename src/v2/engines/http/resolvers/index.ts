@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export const HttpURI = 'http'
-export type HttpURI = typeof HttpURI
-
-export const HttpRouteURI = 'http.route'
-export type HttpRouteURI = typeof HttpRouteURI
+export * from './resolve.http.compilation'
+export * from './resolve.http.pipeline'
+export * from './resolve.http.route.defaults'

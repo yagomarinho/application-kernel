@@ -16,7 +16,7 @@ import {
 } from '@yagomarinho/domain-kernel'
 
 import { isNext, Next } from './next'
-import { mapResolvable, Pointer } from '../../../shared'
+import { failureBoundary, mapResolvable, Pointer } from '../../../shared'
 
 // Local helper
 function forwardResult(
@@ -42,7 +42,9 @@ export function middlewareChain(middlewares: Middleware[]): ExtendedMiddleware {
 
     const resp = middlewares.reduce(
       (result, middleware) => {
-        const apply = forwardResult(middleware, env, contextPointer)
+        const apply = failureBoundary(
+          forwardResult(middleware, env, contextPointer),
+        )
 
         if (result instanceof Promise) {
           return result.then(apply)

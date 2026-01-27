@@ -15,7 +15,7 @@ export interface ApplicationView {
   }
 
   jobs: {
-    list: (tag?: string) => ReadonlyArray<Job>
+    list: (tag?: string) => Job[]
     has: (job: Job) => boolean
     resolve: (job: Job) => Execution
   }

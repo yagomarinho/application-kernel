@@ -5,13 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ExtendedResult } from '../../../core'
-import type { HttpRequest, HttpResponse } from '../ports'
-
-export interface HttpAdapters {
-  requestAdapter: (request: HttpRequest) => any
-  responseAdapter: (data: ExtendedResult) => HttpResponse
-}
+import type { HttpAdapters } from '../adapters'
 
 export interface WithHttpAdapters {
   /**
@@ -25,4 +19,8 @@ export interface WithHttpAdapters {
    * when not provided.
    */
   adapters: HttpAdapters
+}
+
+export interface WithPartialAdapters {
+  adapters: Partial<HttpAdapters>
 }

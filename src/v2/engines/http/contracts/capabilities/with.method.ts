@@ -5,9 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface HttpResponse {
-  status: number
-  headers: Record<string, string>
-  body: unknown
-  bodyStream?: WritableStream
+import type { HttpMethod } from '../ports'
+
+export interface WithHttpMethod {
+  method: HttpMethod
 }

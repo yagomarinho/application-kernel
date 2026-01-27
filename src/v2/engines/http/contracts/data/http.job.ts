@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Job } from '../../../core'
-import type { WithHttpMethod, WithPath } from '../composition'
-import type { HttpURI } from '../uri'
+import type { Job } from '../../../../core'
+import type { HttpURI } from '../../uri'
+import type { WithHttpMethod, WithPath } from '../capabilities'
 
 export interface HttpJob extends Job<HttpURI>, WithHttpMethod, WithPath {}
