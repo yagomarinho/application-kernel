@@ -7,7 +7,7 @@
 
 export * from './constants'
 export * from './contracts'
-export * from './engine'
 export * from './methods'
 export * from './resolvers'
+export * from './service.engine'
 export * from './uri'

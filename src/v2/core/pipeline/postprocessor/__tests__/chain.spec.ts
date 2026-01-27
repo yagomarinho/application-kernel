@@ -4,14 +4,14 @@ import { type ExecutionContext, Successful } from '@yagomarinho/domain-kernel'
 
 import { postprocessorsChain } from '../postprocessor.chain'
 
-const ctx = {} as ExecutionContext
+const context = {} as ExecutionContext
 
 describe('postprocessors chain unit testing', () => {
   it('returns input wrapped in Successful when chain is empty', () => {
     const chain = postprocessorsChain([])
 
     const input = { foo: 'bar' }
-    const result = chain(input, {}, ctx)
+    const result = chain(input, {}, context)
 
     expect(result).toEqual(expect.objectContaining(Successful(input)))
   })
@@ -25,7 +25,7 @@ describe('postprocessors chain unit testing', () => {
     const chain = postprocessorsChain([processor])
 
     const input = { value: 1 }
-    const result = chain(input, {}, ctx)
+    const result = chain(input, {}, context)
 
     expect(result).toEqual(
       expect.objectContaining(
@@ -44,28 +44,28 @@ describe('postprocessors chain unit testing', () => {
 
     const chain = postprocessorsChain([p1, p2, p3])
 
-    const result = chain(1, {}, ctx)
+    const result = chain(1, {}, context)
 
     // (1 + 1) * 2 = 4 → "result:4"
     expect(result).toEqual(expect.objectContaining(Successful('result:4')))
   })
 
-  it('passes env and ctx to all postprocessors', () => {
+  it('passes env and context to all postprocessors', () => {
     const env = { region: 'test' }
-    const calls: Array<{ env: any; ctx: ExecutionContext }> = []
+    const calls: Array<{ env: any; context: ExecutionContext }> = []
 
-    const processor: Postprocessor = (input, env, ctx) => {
-      calls.push({ env, ctx })
+    const processor: Postprocessor = (input, env, context) => {
+      calls.push({ env, context })
       return input
     }
 
     const chain = postprocessorsChain([processor, processor])
 
-    chain('input', env, ctx)
+    chain('input', env, context)
 
     expect(calls).toHaveLength(2)
-    expect(calls[0]).toEqual({ env, ctx })
-    expect(calls[1]).toEqual({ env, ctx })
+    expect(calls[0]).toEqual({ env, context })
+    expect(calls[1]).toEqual({ env, context })
   })
 
   it('always returns Successful, even if processors already return Resolvable', () => {
@@ -73,7 +73,7 @@ describe('postprocessors chain unit testing', () => {
 
     const chain = postprocessorsChain([processor])
 
-    const result = chain('value', {}, ctx)
+    const result = chain('value', {}, context)
 
     // contrato do ExtendedPostProcessor
     expect(result).toEqual(

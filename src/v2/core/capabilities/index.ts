@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export * from './views'
 export * from './with.ambient'
-export * from './with.application.view'
 export * from './with.context'
 export * from './with.defaults'
 export * from './with.execution'

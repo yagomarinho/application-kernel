@@ -5,17 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ApplicationPayload, Job } from '../../../core'
-import { composeCapabilities, globalCapabilities } from '../../../environment'
-import { WithEnvironment } from '../../../core/capabilities'
+import type { ApplicationPayload, Job } from '../../../core'
+import type { WithApplicationView } from '../../../core/capabilities'
 
-export interface RunApplicationService extends WithEnvironment {}
+export interface RunApplicationService extends WithApplicationView {}
 
-export function runApplicationService({ environment }: RunApplicationService) {
-  const registry = composeCapabilities(environment, globalCapabilities)
-
+export function runApplicationService({ view }: RunApplicationService) {
   return (job: Job, payload: ApplicationPayload) => {
-    const execution = registry.jobs.resolve(job)
+    const execution = view.jobs.resolve(job)
     return execution.execute(payload)
   }
 }

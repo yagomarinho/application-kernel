@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { EngineBinder } from '../../../core'
-import type { ApplicationServiceURI } from '../uri'
+import type { EngineBinder } from '../../../../core'
+import type { ApplicationServiceURI } from '../../uri'
 import type { ServiceEngine } from './service.engine'
 
 export type ServiceEngineBinder = EngineBinder<

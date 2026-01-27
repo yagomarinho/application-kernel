@@ -4,7 +4,7 @@ import {
   compilationKey,
   createApplicationView,
   jobsKey,
-} from '../create.application.view'
+} from '../implementations/application.view'
 
 describe('create application view testing', () => {
   const createJob = (overrides = {}) => ({

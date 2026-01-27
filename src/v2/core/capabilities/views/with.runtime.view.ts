@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ApplicationView } from '../primitives'
+import type { RuntimeView } from '../../primitives'
 
-export interface WithRegistry {
-  applicationView: ApplicationView
+export interface WithRuntimeView {
+  view: RuntimeView
 }

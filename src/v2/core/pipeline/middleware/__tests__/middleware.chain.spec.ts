@@ -4,44 +4,44 @@ import type { Middleware } from '../middleware'
 import { middlewareChain } from '../middleware.chain'
 import { Next, isNext } from '../next'
 
-const ctx = {} as ExecutionContext
+const context = {} as ExecutionContext
 
 describe('middlewareChain', () => {
-  it('returns Next(input, ctx) when chain is empty', () => {
+  it('returns Next(input, context) when chain is empty', () => {
     const chain = middlewareChain([])
 
-    const result = chain('input', {}, ctx)
+    const result = chain('input', {}, context)
 
-    expect(result).toEqual(Next('input', ctx))
+    expect(result).toEqual(Next('input', context))
   })
 
   it('executes a single middleware and forwards Next', () => {
-    const middleware: Middleware = (input, _env, ctx) =>
-      Next(`${input}-processed`, ctx)
+    const middleware: Middleware = (input, _env, context) =>
+      Next(`${input}-processed`, context)
 
     const chain = middlewareChain([middleware])
 
-    const result = chain('data', {}, ctx)
+    const result = chain('data', {}, context)
 
-    expect(result).toEqual(Next('data-processed', ctx))
+    expect(result).toEqual(Next('data-processed', context))
   })
 
   it('executes middlewares in order, passing data forward', () => {
-    const m1: Middleware<number, number> = (input, _env, ctx) =>
-      Next(input + 1, ctx)
+    const m1: Middleware<number, number> = (input, _env, context) =>
+      Next(input + 1, context)
 
-    const m2: Middleware<number, number> = (input, _env, ctx) =>
-      Next(input * 2, ctx)
+    const m2: Middleware<number, number> = (input, _env, context) =>
+      Next(input * 2, context)
 
-    const m3: Middleware<number, string> = (input, _env, ctx) =>
-      Next(`value:${input}`, ctx)
+    const m3: Middleware<number, string> = (input, _env, context) =>
+      Next(`value:${input}`, context)
 
     const chain = middlewareChain([m1, m2, m3])
 
-    const result = chain(1, {}, ctx)
+    const result = chain(1, {}, context)
 
     // (1 + 1) * 2 = 4
-    expect(result).toEqual(Next('value:4', ctx))
+    expect(result).toEqual(Next('value:4', context))
   })
 
   it('stops execution when a middleware returns Failure', () => {
@@ -50,7 +50,8 @@ describe('middlewareChain', () => {
       error: 'boom',
     } as any
 
-    const m1: Middleware = (input, _env, ctx) => Next(`${input}-ok`, ctx)
+    const m1: Middleware = (input, _env, context) =>
+      Next(`${input}-ok`, context)
 
     const m2: Middleware = () => failure
 
@@ -60,52 +61,52 @@ describe('middlewareChain', () => {
 
     const chain = middlewareChain([m1, m2, m3])
 
-    const result = chain('data', {}, ctx)
+    const result = chain('data', {}, context)
 
     expect(result).toEqual({
       ...failure,
-      ctx,
+      context,
     })
   })
 
-  it('propagates updated ctx from Next between middlewares', () => {
-    const ctx1 = { step: 1 } as any as ExecutionContext
-    const ctx2 = { step: 2 } as any as ExecutionContext
+  it('propagates updated context from Next between middlewares', () => {
+    const context1 = { step: 1 } as any as ExecutionContext
+    const context2 = { step: 2 } as any as ExecutionContext
 
-    const m1: Middleware = input => Next(input, ctx1)
-    const m2: Middleware = input => Next(input, ctx2)
+    const m1: Middleware = input => Next(input, context1)
+    const m2: Middleware = input => Next(input, context2)
 
     const chain = middlewareChain([m1, m2])
 
-    const result: any = chain('data', {}, ctx)
+    const result: any = chain('data', {}, context)
 
     expect(isNext(result)).toBe(true)
-    expect(result.ctx).toBe(ctx2)
+    expect(result.context).toBe(context2)
   })
 
   it('supports async middlewares mixed with sync ones', async () => {
-    const m1: Middleware<number, number> = (input, _env, ctx) =>
-      Next(input + 1, ctx)
+    const m1: Middleware<number, number> = (input, _env, context) =>
+      Next(input + 1, context)
 
-    const m2: Middleware<number, number> = async (input, _env, ctx) =>
-      Next(input * 3, ctx)
+    const m2: Middleware<number, number> = async (input, _env, context) =>
+      Next(input * 3, context)
 
-    const m3: Middleware<number, number> = (input, _env, ctx) =>
-      Next(input - 2, ctx)
+    const m3: Middleware<number, number> = (input, _env, context) =>
+      Next(input - 2, context)
 
     const chain = middlewareChain([m1, m2, m3])
 
-    const result = await chain(2, {}, ctx)
+    const result = await chain(2, {}, context)
 
     // ((2 + 1) * 3) - 2 = 7
-    expect(result).toEqual(Next(7, ctx))
+    expect(result).toEqual(Next(7, context))
   })
 
-  it('attaches latest ctx to Failure returned after async chain', async () => {
-    const ctx1 = { step: 1 } as any as ExecutionContext
-    const ctx3 = { step: 3 } as any as ExecutionContext
+  it('attaches latest context to Failure returned after async chain', async () => {
+    const context1 = { step: 1 } as any as ExecutionContext
+    const context3 = { step: 3 } as any as ExecutionContext
 
-    const m1: Middleware = _input => Next('ok', ctx1)
+    const m1: Middleware = _input => Next('ok', context1)
 
     const m2: Middleware = async () =>
       ({
@@ -113,16 +114,16 @@ describe('middlewareChain', () => {
         error: 'async-error',
       }) as any
 
-    const m3: Middleware = () => Next('ok', ctx3)
+    const m3: Middleware = () => Next('ok', context3)
 
     const chain = middlewareChain([m1, m2, m3])
 
-    const result = await chain('input', {}, ctx)
+    const result = await chain('input', {}, context)
 
     expect(result).toEqual({
       tag: 'failure',
       error: 'async-error',
-      ctx: ctx1,
+      context: context1,
     })
   })
 })

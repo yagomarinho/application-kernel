@@ -5,5 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './with.environment'
-export * from './with.registry'
+import type { EnvHandler } from '../../../../pipeline'
+
+export interface EnvView {
+  env: {
+    register: (env: any) => void
+    resolve: (access: EnvHandler) => any
+  }
+}

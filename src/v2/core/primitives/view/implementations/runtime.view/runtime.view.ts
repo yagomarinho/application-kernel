@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './compose.views'
-export * from './implementations'
-export * from './merge.view'
-export * from './view'
+import { ApplicationView } from '../application.view'
+import { EnvView } from '../env.view'
+
+export interface RuntimeView extends EnvView, ApplicationView {}

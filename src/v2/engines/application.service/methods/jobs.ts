@@ -5,15 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { WithEnvironment } from '../../../core'
+import type { WithApplicationView } from '../../../core'
 
-import { globalCapabilities } from '../../../environment'
+export interface JobsApplicationService extends WithApplicationView {}
 
-export interface JobsApplicationService extends WithEnvironment {}
-
-export function jobsApplicationService({
-  environment,
-}: JobsApplicationService) {
-  const registry = globalCapabilities(environment)
-  return (tag?: string) => registry.jobs.list(tag)
+export function jobsApplicationService({ view }: JobsApplicationService) {
+  return (tag?: string) => view.jobs.list(tag)
 }

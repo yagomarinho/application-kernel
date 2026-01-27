@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Job } from '../../data'
-import type { Compilation } from '../../meta'
-import type { Execution } from '../../pipeline'
+import type { Job } from '../../../../data'
+import type { Compilation } from '../../../../meta'
+import type { Execution } from '../../../../pipeline'
 
 export interface ApplicationView {
   compilation: {

@@ -5,10 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Engine, ExtendedResult, Job } from '../../../core'
-import type { ApplicationService } from './application.service'
-import type { ServiceConfig } from './config/service.config'
-import type { ServiceDefaults } from './config/service.defaults'
+import type { Engine, ExtendedResult, Job } from '../../../../core'
+import type { ApplicationService } from '../application.service'
+import type { ServiceConfig, ServiceDefaults } from '../config'
 
 export interface ServiceEngine extends Engine<
   ServiceConfig,

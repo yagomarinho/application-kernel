@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './compose.views'
-export * from './implementations'
-export * from './merge.view'
-export * from './view'
+import type { EnvView } from '../../primitives'
+
+export interface WithEnvView {
+  view: EnvView
+}

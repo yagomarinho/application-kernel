@@ -12,6 +12,7 @@ import type {
   Middleware,
   Postprocessor,
   ErrorHandler,
+  EnvHandler,
 } from '../../../core'
 
 export interface ApplicationService {
@@ -21,7 +22,7 @@ export interface ApplicationService {
    * derives a narrowed context used by the use case
    * and the execution pipeline of this route.
    */
-  env: (environment: any) => any
+  env: EnvHandler
 
   /**
    * Technical pre-processing pipeline.

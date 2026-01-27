@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Tag } from '@yagomarinho/domain-kernel'
+import type { Tag } from '@yagomarinho/domain-kernel'
 
 export type RequiredTaggable<C> =
   C extends Tag<any>

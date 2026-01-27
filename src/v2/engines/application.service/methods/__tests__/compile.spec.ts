@@ -11,20 +11,24 @@ import {
   type Postprocessor,
   type ErrorHandler,
   Next,
+  createAmbient,
+  createEnvView,
 } from '../../../../core'
 
 import { compileApplicationService } from '../compile'
-import { createEnvironment } from '../../../../environment'
 
 describe('compileApplicationService', () => {
-  const ctx = {} as ExecutionContext
+  const context = {} as ExecutionContext
 
   it('compiles an ApplicationService into an executable pipeline', () => {
-    const environment = createEnvironment()
+    const ambient = createAmbient()
 
-    const compiler = compileApplicationService({ environment })
+    const compiler = compileApplicationService({
+      view: createEnvView(ambient),
+    })
 
-    const middleware: Middleware = (input, _env, ctx) => Next(input + 1, ctx)
+    const middleware: Middleware = (input, _env, context) =>
+      Next(input + 1, context)
 
     const guardian: Guardian = input => Successful(input * 2)
 
@@ -47,22 +51,30 @@ describe('compileApplicationService', () => {
 
     const result = compilation.execution.execute({
       data: 1,
-      context: ctx,
+      context,
     })
 
     // ((1 + 1) * 2) + 3 = 7
     expect(result).toEqual({
       ...Successful('final:7'),
-      ctx,
+      context,
     })
   })
 
-  it('passes resolved environment to the execution pipeline', () => {
-    const environment = createEnvironment()
+  it('passes resolved ambient to the execution pipeline', () => {
+    const ambient = createAmbient()
+    const view = createEnvView(ambient)
 
-    const compiler = compileApplicationService({ environment })
+    const globalEnv = {}
 
-    const middleware: Middleware = (input, _env, ctx) => Next({ input }, ctx)
+    view.env.register(globalEnv)
+
+    const compiler = compileApplicationService({
+      view,
+    })
+
+    const middleware: Middleware = (input, _env, context) =>
+      Next({ input }, context)
 
     const guardian: Guardian = data => Successful(data)
 
@@ -85,24 +97,27 @@ describe('compileApplicationService', () => {
 
     const result = compilation.execution.execute({
       data: 'value',
-      context: ctx,
+      context,
     })
 
     expect(result).toEqual({
       ...Successful({
         input: 'value',
-        env: { scoped: true, base: environment },
+        env: { scoped: true, base: globalEnv },
       }),
-      ctx,
+      context,
     })
   })
 
   it('returns ExtendedFailure when pipeline fails and onError is applied', async () => {
-    const environment = createEnvironment()
+    const ambient = createAmbient()
 
-    const compiler = compileApplicationService({ environment })
+    const compiler = compileApplicationService({
+      view: createEnvView(ambient),
+    })
 
-    const middleware: Middleware = (input, _env, ctx) => Next(input, ctx)
+    const middleware: Middleware = (input, _env, context) =>
+      Next(input, context)
 
     const guardian: Guardian = () => Failure('guardian-error')
 
@@ -127,20 +142,22 @@ describe('compileApplicationService', () => {
 
     const result = await compilation.execution.execute({
       data: 'input',
-      context: ctx,
+      context,
     })
 
     expect(result).toEqual({
       tag: 'failure',
       error: 'handled:guardian-error',
-      ctx,
+      context,
     })
   })
 
   it('returns a single Compilation with job and execution', () => {
-    const environment = createEnvironment()
+    const ambient = createAmbient()
 
-    const compiler = compileApplicationService({ environment })
+    const compiler = compileApplicationService({
+      view: createEnvView(ambient),
+    })
 
     const [compilation] = compiler({
       env: env => env,

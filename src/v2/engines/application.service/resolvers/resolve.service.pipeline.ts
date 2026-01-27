@@ -31,11 +31,17 @@ import {
 } from '../../../core'
 import { bind, mapResolvable } from '../../../shared'
 
-type Step = (input: any, env: any, ctx: ExecutionContext) => Resolvable<Result>
+type Step = (
+  input: any,
+  env: any,
+  context: ExecutionContext,
+) => Resolvable<Result>
 
 function step(resolvable: Resolvable<MiddlewareResult>, step: Step, env: any) {
   return bind(resolvable, next =>
-    bind(step(next.data, env, next.ctx), result => Next(result.data, next.ctx)),
+    bind(step(next.data, env, next.context), result =>
+      Next(result.data, next.context),
+    ),
   )
 }
 
@@ -50,8 +56,8 @@ export function resolveServicePipeline(
   postprocessor: ExtendedPostProcessor,
   onError: ErrorHandler,
 ) {
-  return (input: any, env: any, ctx: any): Resolvable<ExtendedResult> => {
-    const afterMiddleware = middleware(input, env, ctx)
+  return (input: any, env: any, context: any): Resolvable<ExtendedResult> => {
+    const afterMiddleware = middleware(input, env, context)
 
     const afterCalculation = pipe(
       mapToStep(guardian, env),
@@ -61,26 +67,28 @@ export function resolveServicePipeline(
 
     return mapResolvable(afterCalculation, output => {
       if (isFailure(output)) {
-        if ('ctx' in output)
+        if ('context' in output)
           return mapResolvable(
-            onError(output.error, env, output.ctx as any),
+            onError(output.error, env, output.context as any),
             error =>
               concatenate(Failure(error), {
-                ctx: output.ctx,
+                context: output.context,
               }) as ExtendedFailure,
           )
 
         return bind(afterMiddleware, next =>
           mapResolvable(
-            onError(output.error, env, next.ctx),
+            onError(output.error, env, next.context),
             error =>
-              concatenate(Failure(error), { ctx: next.ctx }) as ExtendedFailure,
+              concatenate(Failure(error), {
+                context: next.context,
+              }) as ExtendedFailure,
           ),
         )
       }
 
       return concatenate(Successful(output.data), {
-        ctx: output.ctx,
+        context: output.context,
       }) as ExtendedSuccessful
     })
   }

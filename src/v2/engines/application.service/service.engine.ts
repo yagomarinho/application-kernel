@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { WithDefaults, WithEnvironment } from '../../core'
+import type { WithDefaults, WithRuntimeView } from '../../core'
 import type { ServiceDefaults, ServiceEngine } from './contracts'
 
 import {
@@ -17,11 +17,11 @@ import {
 import { resolveServiceDefaults } from './resolvers'
 
 interface Options
-  extends WithEnvironment, WithDefaults<Partial<ServiceDefaults>> {}
+  extends WithRuntimeView, WithDefaults<Partial<ServiceDefaults>> {}
 
 export function createServiceEngine({
   defaults,
-  environment,
+  view,
 }: Options): ServiceEngine {
   const resolvedDefaults = resolveServiceDefaults(defaults)
   return {
@@ -30,10 +30,10 @@ export function createServiceEngine({
         defaults: options?.defaults ?? resolvedDefaults,
       })(config),
 
-    compile: compileApplicationService({ environment }),
+    compile: compileApplicationService({ view }),
 
-    jobs: jobsApplicationService({ environment }),
+    jobs: jobsApplicationService({ view }),
 
-    run: runApplicationService({ environment }),
+    run: runApplicationService({ view }),
   }
 }

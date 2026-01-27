@@ -10,17 +10,15 @@ import type { ApplicationService } from '../contracts'
 import {
   type Compilation,
   type Execution,
-  type WithEnvironment,
+  type WithEnvView,
   postprocessorsChain,
   middlewareChain,
 } from '../../../core'
 import { resolveServicePipeline } from '../resolvers'
 
-export interface CompileApplicationService extends WithEnvironment {}
+export interface CompileApplicationService extends WithEnvView {}
 
-export function compileApplicationService({
-  environment,
-}: CompileApplicationService) {
+export function compileApplicationService({ view }: CompileApplicationService) {
   return ({
     env,
     guardian,
@@ -38,7 +36,8 @@ export function compileApplicationService({
     )
 
     const execution: Execution = {
-      execute: ({ data, context }) => pipeline(data, env(environment), context),
+      execute: ({ data, context }) =>
+        pipeline(data, view.env.resolve(env), context),
     }
 
     return [
