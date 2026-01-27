@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './bindings'
-export * as Messaging from './contracts'
-export * from './create.messaging.engine'
-export * from './methods'
-export * from './uri'
+import type { CommandJob } from './command.job'
+import type { EventJob } from './event.job'
+
+export type MessagingJob = EventJob | CommandJob

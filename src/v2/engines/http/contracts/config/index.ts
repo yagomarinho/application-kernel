@@ -5,6 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './config'
-export * from './defaults'
-export * from './required.keys'
+export * from './http.config'
+export * from './http.defaults'
+export * from './http.required.keys'

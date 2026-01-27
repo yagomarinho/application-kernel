@@ -11,7 +11,7 @@ import type {
   HttpCompilation,
   HttpRoute,
 } from '../contracts'
-import { createHttpJob } from '../create.http.job'
+import { createHttpJob } from '../jobs'
 
 export interface ResolveHttpCompilation extends WithUID {
   declaration: Pick<HttpRoute, ExclusiveHttpRequiredKeys>

@@ -1,5 +1,5 @@
 import { doneDefault, identity } from '../../application.service'
-import { MessagingEngine } from '../engine'
+import { MessagingEngine } from '../create.messaging.engine'
 import { CommandhandlerURI, EventHandlerURI } from '../uri'
 
 describe('MessagingEngine', () => {

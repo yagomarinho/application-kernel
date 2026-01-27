@@ -11,7 +11,7 @@ import type { HttpJob } from '../contracts'
 import { jobsApplicationService } from '../../application.service'
 import { HttpURI } from '../uri'
 
-interface JobsHttpRoute extends WithApplicationView {}
+export interface JobsHttpRoute extends WithApplicationView {}
 
 export function jobsHttpRoute({ view }: JobsHttpRoute) {
   return (): HttpJob[] => jobsApplicationService({ view })(HttpURI) as HttpJob[]

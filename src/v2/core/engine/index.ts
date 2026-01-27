@@ -7,3 +7,4 @@
 
 export * from './engine'
 export * from './engine.binder'
+export * from './engine.types'

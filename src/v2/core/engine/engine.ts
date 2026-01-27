@@ -9,19 +9,9 @@ import type { Resolvable } from '@yagomarinho/domain-kernel'
 
 import type { ApplicationPayload } from '../data'
 import type { Compilation } from '../meta'
-import type { WithDefaults } from '../capabilities'
 import type { RequiredTaggable } from '../primitives'
+import type { InOutFromCompilation, JobFromCompilation } from './engine.types'
 
-type InOut<In = any, Out = any> = {
-  in: In
-  out: Out
-}
-
-type JobFromCompilation<C extends Compilation> = C['job']
-type InOutFromCompilation<C extends Compilation> =
-  C extends Compilation<any, infer In, infer Out> ? InOut<In, Out> : InOut
-
-export interface DeclareOptions<D> extends WithDefaults<D> {}
 export interface Engine<
   Config = any,
   Declaration = any,
