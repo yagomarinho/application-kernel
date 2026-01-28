@@ -10,7 +10,7 @@ import type {
   WithPartialDefaults,
   WithUID,
 } from '../../core'
-import type { WithServiceEngine } from '../__contracts__'
+import type { ApplicationService } from '../application.service'
 import type { MessagingDefaults, MessagingEngine } from './contracts'
 
 import {
@@ -24,7 +24,7 @@ import { resolveMessagingDefaults } from './resolvers'
 export interface MessagingEngineOptions
   extends
     WithPartialDefaults<MessagingDefaults>,
-    WithServiceEngine,
+    ApplicationService.WithServiceEngine,
     WithUID,
     WithApplicationView {}
 

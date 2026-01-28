@@ -5,6 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ServiceDefaults } from '../../../application.service'
+import type { ApplicationService } from '../../../application.service'
 
-export type MessagingDefaults = ServiceDefaults
+export type MessagingDefaults = ApplicationService.ServiceDefaults

@@ -6,7 +6,7 @@
  */
 
 export * from './constants'
-export * from './contracts'
+export * as ApplicationService from './contracts'
 export * from './create.service.engine'
 export * from './methods'
 export * from './resolvers'

@@ -12,4 +12,7 @@ import type { WithOn } from '../capabilities'
 import type { EventHandlerURI } from '../../uri'
 
 export interface EventHandler
-  extends ApplicationService, WithOn<string>, Tag<EventHandlerURI> {}
+  extends
+    ApplicationService.ApplicationService,
+    WithOn<string>,
+    Tag<EventHandlerURI> {}

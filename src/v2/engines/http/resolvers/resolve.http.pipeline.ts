@@ -5,13 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Execution } from '../../../core'
+import type { Execution } from '../../../core'
+import type { ApplicationService } from '../../application.service'
+import type { HttpRequest, HttpResponse, HttpRoute } from '../contracts'
+
 import { mapResolvable } from '../../../shared'
-import { ServiceEngine } from '../../application.service'
-import { HttpRequest, HttpResponse, HttpRoute } from '../contracts'
 
 export interface ResolveHttpPipeline {
-  serviceEngine: ServiceEngine
+  serviceEngine: ApplicationService.ServiceEngine
   declaration: HttpRoute
 }
 

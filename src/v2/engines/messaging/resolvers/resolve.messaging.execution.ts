@@ -9,15 +9,14 @@ import type {
   MessagingHandlerToCompilationMapper,
   MessagingHandler,
 } from '../contracts'
-import type { WithServiceEngine } from '../../__contracts__'
 
 import { mapResolvable } from '../../../shared'
 import { eventUnhandledError } from '../constants'
 import { CommandhandlerURI } from '../uri'
+import { ApplicationService } from '../../application.service'
 
-export interface ResolveMessagingExecution<
-  C extends MessagingHandler,
-> extends WithServiceEngine {
+export interface ResolveMessagingExecution<C extends MessagingHandler>
+  extends ApplicationService.WithServiceEngine {
   declaration: C
 }
 

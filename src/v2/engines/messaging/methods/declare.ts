@@ -6,7 +6,8 @@
  */
 
 import type { RequiredTaggable, WithDefaults } from '../../../core'
-import type { WithServiceEngine } from '../../__contracts__'
+import type { ApplicationService } from '../../application.service'
+
 import type {
   MessagingConfig,
   MessagingConfigToHandlerMapper,
@@ -20,7 +21,9 @@ import {
 import { CommandhandlerURI } from '../uri'
 
 export interface DeclareMessagingHandler
-  extends WithDefaults<MessagingDefaults>, WithServiceEngine {}
+  extends
+    WithDefaults<MessagingDefaults>,
+    ApplicationService.WithServiceEngine {}
 
 export function declareMessagingHandler({
   serviceEngine,

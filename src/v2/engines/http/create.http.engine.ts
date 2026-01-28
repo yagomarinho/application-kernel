@@ -10,7 +10,7 @@ import type {
   WithPartialDefaults,
   WithUID,
 } from '../../core'
-import type { WithServiceEngine } from '../__contracts__'
+import { ApplicationService } from '../application.service'
 import type { HttpDefaults, HttpEngine } from './contracts'
 
 import {
@@ -24,7 +24,7 @@ import { resolveHttpDefaults } from './resolvers'
 interface Options
   extends
     WithPartialDefaults<HttpDefaults>,
-    WithServiceEngine,
+    ApplicationService.WithServiceEngine,
     WithApplicationView,
     WithUID {}
 

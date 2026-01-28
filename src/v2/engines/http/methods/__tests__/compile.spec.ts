@@ -1,8 +1,9 @@
-import { UID } from '../../../../shared'
-import { ServiceEngine } from '../../../application.service'
-import { HttpRoute } from '../../contracts'
-import { HttpRouteURI, HttpURI } from '../../uri'
+import type { UID } from '../../../../shared'
+import type { ApplicationService } from '../../../application.service'
+import type { HttpRoute } from '../../contracts'
+
 import { compileHttpRoute } from '../compile'
+import { HttpRouteURI, HttpURI } from '../../uri'
 
 describe('compile HttpRoute', () => {
   it('compiles a HttpRoute into a HttpCompilation', () => {
@@ -21,7 +22,7 @@ describe('compile HttpRoute', () => {
           },
         },
       ]),
-    } as any as ServiceEngine
+    } as any as ApplicationService.ServiceEngine
 
     const route: HttpRoute = {
       method: 'get',

@@ -13,7 +13,7 @@ import type { HttpRouteURI } from '../uri'
 
 export interface HttpRoute
   extends
-    ApplicationService,
+    ApplicationService.ApplicationService,
     WithHttpMethod,
     WithPath,
     WithHttpAdapters,

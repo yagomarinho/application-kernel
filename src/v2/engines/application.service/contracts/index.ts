@@ -6,5 +6,6 @@
  */
 
 export * from './application.service'
+export * from './capabilities'
 export * from './config'
 export * from './engine'

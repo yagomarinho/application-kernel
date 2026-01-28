@@ -14,7 +14,7 @@ import type { CommandhandlerURI } from '../../uri'
 
 export interface CommandHandler
   extends
-    ApplicationService,
+    ApplicationService.ApplicationService,
     WithOn<string>,
     WithEmits<Emits<string>>,
     Tag<CommandhandlerURI> {}

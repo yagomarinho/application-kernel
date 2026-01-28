@@ -6,13 +6,15 @@
  */
 
 import type { RequiredTaggable, WithDefaults } from '../../../core'
-import type { WithServiceEngine } from '../../__contracts__'
+import type { ApplicationService } from '../../application.service'
 import type { CommandConfig, MessagingDefaults } from '../contracts'
 
 import { concatenate } from '@yagomarinho/smooth/concatenate'
 
 export interface DeclareCommandHandler
-  extends WithDefaults<MessagingDefaults>, WithServiceEngine {
+  extends
+    WithDefaults<MessagingDefaults>,
+    ApplicationService.WithServiceEngine {
   declaration: RequiredTaggable<CommandConfig>
 }
 

@@ -5,8 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ServiceRequiredKeys } from '../../../application.service'
+import type { ApplicationService } from '../../../application.service'
 
 export type ExclusiveEventRequiredKeys = 'on'
 
-export type EventRequiredKeys = ExclusiveEventRequiredKeys | ServiceRequiredKeys
+export type EventRequiredKeys =
+  | ExclusiveEventRequiredKeys
+  | ApplicationService.ServiceRequiredKeys

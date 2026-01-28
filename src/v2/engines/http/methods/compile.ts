@@ -6,11 +6,13 @@
  */
 
 import type { WithUID } from '../../../core'
-import type { WithServiceEngine } from '../../__contracts__'
+import type { ApplicationService } from '../../application.service'
 import type { HttpCompilation, HttpRoute } from '../contracts'
+
 import { resolveHttpCompilation, resolveHttpPipeline } from '../resolvers'
 
-export interface CompileHttpRoute extends WithServiceEngine, WithUID {}
+export interface CompileHttpRoute
+  extends ApplicationService.WithServiceEngine, WithUID {}
 
 export function compileHttpRoute({ serviceEngine, uid }: CompileHttpRoute) {
   return (declaration: HttpRoute): HttpCompilation[] => {

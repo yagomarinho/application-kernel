@@ -6,7 +6,7 @@
  */
 
 import type { WithUID } from '../../../core'
-import type { WithServiceEngine } from '../../__contracts__'
+import type { ApplicationService } from '../../application.service'
 import type {
   MessagingHandlerToCompilationMapper,
   MessagingHandler,
@@ -17,7 +17,8 @@ import {
   resolveMessagingExecution,
 } from '../resolvers'
 
-export interface CompileMessagingHandler extends WithServiceEngine, WithUID {}
+export interface CompileMessagingHandler
+  extends ApplicationService.WithServiceEngine, WithUID {}
 
 export function compileMessagingHandler({
   serviceEngine,

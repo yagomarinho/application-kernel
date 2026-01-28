@@ -5,7 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ServiceDefaults } from '../../../application.service'
+import type { ApplicationService } from '../../../application.service'
 import type { WithHttpAdapters } from '../capabilities'
 
-export interface HttpDefaults extends ServiceDefaults, WithHttpAdapters {}
+export interface HttpDefaults
+  extends ApplicationService.ServiceDefaults, WithHttpAdapters {}

@@ -5,8 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ServiceRequiredKeys } from '../../../application.service'
+import { ApplicationService } from '../../../application.service'
 
 export type ExclusiveHttpRequiredKeys = 'method' | 'path'
 
-export type HttpRequiredKeys = ExclusiveHttpRequiredKeys | ServiceRequiredKeys
+export type HttpRequiredKeys =
+  | ExclusiveHttpRequiredKeys
+  | ApplicationService.ServiceRequiredKeys
