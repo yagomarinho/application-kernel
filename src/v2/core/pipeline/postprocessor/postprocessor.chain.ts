@@ -7,13 +7,14 @@
 
 import type { Postprocessor } from './postprocessor'
 import type { ExtendedPostProcessor } from './extended.postprocessor'
+import type { ApplicationContext } from '../../data'
 
-import { type ExecutionContext, Successful } from '@yagomarinho/domain-kernel'
+import { Successful } from '@yagomarinho/domain-kernel'
 
 export function postprocessorsChain(
   processors: Postprocessor[],
 ): ExtendedPostProcessor {
-  return (input: any, env: any, context: ExecutionContext): Successful => {
+  return (input: any, env: any, context: ApplicationContext): Successful => {
     if (!processors.length) return Successful(input)
 
     const resp = processors.reduce(

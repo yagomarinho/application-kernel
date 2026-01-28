@@ -1,10 +1,11 @@
 import type { Postprocessor } from '../postprocessor'
+import type { ApplicationContext } from '../../../data'
 
-import { type ExecutionContext, Successful } from '@yagomarinho/domain-kernel'
+import { Successful } from '@yagomarinho/domain-kernel'
 
 import { postprocessorsChain } from '../postprocessor.chain'
 
-const context = {} as ExecutionContext
+const context = {} as ApplicationContext
 
 describe('postprocessors chain unit testing', () => {
   it('returns input wrapped in Successful when chain is empty', () => {
@@ -52,7 +53,7 @@ describe('postprocessors chain unit testing', () => {
 
   it('passes env and context to all postprocessors', () => {
     const env = { region: 'test' }
-    const calls: Array<{ env: any; context: ExecutionContext }> = []
+    const calls: Array<{ env: any; context: ApplicationContext }> = []
 
     const processor: Postprocessor = (input, env, context) => {
       calls.push({ env, context })

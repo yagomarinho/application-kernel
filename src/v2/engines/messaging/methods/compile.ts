@@ -7,7 +7,10 @@
 
 import type { WithUID } from '../../../core'
 import type { WithServiceEngine } from '../../__contracts__'
-import type { MessagingCompilationMapper, MessagingHandler } from '../contracts'
+import type {
+  MessagingHandlerToCompilationMapper,
+  MessagingHandler,
+} from '../contracts'
 
 import {
   resolveMessagingCompilation,
@@ -22,7 +25,7 @@ export function compileMessagingHandler({
 }: CompileMessagingHandler) {
   return <C extends MessagingHandler>(
     declaration: C,
-  ): MessagingCompilationMapper<C>[] => {
+  ): MessagingHandlerToCompilationMapper<C>[] => {
     const execution = resolveMessagingExecution<C>({
       declaration,
       serviceEngine,

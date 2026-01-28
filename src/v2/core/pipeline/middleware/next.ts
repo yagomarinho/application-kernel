@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ExecutionContext, Tag } from '@yagomarinho/domain-kernel'
+import type { Tag } from '@yagomarinho/domain-kernel'
 import type { WithContext } from '../../capabilities'
+import type { ApplicationContext } from '../../data'
 
 export const NextURI = 'next'
 export type NextURI = typeof NextURI
@@ -15,7 +16,10 @@ export interface Next<Data = any> extends Tag<NextURI>, WithContext {
   data: Data
 }
 
-export function Next<Data>(data: Data, context: ExecutionContext): Next<Data> {
+export function Next<Data>(
+  data: Data,
+  context: ApplicationContext,
+): Next<Data> {
   return {
     tag: NextURI,
     data,

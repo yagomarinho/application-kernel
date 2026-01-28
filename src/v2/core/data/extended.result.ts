@@ -10,6 +10,16 @@ import type { WithContext } from '../capabilities'
 
 export interface ExtendedSuccessful extends Successful, WithContext {}
 
-export interface ExtendedFailure extends Failure, WithContext {}
+export interface ExtendedFailure extends Failure, WithContext {
+  handled: boolean
+}
+
+export interface HandledFailure extends ExtendedFailure {
+  handled: true
+}
+
+export interface UnhandledFailure extends ExtendedFailure {
+  handled: false
+}
 
 export type ExtendedResult = ExtendedFailure | ExtendedSuccessful

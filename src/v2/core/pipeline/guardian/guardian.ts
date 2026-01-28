@@ -5,16 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {
-  ExecutionContext,
-  Resolvable,
-  Result,
-} from '@yagomarinho/domain-kernel'
+import type { Resolvable, Result } from '@yagomarinho/domain-kernel'
+
+import type { ApplicationContext } from '../../data'
 
 export interface Guardian<Input = any, Output = any, Env = any, Error = any> {
   (
     input: Input,
     env: Env,
-    context: ExecutionContext,
+    context: ApplicationContext,
   ): Resolvable<Result<Error, Output>>
 }

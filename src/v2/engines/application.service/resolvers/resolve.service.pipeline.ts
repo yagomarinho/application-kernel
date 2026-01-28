@@ -6,7 +6,6 @@
  */
 
 import {
-  Failure,
   isFailure,
   Successful,
   type ExecutionContext,
@@ -24,10 +23,10 @@ import {
   type ExtendedPostProcessor,
   type Guardian,
   type MiddlewareResult,
-  type ExtendedFailure,
   type ExtendedResult,
   type ExtendedSuccessful,
   Next,
+  AppError,
 } from '../../../core'
 import { bind, failureBoundary, mapResolvable } from '../../../shared'
 
@@ -39,7 +38,7 @@ type Step = (
 
 function step(resolvable: Resolvable<MiddlewareResult>, step: Step, env: any) {
   return bind(resolvable, next =>
-    bind(step(next.data, env, next.context), result =>
+    bind(step(next.data, env, (next as any).context), result =>
       Next(result.data, next.context),
     ),
   )
@@ -47,6 +46,19 @@ function step(resolvable: Resolvable<MiddlewareResult>, step: Step, env: any) {
 
 function mapToStep(fn: Step, env: any) {
   return (resolvable: Resolvable<MiddlewareResult>) => step(resolvable, fn, env)
+}
+
+function handleError(context: any) {
+  return (error: any) =>
+    isFailure(error)
+      ? AppError(
+          error.error,
+          Object.keys((error as any).context).length
+            ? (error as any).context
+            : context,
+          (error as any).handled ?? false,
+        )
+      : AppError.unhandle(error, context)
 }
 
 export function resolveServicePipeline(
@@ -71,19 +83,13 @@ export function resolveServicePipeline(
         if ('context' in output)
           return mapResolvable(
             safeOnError(output.error, env, output.context as any),
-            error =>
-              concatenate(Failure(error), {
-                context: output.context,
-              }) as ExtendedFailure,
+            handleError(output.context),
           )
 
         return bind(afterMiddleware, next =>
           mapResolvable(
             safeOnError(output.error, env, next.context),
-            error =>
-              concatenate(Failure(error), {
-                context: next.context,
-              }) as ExtendedFailure,
+            handleError(next.context),
           ),
         )
       }

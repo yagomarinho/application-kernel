@@ -6,6 +6,7 @@
  */
 
 export * from './bindings'
+export * from './constants'
 export * as Messaging from './contracts'
 export * from './create.messaging.engine'
 export * from './methods'

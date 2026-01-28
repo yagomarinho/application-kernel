@@ -11,9 +11,8 @@ import type { EventHandler } from '../bindings/event.handler'
 import type { MessagingHandler } from '../bindings/messaging.handler'
 import type { CommandCompilation, EventCompilation } from '../meta'
 
-export type MessagingMapper<C extends MessagingConfig> = C extends CommandConfig
-  ? CommandHandler
-  : EventHandler
+export type MessagingConfigToHandlerMapper<C extends MessagingConfig> =
+  C extends CommandConfig ? CommandHandler : EventHandler
 
-export type MessagingCompilationMapper<C extends MessagingHandler> =
+export type MessagingHandlerToCompilationMapper<C extends MessagingHandler> =
   C extends CommandHandler ? CommandCompilation : EventCompilation

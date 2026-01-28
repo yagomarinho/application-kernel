@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ApplicationContext } from '../data'
+import type { Result } from '@yagomarinho/domain-kernel'
 
-export interface WithContext {
-  context: ApplicationContext
+export function eventUnhandledError(result: Result) {
+  if (result.tag === 'failure') throw new Error(result.error)
 }

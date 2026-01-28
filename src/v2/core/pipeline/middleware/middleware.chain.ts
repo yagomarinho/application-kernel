@@ -9,11 +9,8 @@ import type { ExtendedMiddleware } from './extended.middleware'
 import type { Middleware } from './middleware'
 import type { MiddlewareResult } from './middleware.result'
 
-import {
-  type ExecutionContext,
-  type Resolvable,
-  isFailure,
-} from '@yagomarinho/domain-kernel'
+import { type Resolvable, isFailure } from '@yagomarinho/domain-kernel'
+import { type ApplicationContext, AppError } from '../../data'
 
 import { isNext, Next } from './next'
 import { failureBoundary, mapResolvable, Pointer } from '../../../shared'
@@ -22,7 +19,7 @@ import { failureBoundary, mapResolvable, Pointer } from '../../../shared'
 function forwardResult(
   middleware: Middleware,
   env: any,
-  context: Pointer<ExecutionContext>,
+  context: Pointer<ApplicationContext>,
 ) {
   return (result: MiddlewareResult): Resolvable<MiddlewareResult> => {
     if (isNext(result)) {
@@ -57,10 +54,7 @@ export function middlewareChain(middlewares: Middleware[]): ExtendedMiddleware {
 
     return mapResolvable(resp, result => {
       if (isFailure(result))
-        return {
-          ...result,
-          context: contextPointer.get(),
-        }
+        return AppError.unhandle(result.error, contextPointer.get())
 
       return result
     })

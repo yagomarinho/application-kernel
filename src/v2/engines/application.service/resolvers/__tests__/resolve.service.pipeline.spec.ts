@@ -1,21 +1,18 @@
-import {
-  type ExecutionContext,
-  type UseCase,
-  Failure,
-  Successful,
-} from '@yagomarinho/domain-kernel'
+import { type UseCase, Failure, Successful } from '@yagomarinho/domain-kernel'
 
 import {
+  type ApplicationContext,
   type ExtendedMiddleware,
   type Guardian,
   type ExtendedPostProcessor,
   type ErrorHandler,
   Next,
+  AppError,
 } from '../../../../core'
 
 import { resolveServicePipeline } from '../resolve.service.pipeline'
 
-const baseCtx = {} as ExecutionContext
+const baseCtx = {} as ApplicationContext
 const env = {}
 
 describe('resolveServicePipeline', () => {
@@ -65,7 +62,7 @@ describe('resolveServicePipeline', () => {
       throw new Error('should not run')
     }
 
-    const onError: ErrorHandler = error => `handled:${error}`
+    const onError: ErrorHandler = error => AppError.handle(`handled:${error}`)
 
     const pipeline = resolveServicePipeline(
       middleware,
@@ -85,7 +82,7 @@ describe('resolveServicePipeline', () => {
   })
 
   it('propagates context from middleware through the entire pipeline', () => {
-    const context1 = { step: 1 } as any as ExecutionContext
+    const context1 = { step: 1 } as any as ApplicationContext
 
     const middleware: ExtendedMiddleware = input => Next(input, context1)
 
@@ -116,7 +113,7 @@ describe('resolveServicePipeline', () => {
   })
 
   it('uses context from failure when failure already contains context', async () => {
-    const context1 = { step: 'guardian' } as any as ExecutionContext
+    const context1 = { step: 'guardian' } as any as ApplicationContext
 
     const middleware: ExtendedMiddleware = (input, _env, context) =>
       Next(input, context)

@@ -5,12 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type {
-  ExecutionContext,
-  Resolvable,
-  Successful,
-} from '@yagomarinho/domain-kernel'
+import type { Resolvable, Successful } from '@yagomarinho/domain-kernel'
+import type { ApplicationContext } from '../../data'
 
 export interface ExtendedPostProcessor {
-  (input: any, env: any, context: ExecutionContext): Resolvable<Successful>
+  (input: any, env: any, context: ApplicationContext): Resolvable<Successful>
 }

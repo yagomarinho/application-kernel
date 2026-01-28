@@ -1,10 +1,11 @@
-import type { ExecutionContext, Failure } from '@yagomarinho/domain-kernel'
+import type { Failure } from '@yagomarinho/domain-kernel'
 import type { Middleware } from '../middleware'
+import type { ApplicationContext } from '../../../data'
 
 import { middlewareChain } from '../middleware.chain'
 import { Next, isNext } from '../next'
 
-const context = {} as ExecutionContext
+const context = {} as ApplicationContext
 
 describe('middlewareChain', () => {
   it('returns Next(input, context) when chain is empty', () => {
@@ -70,8 +71,8 @@ describe('middlewareChain', () => {
   })
 
   it('propagates updated context from Next between middlewares', () => {
-    const context1 = { step: 1 } as any as ExecutionContext
-    const context2 = { step: 2 } as any as ExecutionContext
+    const context1 = { step: 1 } as any as ApplicationContext
+    const context2 = { step: 2 } as any as ApplicationContext
 
     const m1: Middleware = input => Next(input, context1)
     const m2: Middleware = input => Next(input, context2)
@@ -103,8 +104,8 @@ describe('middlewareChain', () => {
   })
 
   it('attaches latest context to Failure returned after async chain', async () => {
-    const context1 = { step: 1 } as any as ExecutionContext
-    const context3 = { step: 3 } as any as ExecutionContext
+    const context1 = { step: 1 } as any as ApplicationContext
+    const context3 = { step: 3 } as any as ApplicationContext
 
     const m1: Middleware = _input => Next('ok', context1)
 

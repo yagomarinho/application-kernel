@@ -18,6 +18,7 @@
     "test:environment": "jest src/v2/environment",
     "test:service-engine": "jest src/v2/engines/application.service",
     "test:http-engine": "jest src/v2/engines/http",
+    "test:messaging-engine": "jest src/v2/engines/messaging",
     "typecheck": "tsc --noEmit"
   },
   "author": {

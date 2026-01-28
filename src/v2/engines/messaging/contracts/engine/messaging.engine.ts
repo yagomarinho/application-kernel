@@ -10,8 +10,8 @@ import type { MessagingConfig } from '../config'
 import type { MessagingHandler } from '../bindings/messaging.handler'
 import type { MessagingCompilation } from '../meta'
 import type {
-  MessagingCompilationMapper,
-  MessagingMapper,
+  MessagingHandlerToCompilationMapper,
+  MessagingConfigToHandlerMapper,
 } from './messaging.types'
 
 export interface MessagingEngine extends Engine<
@@ -21,9 +21,9 @@ export interface MessagingEngine extends Engine<
 > {
   declare: <C extends MessagingConfig>(
     config: RequiredTaggable<C>,
-  ) => MessagingMapper<C>
+  ) => MessagingConfigToHandlerMapper<C>
 
   compile: <C extends MessagingHandler>(
     declaration: C,
-  ) => MessagingCompilationMapper<C>[]
+  ) => MessagingHandlerToCompilationMapper<C>[]
 }

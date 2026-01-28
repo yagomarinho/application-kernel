@@ -1,11 +1,7 @@
-import {
-  Failure,
-  Successful,
-  UseCase,
-  type ExecutionContext,
-} from '@yagomarinho/domain-kernel'
+import { Failure, Successful, UseCase } from '@yagomarinho/domain-kernel'
 
 import {
+  type ApplicationContext,
   type Middleware,
   type Guardian,
   type Postprocessor,
@@ -18,7 +14,7 @@ import {
 import { compileApplicationService } from '../compile'
 
 describe('compileApplicationService', () => {
-  const context = {} as ExecutionContext
+  const context = {} as ApplicationContext
 
   it('compiles an ApplicationService into an executable pipeline', () => {
     const ambient = createAmbient()

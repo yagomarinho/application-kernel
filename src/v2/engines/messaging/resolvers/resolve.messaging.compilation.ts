@@ -6,21 +6,25 @@
  */
 
 import type { WithUID } from '../../../core'
-import type { MessagingCompilationMapper, MessagingHandler } from '../contracts'
-import { createMessagingJob, CreateMessagingJobDeclaration } from '../jobs'
+import type {
+  MessagingHandlerToCompilationMapper,
+  MessagingHandler,
+} from '../contracts'
+
+import { createMessagingJob } from '../jobs'
 
 export interface ResolveMessagingCompilation<
   C extends MessagingHandler,
 > extends WithUID {
-  declaration: CreateMessagingJobDeclaration<C>
-  execution: MessagingCompilationMapper<C>['execution']
+  declaration: C
+  execution: MessagingHandlerToCompilationMapper<C>['execution']
 }
 
 export function resolveMessagingCompilation<C extends MessagingHandler>({
   declaration,
   execution,
   uid,
-}: ResolveMessagingCompilation<C>): MessagingCompilationMapper<C> {
+}: ResolveMessagingCompilation<C>): MessagingHandlerToCompilationMapper<C> {
   const compilation: any = {
     job: createMessagingJob({ id: uid.generate(), declaration }),
     execution,

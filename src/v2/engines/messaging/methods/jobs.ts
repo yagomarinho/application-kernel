@@ -5,18 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { jobsApplicationService } from '../../../application.service'
-import { Registry } from '../../../../environment'
-import { CommandhandlerURI, EventHandlerURI } from '../../uri'
-import { MessagingJob } from '../job'
+import type { WithApplicationView } from '../../../core'
+import type { MessagingJob } from '../contracts'
 
-interface JobsMessagingHandler {
-  registry: Registry
-}
+import { jobsApplicationService } from '../../application.service'
+import { CommandhandlerURI, EventHandlerURI } from '../uri'
 
-export function jobsMessagingHandler({ registry }: JobsMessagingHandler) {
+export interface JobsMessagingHandler extends WithApplicationView {}
+
+export function jobsMessagingHandler({ view }: JobsMessagingHandler) {
   return (): MessagingJob[] =>
-    jobsApplicationService({ registry })(CommandhandlerURI).concat(
-      jobsApplicationService({ registry })(EventHandlerURI),
+    jobsApplicationService({ view })(CommandhandlerURI).concat(
+      jobsApplicationService({ view })(EventHandlerURI),
     ) as MessagingJob[]
 }

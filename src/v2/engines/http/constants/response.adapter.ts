@@ -10,7 +10,7 @@ import type { HttpResponse } from '../contracts'
 import { type Result, isFailure } from '@yagomarinho/domain-kernel'
 
 export function responseAdapter(result: Result): HttpResponse {
-  return isFailure(result)
-    ? { status: 500, body: result.error, headers: {} }
-    : { status: 200, body: result.data, headers: {} }
+  if (isFailure(result)) throw new Error(result.error)
+
+  return { status: 200, body: result.data, headers: {} }
 }

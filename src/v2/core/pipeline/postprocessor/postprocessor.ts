@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ExecutionContext, Resolvable } from '@yagomarinho/domain-kernel'
+import type { Resolvable } from '@yagomarinho/domain-kernel'
+import type { ApplicationContext } from '../../data'
 
 export interface Postprocessor<Input = any, Output = any, Env = any> {
-  (input: Input, env: Env, context: ExecutionContext): Resolvable<Output>
+  (input: Input, env: Env, context: ApplicationContext): Resolvable<Output>
 }

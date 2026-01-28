@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ExecutionContext } from '@yagomarinho/domain-kernel'
+import type { ApplicationContext } from '../../../core'
 
 export interface Audience {
   incoming: {
@@ -13,5 +13,5 @@ export interface Audience {
     headers: Record<string, string>
     query: Record<string, string>
   }
-  context: ExecutionContext
+  context: ApplicationContext
 }

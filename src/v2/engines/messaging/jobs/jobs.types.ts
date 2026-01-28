@@ -14,20 +14,11 @@ import type {
   ExclusiveEventRequiredKeys,
   MessagingHandler,
 } from '../contracts'
-import type { CommandhandlerURI, EventHandlerURI } from '../uri'
 
-export type CreateMessagingJobDeclaration<T extends MessagingHandler> =
-  DeclarationPicker[T['tag']]
+export type MessagingHandlerToJobDeclarationMapper<C extends MessagingHandler> =
+  C extends CommandHandler
+    ? Pick<CommandHandler, ExclusiveCommandRequiredKeys | 'tag'>
+    : Pick<EventHandler, ExclusiveEventRequiredKeys | 'tag'>
 
-export type DeclarationPicker = {
-  [EventHandlerURI]: Pick<EventHandler, ExclusiveEventRequiredKeys | 'tag'>
-  [CommandhandlerURI]: Pick<
-    CommandHandler,
-    ExclusiveCommandRequiredKeys | 'tag'
-  >
-}
-
-export type JobPicker = {
-  [EventHandlerURI]: EventJob
-  [CommandhandlerURI]: CommandJob
-}
+export type MessagingHandlerToJobMapper<C extends MessagingHandler> =
+  C extends CommandHandler ? CommandJob : EventJob

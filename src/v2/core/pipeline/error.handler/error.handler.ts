@@ -5,8 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ExecutionContext, Resolvable } from '@yagomarinho/domain-kernel'
+import type { ExtendedFailure, ApplicationContext } from '../../data'
+import type { Resolvable } from '@yagomarinho/domain-kernel'
 
-export interface ErrorHandler<Output = any, Env = any, Error = any> {
-  (error: Error, env: Env, context: ExecutionContext): Resolvable<Output>
+export interface ErrorHandler<Error = any, Env = any> {
+  (
+    error: Error,
+    env: Env,
+    context: ApplicationContext,
+  ): Resolvable<ExtendedFailure | Error>
 }

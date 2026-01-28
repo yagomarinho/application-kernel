@@ -5,13 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { ExecutionContext, Resolvable } from '@yagomarinho/domain-kernel'
+import type { Resolvable } from '@yagomarinho/domain-kernel'
 import type { MiddlewareResult } from './middleware.result'
+import type { ApplicationContext } from '../../data'
 
 export interface Middleware<Input = any, Output = any, Env = any, Error = any> {
   (
     input: Input,
     env: Env,
-    context: ExecutionContext,
+    context: ApplicationContext,
   ): Resolvable<MiddlewareResult<Error, Output>>
 }

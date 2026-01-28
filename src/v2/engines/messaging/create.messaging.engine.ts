@@ -5,20 +5,34 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { MessagingEngine } from './contracts'
+import type {
+  WithApplicationView,
+  WithPartialDefaults,
+  WithUID,
+} from '../../core'
+import type { WithServiceEngine } from '../__contracts__'
+import type { MessagingDefaults, MessagingEngine } from './contracts'
 
-export interface MessagingEngineOptions {
-  defaults?: Partial<MessagingDefaults>
-  serviceEngine: ApplicationServiceEngine
-  uid: UID
-  registry: Registry
-}
+import {
+  compileMessagingHandler,
+  declareMessagingHandler,
+  jobsMessagingHandler,
+  runMessagingHandler,
+} from './methods'
+import { resolveMessagingDefaults } from './resolvers'
+
+export interface MessagingEngineOptions
+  extends
+    WithPartialDefaults<MessagingDefaults>,
+    WithServiceEngine,
+    WithUID,
+    WithApplicationView {}
 
 export function MessagingEngine({
   defaults,
   serviceEngine,
+  view,
   uid,
-  registry,
 }: MessagingEngineOptions): MessagingEngine {
   return {
     declare: declareMessagingHandler({
@@ -32,9 +46,9 @@ export function MessagingEngine({
     }),
 
     jobs: jobsMessagingHandler({
-      registry,
+      view,
     }),
 
-    run: runMessagingHandler({ registry }),
+    run: runMessagingHandler({ view }),
   }
 }

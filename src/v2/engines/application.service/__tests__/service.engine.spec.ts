@@ -1,5 +1,6 @@
-import { type ExecutionContext, Successful } from '@yagomarinho/domain-kernel'
+import { Successful } from '@yagomarinho/domain-kernel'
 import {
+  ApplicationContext,
   type Guardian,
   type Job,
   createAmbient,
@@ -8,7 +9,7 @@ import {
 import { createServiceEngine } from '../create.service.engine'
 
 describe('service engine testing', () => {
-  const context = {} as ExecutionContext
+  const context = {} as ApplicationContext
 
   function createJob(id: string, tag: string): Job {
     return { id, tag } as Job

@@ -1,6 +1,5 @@
-import type { ExecutionContext } from '@yagomarinho/domain-kernel'
-
 import {
+  type ApplicationContext,
   type ApplicationPayload,
   type Job,
   createAmbient,
@@ -9,7 +8,7 @@ import {
 import { runApplicationService } from '../run'
 
 describe('run application service testing', () => {
-  const context = {} as ExecutionContext
+  const context = {} as ApplicationContext
 
   function createJob(id: string, tag: string): Job {
     return {

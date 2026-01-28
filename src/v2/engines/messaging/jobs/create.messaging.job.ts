@@ -6,20 +6,23 @@
  */
 
 import type { MessagingHandler } from '../contracts'
-import type { CreateMessagingJobDeclaration, JobPicker } from './jobs.types'
+import type {
+  MessagingHandlerToJobDeclarationMapper,
+  MessagingHandlerToJobMapper,
+} from './jobs.types'
 
 import { createCommandJob } from './create.command.job'
 import { createEventJob } from './create.event.job'
 
-export interface CreateMessagingJob<T extends MessagingHandler['tag']> {
+export interface CreateMessagingJob<C extends MessagingHandler> {
   id: string
-  declaration: CreateMessagingJobDeclaration<T>
+  declaration: MessagingHandlerToJobDeclarationMapper<C>
 }
 
-export function createMessagingJob<T extends MessagingHandler['tag']>({
+export function createMessagingJob<C extends MessagingHandler>({
   id,
   declaration,
-}: CreateMessagingJob<T>): JobPicker[T] {
+}: CreateMessagingJob<C>): MessagingHandlerToJobMapper<C> {
   return declaration.tag === 'command.handler'
     ? (createCommandJob(id, declaration.on, declaration.emits) as any)
     : (createEventJob(id, declaration.on) as any)
