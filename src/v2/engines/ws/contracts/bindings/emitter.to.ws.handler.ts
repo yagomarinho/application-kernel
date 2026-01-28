@@ -8,13 +8,13 @@
 import type { Tag } from '@yagomarinho/domain-kernel'
 
 import type { ApplicationService } from '../../../application.service'
-import type { WsMixedEventHandlerURI } from '../../uri'
+import type { WsMixedInOutURI } from '../../uri'
 import type { Messaging } from '../../../messaging'
 import type { EmitterIncomingEvent, WsOutgoingEvent } from '../meta'
 
 export interface EmitterToWsHandler
   extends
     ApplicationService.ApplicationService,
-    Tag<WsMixedEventHandlerURI>,
+    Tag<WsMixedInOutURI>,
     Messaging.WithOn<EmitterIncomingEvent>,
     Messaging.WithEmits<WsOutgoingEvent> {}

@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { EmitterIncomingEvent, WsIncomingEvent } from '../meta'
+import { WsIncomingAdapter } from '../meta'
 
-export interface DerivedAcceptIncoming {
-  on: WsIncomingEvent | EmitterIncomingEvent
+export interface WithWsIncomingAdapter {
+  incomingAdapter: WsIncomingAdapter
 }

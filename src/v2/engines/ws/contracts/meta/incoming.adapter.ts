@@ -7,4 +7,4 @@
 
 import { WsIncomingMessage } from '../ports'
 
-export type IncomingAdapter = (incoming: WsIncomingMessage) => any
+export type WsIncomingAdapter = (incoming: WsIncomingMessage) => any

@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { Engine } from '../../../../core'
+
 export type WsHandlersConfig =
   | WsCommandHandlerConfig
   | WsEventHandlerConfig
@@ -15,7 +17,7 @@ export type WsHandlers = WsCommandHandler | WsEventHandler | WsMixedEventHandler
 type Mapper = {
   [WsCommandHandlerURI]: WsCommandHandler
   [WsEventHandlerURI]: WsEventHandler
-  [WsMixedEventHandlerURI]: WsMixedEventHandler
+  [WsMixedInOutURI]: WsMixedEventHandler
 }
 
 export type WsHandlersMapper<C extends WsHandlersConfig> = Mapper[NonNullable<

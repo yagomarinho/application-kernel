@@ -9,7 +9,7 @@ type RequiredKeys = 'on' | 'emits' | 'handler'
 
 type ConfigWsToEmitter = Omit<WsIncomingEmitterOut, 'on' | 'emits'> & {
   on: Omit<AcceptWsIncoming, 'incomingAdapter'> & {
-    incomingAdapter?: IncomingAdapter
+    incomingAdapter?: WsIncomingAdapter
   }
   emits: { target: 'emitter'; event: string } | EmitsEmitterOutput
 }

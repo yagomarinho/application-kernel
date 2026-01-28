@@ -7,17 +7,19 @@
 
 import { Merge } from '@yagomarinho/ts-toolkit'
 import { ApplicationService } from '../../../application.service'
-import { DerivedEndsEmits } from './derived.ends.emits'
-import { WithIncomingAdapter } from './with.incoming.adapter'
+import { WithWsIncomingAdapter } from './with.ws.incoming.adapter'
 import { Messaging } from '../../../messaging'
+import { MixedOutgoingEvent } from '../meta'
 
 export type OnConnectionEvent = Merge<
   Omit<ApplicationService.ApplicationService, 'tag'>,
-  WithIncomingAdapter
+  WithWsIncomingAdapter
 >
 
-export type OnConnectionCommand = OnConnectionEvent &
-  (Messaging.WithEmits<string> | DerivedEndsEmits)
+export type OnConnectionCommand = Merge<
+  OnConnectionEvent,
+  Messaging.WithEmits<string | MixedOutgoingEvent>
+>
 
 export type OnConnection = OnConnectionEvent | OnConnectionCommand
 

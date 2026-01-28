@@ -9,10 +9,10 @@ import type { Merge } from '@yagomarinho/ts-toolkit'
 import type { Tag } from '@yagomarinho/domain-kernel'
 
 import type { Messaging } from '../../../messaging'
-import type { WithIncomingAdapter } from '../capabilities'
+import type { WithWsIncomingAdapter } from '../capabilities'
 import type { WsCommandHandlerURI } from '../../uri'
 
 export interface WsCommandHandler
   extends
     Merge<Messaging.CommandHandler, Tag<WsCommandHandlerURI>>,
-    WithIncomingAdapter {}
+    WithWsIncomingAdapter {}

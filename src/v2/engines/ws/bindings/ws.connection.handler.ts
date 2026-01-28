@@ -25,7 +25,7 @@ export function WsRouteConnection({
       onError,
       env,
       incomingAdapter,
-      tag: WsRouteConnectionURI,
+      tag: WsConnectionURI,
     })
 
   return applyEntry('resource', WsURI)(target)

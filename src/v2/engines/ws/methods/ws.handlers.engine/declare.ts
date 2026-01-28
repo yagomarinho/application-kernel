@@ -23,7 +23,7 @@ import type {
 import {
   WsCommandHandlerURI,
   WsEventHandlerURI,
-  WsMixedEventHandlerURI,
+  WsMixedInOutURI,
 } from '../../../uri'
 
 export function declareWsCommandHandler(
@@ -142,7 +142,7 @@ export function declareWsHandlers({
     const declares = {
       [WsCommandHandlerURI]: declareWsCommandHandler,
       [WsEventHandlerURI]: declareWsEventHandler,
-      [WsMixedEventHandlerURI]: declareWsMixedEventHandler,
+      [WsMixedInOutURI]: declareWsMixedEventHandler,
     }
 
     const declare = declares[config.tag]

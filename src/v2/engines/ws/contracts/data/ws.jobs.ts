@@ -5,4 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export type WsJobs = WsRouteConnectionJob | WsHandlersJob
+import type { WsConnectionJob } from './ws.connection'
+import type { WsHandlersJob } from './ws.handlers.job'
+
+export type WsJobs = WsConnectionJob | WsHandlersJob

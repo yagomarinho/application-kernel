@@ -9,7 +9,7 @@ type RequiredKeys = 'path' | 'handlers'
 
 type Config = Omit<WsRouteConnection, 'handlers' | 'onConnection'> & {
   onConnection: Omit<ApplicationServiceConfig, 'tag'> & {
-    incomingAdapter?: IncomingAdapter
+    incomingAdapter?: WsIncomingAdapter
     emits?: EndsEmits['emits'] | DerivedEndsEmits['emits']
   }
   handlers: WsHandlersEngineBinder[]

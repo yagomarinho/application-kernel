@@ -3,7 +3,7 @@ import {
   WsHandlersEngine,
   WsCommandHandlerURI,
   WsEventHandlerURI,
-  WsMixedEventHandlerURI,
+  WsMixedInOutURI,
 } from '..'
 
 describe('WsHandlersEngine', () => {
@@ -57,7 +57,7 @@ describe('WsHandlersEngine', () => {
     const handler = jest.fn()
 
     const mixed = engine.declare({
-      tag: WsMixedEventHandlerURI,
+      tag: WsMixedInOutURI,
       on: {
         source: 'ws',
         event: 'message',
@@ -69,7 +69,7 @@ describe('WsHandlersEngine', () => {
       handler,
     })
 
-    expect(mixed.tag).toBe(WsMixedEventHandlerURI)
+    expect(mixed.tag).toBe(WsMixedInOutURI)
     expect(mixed.on).toEqual({
       source: 'ws',
       event: 'message',

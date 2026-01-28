@@ -5,6 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface WsEventHandlerJob extends Job<WsHandlersURI>, AcceptIncoming {
+import type { Job } from '../../../../core'
+import type { Messaging } from '../../../messaging'
+import type { WsEventHandlerURI, WsHandlersURI } from '../../uri'
+
+export interface WsEventJob
+  extends Job<WsHandlersURI>, Messaging.WithOn<string> {
   type: WsEventHandlerURI
 }

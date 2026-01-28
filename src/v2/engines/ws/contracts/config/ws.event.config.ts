@@ -5,7 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-type RequiredKeys = 'on' | 'handler'
+import type { WithRequiredKeys } from '@yagomarinho/ts-toolkit'
+import type { WsEventHandler } from '../bindings'
+import type { WsEventRequiredKeys } from './keys'
 
-export type WsEventHandlerConfig = Partial<Omit<WsEventHandler, RequiredKeys>> &
-  Pick<WsEventHandler, RequiredKeys>
+export type WsEventConfig = WithRequiredKeys<
+  WsEventHandler,
+  WsEventRequiredKeys
+>

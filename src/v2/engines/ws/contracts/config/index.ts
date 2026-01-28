@@ -5,8 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export * from './defaults'
+export * from './keys'
 export * from './ws.command.config'
 export * from './ws.connection.config'
-export * from './ws.connection.defaults'
 export * from './ws.event.config'
 export * from './ws.mixed.in.out.config'

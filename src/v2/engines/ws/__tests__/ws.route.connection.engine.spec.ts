@@ -3,7 +3,7 @@ import {
   WsEventHandler,
   WsHandlersEngine,
   WsRouteConnectionEngine,
-  WsRouteConnectionURI,
+  WsConnectionURI,
 } from '..'
 
 describe('WsRouteConnectionEngine', () => {
@@ -16,7 +16,7 @@ describe('WsRouteConnectionEngine', () => {
     const handler = jest.fn()
 
     const route = engine.declare({
-      tag: WsRouteConnectionURI,
+      tag: WsConnectionURI,
       path: '/ws',
       handlers: [
         WsEventHandler({
@@ -26,7 +26,7 @@ describe('WsRouteConnectionEngine', () => {
       ],
     })
 
-    expect(route.tag).toBe(WsRouteConnectionURI)
+    expect(route.tag).toBe(WsConnectionURI)
     expect(route.path).toBe('/ws')
     expect(route.env).toBe(identity)
     expect(route.middlewares).toEqual([])
@@ -58,7 +58,7 @@ describe('WsRouteConnectionEngine', () => {
     const incomingAdapter = jest.fn()
 
     const route = engine.declare({
-      tag: WsRouteConnectionURI,
+      tag: WsConnectionURI,
       path: '/custom',
       handlers: [],
       onConnection: {
@@ -106,7 +106,7 @@ describe('WsRouteConnectionEngine', () => {
     })
 
     const route = engine.declare({
-      tag: WsRouteConnectionURI,
+      tag: WsConnectionURI,
       path: '/override',
       handlers: [],
     })
@@ -127,7 +127,7 @@ describe('WsRouteConnectionEngine', () => {
     const handler = jest.fn()
 
     const route = engine.declare({
-      tag: WsRouteConnectionURI,
+      tag: WsConnectionURI,
       path: '/bind',
       handlers: [
         WsEventHandler({
@@ -149,13 +149,13 @@ describe('WsRouteConnectionEngine', () => {
     })
 
     const a = engine.declare({
-      tag: WsRouteConnectionURI,
+      tag: WsConnectionURI,
       path: '/a',
       handlers: [],
     })
 
     const b = engine.declare({
-      tag: WsRouteConnectionURI,
+      tag: WsConnectionURI,
       path: '/b',
       handlers: [],
     })

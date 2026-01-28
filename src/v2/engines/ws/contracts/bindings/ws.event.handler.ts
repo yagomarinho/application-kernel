@@ -9,10 +9,10 @@ import type { Tag } from '@yagomarinho/domain-kernel'
 import type { Merge } from '@yagomarinho/ts-toolkit'
 
 import type { Messaging } from '../../../messaging'
-import type { WithIncomingAdapter } from '../capabilities'
+import type { WithWsIncomingAdapter } from '../capabilities'
 import type { WsEventHandlerURI } from '../../uri'
 
 export interface WsEventHandler
   extends
     Merge<Messaging.EventHandler, Tag<WsEventHandlerURI>>,
-    WithIncomingAdapter {}
+    WithWsIncomingAdapter {}

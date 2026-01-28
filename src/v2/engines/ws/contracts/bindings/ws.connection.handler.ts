@@ -10,10 +10,10 @@ import type { ApplicationService } from '../../../application.service'
 import type { Http } from '../../../http'
 import type {
   WithHandlers,
-  WithIncomingAdapter,
+  WithWsIncomingAdapter,
   WithOnConnection,
 } from '../capabilities'
-import type { WsRouteConnectionURI } from '../../uri'
+import type { WsConnectionURI } from '../../uri'
 
 export interface WsRouteConnection
   extends
@@ -24,5 +24,5 @@ export interface WsRouteConnection
     Http.WithPath,
     WithOnConnection,
     WithHandlers,
-    WithIncomingAdapter,
-    Tag<WsRouteConnectionURI> {}
+    WithWsIncomingAdapter,
+    Tag<WsConnectionURI> {}

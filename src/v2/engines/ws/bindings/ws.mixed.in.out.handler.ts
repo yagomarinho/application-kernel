@@ -27,7 +27,7 @@ export function WsMixedEventHandler({
       postprocessors,
       onError,
       env,
-      tag: WsMixedEventHandlerURI,
+      tag: WsMixedInOutURI,
     } as any)
 
   return applyEntry('resource', WsURI)(target)

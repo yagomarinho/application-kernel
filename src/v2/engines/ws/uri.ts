@@ -11,8 +11,8 @@ export type WsURI = typeof WsURI
 export const WsHandlersURI = 'ws.handlers'
 export type WsHandlersURI = typeof WsHandlersURI
 
-export const WsRouteConnectionURI = 'ws.connection'
-export type WsRouteConnectionURI = typeof WsRouteConnectionURI
+export const WsConnectionURI = 'ws.connection'
+export type WsConnectionURI = typeof WsConnectionURI
 
 export const WsCommandHandlerURI = 'ws.command.handler'
 export type WsCommandHandlerURI = typeof WsCommandHandlerURI
@@ -20,5 +20,5 @@ export type WsCommandHandlerURI = typeof WsCommandHandlerURI
 export const WsEventHandlerURI = 'ws.event.handler'
 export type WsEventHandlerURI = typeof WsEventHandlerURI
 
-export const WsMixedEventHandlerURI = 'ws.mixed.event.handler'
-export type WsMixedEventHandlerURI = typeof WsMixedEventHandlerURI
+export const WsMixedInOutURI = 'ws.mixed.in.out'
+export type WsMixedInOutURI = typeof WsMixedInOutURI

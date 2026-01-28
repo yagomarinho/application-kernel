@@ -5,13 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-type RequiredKeys = 'on' | 'emits' | 'handler'
+import { Merge, WithRequiredKeys } from '@yagomarinho/ts-toolkit'
+import { WsCommandRequiredKeys } from './keys'
+import { WsCommandHandler } from '../bindings'
+import { Messaging } from '../../../messaging'
 
-type ConfigWithEndsEmitsVariant = Omit<WsCommandHandler, 'emits'> & {
-  emits: string | Emits
-}
+type WsCommandPreConfig = Merge<
+  WsCommandHandler,
+  Messaging.WithEmits<string | Messaging.Emits<string>>
+>
 
-export type WsCommandHandlerConfig = Partial<
-  Omit<WsCommandHandler, RequiredKeys>
-> &
-  Pick<ConfigWithEndsEmitsVariant, RequiredKeys>
+export type WsCommandConfig = WithRequiredKeys<
+  WsCommandPreConfig,
+  WsCommandRequiredKeys
+>

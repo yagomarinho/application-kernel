@@ -7,7 +7,7 @@
 
 import type { WsCommandHandler } from '../../../command'
 import type { WsEventHandler } from '../../../event'
-import type { IncomingAdapter, WithWsRegistry } from '../../../composition'
+import type { WsIncomingAdapter, WithWsRegistry } from '../../../composition'
 import type {
   ResultWithAudience,
   WsHandlers,
@@ -43,7 +43,7 @@ import {
   WsCommandHandlerURI,
   WsEventHandlerURI,
   WsHandlersURI,
-  WsMixedEventHandlerURI,
+  WsMixedInOutURI,
 } from '../../../uri'
 
 import { bindResolvableArray, mapResolvable } from '../../../../../helpers'
@@ -74,7 +74,7 @@ function createExecutionWithAdapter({
   incomingAdapter,
 }: {
   execution: Execution
-  incomingAdapter: IncomingAdapter
+  incomingAdapter: WsIncomingAdapter
 }): Execution<WsIncomingMessage, ExtendedResult> {
   const execute: Execution['execute'] = ({
     context,
@@ -170,13 +170,13 @@ export function compileWsHandlers({
     const executions = {
       [WsEventHandlerURI]: routeHandlerToExecution,
       [WsCommandHandlerURI]: routeHandlerToExecution,
-      [WsMixedEventHandlerURI]: routeMixedEventExecution,
+      [WsMixedInOutURI]: routeMixedEventExecution,
     }
 
     const jobs = {
       [WsEventHandlerURI]: WsEventHandlerJob,
       [WsCommandHandlerURI]: WsCommandHandlerJob,
-      [WsMixedEventHandlerURI]: WsMixedEventHandlerJob,
+      [WsMixedInOutURI]: WsMixedEventHandlerJob,
     }
 
     const uri = declaration.tag
@@ -239,6 +239,6 @@ function WsMixedEventHandlerJob(
     on,
     emits,
     tag: WsHandlersURI,
-    type: WsMixedEventHandlerURI,
+    type: WsMixedInOutURI,
   } as any
 }

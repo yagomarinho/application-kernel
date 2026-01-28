@@ -6,6 +6,8 @@
  */
 
 export * from './ws.command.job'
-export * from './ws.connection.jobs'
+export * from './ws.connection'
 export * from './ws.event.job'
-export * from './ws.mixed.in.out.job'
+export * from './ws.handlers.job'
+export * from './ws.jobs'
+export * from './ws.mixed.in.out'

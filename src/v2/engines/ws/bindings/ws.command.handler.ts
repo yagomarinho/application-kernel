@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { WsCommandConfig } from '../contracts'
+
 export function WsCommandHandler({
   on,
   emits,
@@ -15,7 +17,7 @@ export function WsCommandHandler({
   onError,
   env,
   incomingAdapter,
-}: WsCommandHandlerConfig): WsHandlersEngineBinder {
+}: WsCommandConfig): WsHandlersEngineBinder {
   const target = (engine: WsHandlersEngine) =>
     engine.declare({
       on,

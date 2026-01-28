@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './derived.accept.incoming'
-export * from './derived.ends.emits'
 export * from './with.handlers'
 export * from './with.on.connection'
-export * from './with.incoming.adapter'
+export * from './with.ws.incoming.adapter'
