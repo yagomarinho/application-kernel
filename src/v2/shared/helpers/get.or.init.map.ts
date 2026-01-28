@@ -8,13 +8,13 @@
 import type { Ambient, AmbientKey } from '../../core'
 
 export function getOrInitMap<K, V>(
-  env: Ambient,
+  ambient: Ambient,
   key: AmbientKey<Map<K, V>>,
 ): Map<K, V> {
-  const map = env.get(key)
+  const map = ambient.get(key)
   if (map) return map
 
   const next = new Map<K, V>()
-  env.set(key, next)
+  ambient.set(key, next)
   return next
 }

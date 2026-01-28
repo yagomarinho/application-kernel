@@ -74,11 +74,11 @@ describe('resolveMessagingExecution', () => {
       serviceEngine,
     })
 
-    await expect(
+    expect(() =>
       resolved.execute({
         data: null,
         context: {} as any,
       }),
-    ).rejects.toThrow('boom')
+    ).toThrow('boom')
   })
 })

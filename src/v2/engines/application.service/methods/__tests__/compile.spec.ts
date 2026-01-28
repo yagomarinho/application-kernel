@@ -9,6 +9,7 @@ import {
   Next,
   createAmbient,
   createEnvView,
+  AppError,
 } from '../../../../core'
 
 import { compileApplicationService } from '../compile'
@@ -125,7 +126,7 @@ describe('compileApplicationService', () => {
       throw new Error('should not run')
     }
 
-    const onError: ErrorHandler = error => `handled:${error}`
+    const onError: ErrorHandler = error => AppError.handle(`handled:${error}`)
 
     const [compilation] = compiler({
       env: env => env,
@@ -145,6 +146,7 @@ describe('compileApplicationService', () => {
       tag: 'failure',
       error: 'handled:guardian-error',
       context,
+      handled: true,
     })
   })
 

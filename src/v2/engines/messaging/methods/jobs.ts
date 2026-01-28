@@ -9,13 +9,11 @@ import type { WithApplicationView } from '../../../core'
 import type { MessagingJob } from '../contracts'
 
 import { jobsApplicationService } from '../../application.service'
-import { CommandhandlerURI, EventHandlerURI } from '../uri'
+import { MessagingURI } from '../uri'
 
 export interface JobsMessagingHandler extends WithApplicationView {}
 
 export function jobsMessagingHandler({ view }: JobsMessagingHandler) {
   return (): MessagingJob[] =>
-    jobsApplicationService({ view })(CommandhandlerURI).concat(
-      jobsApplicationService({ view })(EventHandlerURI),
-    ) as MessagingJob[]
+    jobsApplicationService({ view })(MessagingURI) as MessagingJob[]
 }

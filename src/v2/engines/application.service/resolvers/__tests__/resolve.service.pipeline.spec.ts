@@ -78,6 +78,7 @@ describe('resolveServicePipeline', () => {
       tag: 'failure',
       error: 'handled:guardian-error',
       context: baseCtx,
+      handled: true,
     })
   })
 
@@ -149,6 +150,7 @@ describe('resolveServicePipeline', () => {
       tag: 'failure',
       error: 'mapped:boom',
       context: context1,
+      handled: false,
     })
   })
 
@@ -195,7 +197,7 @@ describe('resolveServicePipeline', () => {
       throw new Error('should not run')
     }
 
-    const onError: ErrorHandler = error => `handled:${error}`
+    const onError: ErrorHandler = error => AppError.handle(`handled:${error}`)
 
     const pipeline = resolveServicePipeline(
       middleware,
@@ -211,6 +213,7 @@ describe('resolveServicePipeline', () => {
       tag: 'failure',
       error: 'handled:handler-error',
       context: baseCtx,
+      handled: true,
     })
   })
 })

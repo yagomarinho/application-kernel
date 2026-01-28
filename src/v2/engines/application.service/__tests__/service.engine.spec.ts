@@ -1,5 +1,6 @@
 import { Successful } from '@yagomarinho/domain-kernel'
 import {
+  AppError,
   ApplicationContext,
   type Guardian,
   type Job,
@@ -136,7 +137,9 @@ describe('service engine testing', () => {
         },
         postprocessors: [],
         onError: error =>
-          error instanceof Error ? `mapped:${error.message}` : error,
+          AppError.handle(
+            error instanceof Error ? `mapped:${error.message}` : error,
+          ),
       },
     })
 
@@ -164,6 +167,7 @@ describe('service engine testing', () => {
       tag: 'failure',
       error: 'mapped:boom',
       context,
+      handled: true,
     })
   })
 

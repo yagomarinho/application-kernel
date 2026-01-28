@@ -49,7 +49,7 @@ describe('middlewareChain', () => {
     const failure: Failure = {
       tag: 'failure',
       error: 'boom',
-    } as any
+    }
 
     const m1: Middleware = (input, _env, context) =>
       Next(`${input}-ok`, context)
@@ -67,6 +67,7 @@ describe('middlewareChain', () => {
     expect(result).toEqual({
       ...failure,
       context,
+      handled: false,
     })
   })
 
@@ -125,6 +126,7 @@ describe('middlewareChain', () => {
       tag: 'failure',
       error: 'async-error',
       context: context1,
+      handled: false,
     })
   })
 })

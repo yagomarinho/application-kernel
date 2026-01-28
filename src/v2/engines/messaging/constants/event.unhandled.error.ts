@@ -8,5 +8,6 @@
 import type { Result } from '@yagomarinho/domain-kernel'
 
 export function eventUnhandledError(result: Result) {
-  if (result.tag === 'failure') throw new Error(result.error)
+  if (result.tag === 'failure' && !(result as any).handled)
+    throw new Error(result.error)
 }

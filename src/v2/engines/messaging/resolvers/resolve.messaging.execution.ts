@@ -20,6 +20,7 @@ export interface ResolveMessagingExecution<
 > extends WithServiceEngine {
   declaration: C
 }
+
 export function resolveMessagingExecution<C extends MessagingHandler>({
   declaration,
   serviceEngine,

@@ -28,7 +28,7 @@ export interface MessagingEngineOptions
     WithUID,
     WithApplicationView {}
 
-export function MessagingEngine({
+export function createMessagingEngine({
   defaults,
   serviceEngine,
   view,
