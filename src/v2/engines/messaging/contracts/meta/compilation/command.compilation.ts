@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { Compilation, ExtendedResult } from '../../../../core'
-import type { CommandJob } from '../data'
+import type { Compilation, ExtendedResult } from '../../../../../core'
+import type { CommandJob } from '../../data'
 
 export type CommandCompilation = Compilation<CommandJob, any, ExtendedResult>

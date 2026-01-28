@@ -5,6 +5,4 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './resolve.messaging.compilation'
-export * from './resolve.messaging.defaults'
-export * from './resolve.messaging.execution'
+export * from './with.service.engine'

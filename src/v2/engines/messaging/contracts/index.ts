@@ -5,12 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+export * from './bindings'
 export * from './capabilities'
-export * from './command.handler'
 export * from './config'
 export * from './data'
 export * from './engine'
-export * from './event.handler'
-export * from './messaging.handler'
 export * from './meta'
 export * from './ports'

@@ -10,7 +10,8 @@ import type {
   WithPartialDefaults,
   WithUID,
 } from '../../core'
-import type { HttpDefaults, HttpEngine, WithServiceEngine } from './contracts'
+import type { WithServiceEngine } from '../__contracts__'
+import type { HttpDefaults, HttpEngine } from './contracts'
 
 import {
   compileHttpRoute,

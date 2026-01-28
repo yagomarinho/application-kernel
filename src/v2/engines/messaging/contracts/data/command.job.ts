@@ -8,8 +8,9 @@
 import type { Job } from '../../../../core'
 import type { CommandhandlerURI, MessagingURI } from '../../uri'
 import type { WithEmits, WithOn } from '../capabilities'
+import { Emits } from '../meta'
 
 export interface CommandJob
-  extends Job<MessagingURI>, WithOn<string>, WithEmits<string> {
+  extends Job<MessagingURI>, WithOn<string>, WithEmits<Emits<string>> {
   type: CommandhandlerURI
 }

@@ -5,6 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export * from './resolve.messaging.compilation'
-export * from './resolve.messaging.defaults'
-export * from './resolve.messaging.execution'
+export * from './command.handler'
+export * from './event.handler'
+export * from './messaging.handler'

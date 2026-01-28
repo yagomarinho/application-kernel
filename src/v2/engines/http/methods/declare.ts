@@ -6,12 +6,8 @@
  */
 
 import type { RequiredTaggable, WithDefaults } from '../../../core'
-import type {
-  HttpConfig,
-  HttpDefaults,
-  HttpRoute,
-  WithServiceEngine,
-} from '../contracts'
+import type { WithServiceEngine } from '../../__contracts__'
+import type { HttpConfig, HttpDefaults, HttpRoute } from '../contracts'
 
 import { concatenate } from '@yagomarinho/smooth/concatenate'
 import { resolveHttpAdapters } from '../resolvers'

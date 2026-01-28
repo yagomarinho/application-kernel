@@ -7,6 +7,6 @@
 
 import type { WithRequiredKeys } from '@yagomarinho/ts-toolkit'
 import type { EventRequiredKeys } from './event.required.keys'
-import type { EventHandler } from '../event.handler'
+import type { EventHandler } from '../bindings/event.handler'
 
 export type EventConfig = WithRequiredKeys<EventHandler, EventRequiredKeys>

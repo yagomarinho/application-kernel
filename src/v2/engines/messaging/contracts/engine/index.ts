@@ -7,3 +7,4 @@
 
 export * from './messaging.engine'
 export * from './messaging.engine.binder'
+export * from './messaging.types'

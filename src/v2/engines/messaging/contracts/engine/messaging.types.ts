@@ -5,10 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { CommandHandler } from '../command.handler'
+import type { CommandHandler } from '../bindings/command.handler'
 import type { CommandConfig, MessagingConfig } from '../config'
-import type { EventHandler } from '../event.handler'
+import type { EventHandler } from '../bindings/event.handler'
+import type { MessagingHandler } from '../bindings/messaging.handler'
+import type { CommandCompilation, EventCompilation } from '../meta'
 
 export type MessagingMapper<C extends MessagingConfig> = C extends CommandConfig
   ? CommandHandler
   : EventHandler
+
+export type MessagingCompilationMapper<C extends MessagingHandler> =
+  C extends CommandHandler ? CommandCompilation : EventCompilation

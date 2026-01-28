@@ -5,57 +5,35 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { MessagingHandler } from '../create.messaging.engine'
-import type { CommandJob, EventJob, MessagingJob } from '../job'
-import type { ApplicationServiceEngine } from '../../../application.service'
-import type { UID } from '../../../../shared/uid'
+import type { WithUID } from '../../../core'
+import type { WithServiceEngine } from '../../__contracts__'
+import type { MessagingCompilationMapper, MessagingHandler } from '../contracts'
 
-import { type Compilation, ExtendedResult } from '../../../../core'
-import { CommandhandlerURI, EventHandlerURI, MessagingURI } from '../../uri'
+import {
+  resolveMessagingCompilation,
+  resolveMessagingExecution,
+} from '../resolvers'
 
-export interface CompileMessagingHandler {
-  serviceEngine: ApplicationServiceEngine
-  uid: UID
-}
+export interface CompileMessagingHandler extends WithServiceEngine, WithUID {}
 
 export function compileMessagingHandler({
   serviceEngine,
   uid,
 }: CompileMessagingHandler) {
-  return (declaration: MessagingHandler): Compilation<MessagingJob>[] => {
-    const [{ execution }] = serviceEngine.compile(declaration)
+  return <C extends MessagingHandler>(
+    declaration: C,
+  ): MessagingCompilationMapper<C>[] => {
+    const execution = resolveMessagingExecution<C>({
+      declaration,
+      serviceEngine,
+    })
 
-    const id = uid.generate()
-    const compilation: Compilation<MessagingJob, any, ExtendedResult> = {
-      job:
-        declaration.tag === 'command.handler'
-          ? CommandJob(id, declaration.on, declaration.emits)
-          : EventJob(id, declaration.on),
+    const compilation = resolveMessagingCompilation<C>({
+      declaration,
       execution,
-    }
+      uid,
+    })
+
     return [compilation]
-  }
-}
-
-function EventJob(id: string, on: EventJob['on']): EventJob {
-  return {
-    id,
-    on,
-    tag: MessagingURI,
-    type: EventHandlerURI,
-  }
-}
-
-function CommandJob(
-  id: string,
-  on: CommandJob['on'],
-  emits: CommandJob['emits'],
-): CommandJob {
-  return {
-    emits,
-    id,
-    on,
-    tag: MessagingURI,
-    type: CommandhandlerURI,
   }
 }

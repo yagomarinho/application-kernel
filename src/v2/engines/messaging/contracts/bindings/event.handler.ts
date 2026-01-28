@@ -6,10 +6,10 @@
  */
 
 import type { Tag } from '@yagomarinho/domain-kernel'
-import type { ApplicationService } from '../../application.service'
-import type { WithOn } from './capabilities'
+import type { ApplicationService } from '../../../application.service'
+import type { WithOn } from '../capabilities'
 
-import { EventHandlerURI } from '../uri'
+import type { EventHandlerURI } from '../../uri'
 
 export interface EventHandler
   extends ApplicationService, WithOn<string>, Tag<EventHandlerURI> {}

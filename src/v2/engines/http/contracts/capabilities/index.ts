@@ -8,4 +8,3 @@
 export * from './with.http.adapters'
 export * from './with.method'
 export * from './with.path'
-export * from './with.service.engine'

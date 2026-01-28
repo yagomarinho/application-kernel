@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ServiceEngine } from '../../../application.service'
+import type { Compilation } from '../../../../../core'
+import type { EventJob } from '../../data'
 
-export interface WithServiceEngine {
-  serviceEngine: ServiceEngine
-}
+export type EventCompilation = Compilation<EventJob, any, void>

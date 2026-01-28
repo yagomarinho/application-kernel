@@ -6,7 +6,7 @@
  */
 
 import type { Merge, WithRequiredKeys } from '@yagomarinho/ts-toolkit'
-import type { CommandHandler } from '../command.handler'
+import type { CommandHandler } from '../bindings/command.handler'
 import type { CommandRequiredKeys } from './command.required.keys'
 import type { Emits } from '../meta'
 import type { WithEmits } from '../capabilities'
